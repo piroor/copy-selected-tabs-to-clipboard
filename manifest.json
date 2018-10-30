@@ -10,7 +10,9 @@
     "menus",
     "notifications",
     "storage",
-    "tabs",
+    "tabs"
+  ],
+  "optional_permissions": [
     "<all_urls>"
   ],
   "icons": {
