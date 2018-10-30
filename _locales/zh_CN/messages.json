@@ -1,5 +1,9 @@
 {
-    "context_clipboard_label": {
+    "context_copyTab_label": {
+        "message": "复制到剪贴板(&Y)",
+        "hash": "22acde57292bafa4ff70df7b4409f370"
+    },
+    "context_copyTabs_label": {
         "message": "复制到剪贴板(&Y)",
         "hash": "22acde57292bafa4ff70df7b4409f370"
     },

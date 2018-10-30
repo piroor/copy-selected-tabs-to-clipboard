@@ -2,7 +2,8 @@
   "extensionName": { "message": "Copy Selected Tabs to Clipboard" },
   "extensionDescription": { "message": "Provides ability to copy title and URL of selected tabs to the clipboard." },
 
-  "context_clipboard_label":              { "message": "Cop&y to Clipboard" },
+  "context_copyTab_label":                 { "message": "Cop&y to Clipboard" },
+  "context_copyTabs_label":                { "message": "Cop&y to Clipboard" },
   "context_clipboard_url_label":           { "message": "URI" },
   "context_clipboard_title_and_url_label": { "message": "Title and URI" },
   "context_clipboard_html_link_label":     { "message": "HTML Link" },

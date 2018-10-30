@@ -41,7 +41,7 @@ const mMenuItem = {
   id:       'clipboard',
   type:     'normal',
   visible:  true,
-  title:    browser.i18n.getMessage('context_clipboard_label'),
+  title:    browser.i18n.getMessage('context_copyTabs_label'),
   icons:    browser.runtime.getManifest().icons,
   contexts: ['tab', 'page']
 };
@@ -91,16 +91,23 @@ async function refreshFormatItems() {
 async function onShown(info, tab) {
   const tabs = await Commands.getMultiselectedTabs(tab);
   const lastVisible = mMenuItem.visible;
+  const lastTitle   = mMenuItem.title;
   mMenuItem.visible = mFormatItems.size > 0 && (tabs.length > 1 || configs.showContextCommandForSingleTab);
-  if (lastVisible == mMenuItem.visible)
+  mMenuItem.title   = browser.i18n.getMessage(tabs.length > 1 ? 'context_copyTabs_label' : 'context_copyTab_label');
+  if (lastVisible == mMenuItem.visible &&
+      lastTitle == mMenuItem.title)
     return;
 
-  browser.menus.update(mMenuItem.id, { visible: mMenuItem.visible });
+  const params = {
+    visible: mMenuItem.visible,
+    title:   mMenuItem.title
+  };
+  browser.menus.update(mMenuItem.id, params);
   browser.menus.refresh();
   try {
     browser.runtime.sendMessage(Constants.kTST_ID, {
       type:   Constants.kTSTAPI_CONTEXT_MENU_UPDATE,
-      params: [mMenuItem.id, { visible: mMenuItem.visible }]
+      params: [mMenuItem.id, params]
     }).catch(handleMissingReceiverError);
   }
   catch(_e) {
@@ -142,8 +149,7 @@ async function onClick(info, tab) {
 browser.menus.onClicked.addListener(onClick);
 
 function onMessageExternal(message, sender) {
-  if (configs.debug)
-    console.log('onMessageExternal: ', message, sender);
+  log('onMessageExternal: ', message, sender);
 
   if (!message ||
       typeof message.type != 'string')

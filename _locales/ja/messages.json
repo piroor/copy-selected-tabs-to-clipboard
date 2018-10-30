@@ -2,7 +2,8 @@
   "extensionName": { "message": "選択したタブをクリップボードにコピー" },
   "extensionDescription": { "message": "選択されたタブの情報をクリップボードにコピーする機能を提供します。" },
 
-  "context_clipboard_label":              { "message": "クリップボードにコピー(&Y)" },
+  "context_copyTab_label":                 { "message": "クリップボードにコピー(&Y)" },
+  "context_copyTabs_label":                { "message": "クリップボードにコピー(&Y)" },
   "context_clipboard_url_label":           { "message": "URI" },
   "context_clipboard_title_and_url_label": { "message": "タイトルとURI" },
   "context_clipboard_html_link_label":     { "message": "HTMLのリンク" },
