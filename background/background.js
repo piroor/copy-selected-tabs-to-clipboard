@@ -12,7 +12,7 @@ import {
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import * as Commands from '/common/commands.js';
-import './context-menu.js';
+import * as ContextMenu from './context-menu.js';
 import RichConfirm from '/extlib/RichConfirm.js';
 
 log.context = 'BG';
@@ -76,13 +76,13 @@ function onTSTAPIMessage(message) {
   switch (message.type) {
     case Constants.kTSTAPI_NOTIFY_READY:
       registerToTST();
+      ContextMenu.init();
       return Promise.resolve(true);
   }
 }
 
 function onMessageExternal(message, sender) {
-  if (configs.debug)
-    console.log('onMessageExternal: ', message, sender);
+  log('onMessageExternal: ', message, sender);
 
   switch (sender.id) {
     case Constants.kTST_ID: { // Tree Style Tab API

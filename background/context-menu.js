@@ -45,9 +45,13 @@ const mMenuItem = {
   icons:    browser.runtime.getManifest().icons,
   contexts: ['tab', 'page']
 };
-createItem(mMenuItem);
-
 const mFormatItems = new Map();
+
+export function init() {
+  createItem(mMenuItem);
+  configs.$loaded.then(refreshFormatItems);
+}
+
 configs.$addObserver(key => {
   switch (key) {
     case 'copyToClipboardFormats':
@@ -55,7 +59,6 @@ configs.$addObserver(key => {
       break;
   }
 });
-configs.$loaded.then(refreshFormatItems);
 
 function reserveRefreshFormatItems() {
   if (reserveRefreshFormatItems.timeout)
@@ -168,3 +171,5 @@ function onTSTAPIMessage(message) {
       return onShown(message.info, message.tab);
   }
 }
+
+init();
