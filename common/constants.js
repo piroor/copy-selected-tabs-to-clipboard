@@ -5,8 +5,6 @@
 */
 'use strict';
 
-export const kCOMMAND_NOTIFY_PERMISSIONS_GRANTED = 'notify-permissions-granted';
-
 export const kTST_ID = 'treestyletab@piro.sakura.ne.jp';
 
 export const kTSTAPI_REGISTER_SELF           = 'register-self';

@@ -53,8 +53,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   configs.$loaded.then(() => {
     Permissions.bindToCheckbox(
-      Permissions.CLIPBOARD_WRITE,
-      document.querySelector('#clipboardWritePermissionGranted')
+      Permissions.ALL_URLS,
+      document.querySelector('#allUrlsPermissionGranted')
     );
 
     options.buildUIForAllConfigs(document.querySelector('#debug-configs'));

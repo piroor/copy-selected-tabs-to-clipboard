@@ -70,7 +70,6 @@ async function refreshFormatItems() {
   }
   mFormatItems.clear();
 
-  let formatIds;
   const formats = configs.copyToClipboardFormats;
   for (let i = 0, maxi = formats.length; i < maxi; i++) {
     const format = formats[i];

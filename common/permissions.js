@@ -6,13 +6,10 @@
 'use strict';
 
 import {
-  log,
   configs
 } from './common.js';
-import * as Constants from './constants.js';
 
-export const ALL_URLS        = { origins: ['<all_urls>'] };
-export const CLIPBOARD_WRITE = { permissions: ['clipboardWrite'], origins: ['<all_urls>'] };
+export const ALL_URLS = { origins: ['<all_urls>'] };
 
 export function clearRequest() {
   configs.requestingPermissions = null;
@@ -44,17 +41,6 @@ export function bindToCheckbox(permissions, checkbox, options = {}) {
     checkbox.requestPermissions()
   });
 
-  browser.runtime.onMessage.addListener((message, _sender) => {
-    if (!message ||
-        !message.type ||
-        message.type != Constants.kCOMMAND_NOTIFY_PERMISSIONS_GRANTED ||
-        JSON.stringify(message.permissions) != JSON.stringify(permissions))
-      return;
-    if (options.onChanged)
-      options.onChanged(true);
-    checkbox.checked = true;
-  });
-
   /*
     // These events are not available yet on Firefox...
     browser.permissions.onAdded.addListener(addedPermissions => {
@@ -80,7 +66,7 @@ export function bindToCheckbox(permissions, checkbox, options = {}) {
       if (configs.requestingPermissionsNatively)
         return;
 
-      const granted = await browser.permissions.request(permissions);
+      let granted = await browser.permissions.request(permissions);
       if (granted === undefined)
         granted = await isGranted(permissions);
       else if (!granted)
@@ -98,30 +84,6 @@ export function bindToCheckbox(permissions, checkbox, options = {}) {
     }
     checkbox.checked = false;
   };
-}
-
-export function requestPostProcess() {
-  if (!configs.requestingPermissions)
-    return false;
-
-  const permissions = configs.requestingPermissions;
-  configs.requestingPermissions = null;
-  configs.requestingPermissionsNatively = permissions;
-
-  browser.browserAction.setBadgeText({ text: '' });
-  browser.permissions.request(permissions)
-    .then(granted => {
-      log('permission requested: ', permissions, granted);
-      if (granted)
-        browser.runtime.sendMessage({
-          type:        Constants.kCOMMAND_NOTIFY_PERMISSIONS_GRANTED,
-          permissions: permissions
-        });
-    })
-    .finally(() => {
-      configs.requestingPermissionsNatively = null;
-    });
-  return true;
 }
 
 export function isPermittedTab(tab) {
