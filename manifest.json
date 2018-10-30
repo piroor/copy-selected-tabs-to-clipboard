@@ -1,12 +1,11 @@
 {
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
-  "version": "2.2.2",
+  "version": "1.0",
   "author": "YUKI \"Piro\" Hiroshi",
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "activeTab",
-    "downloads",
     "menus",
     "menus.overrideContext",
     "notifications",
@@ -15,7 +14,6 @@
   ],
   "optional_permissions": [
     "<all_urls>",
-    "bookmarks",
     "clipboardWrite"
   ],
   "icons": {
@@ -53,65 +51,8 @@
     ]
   },
   "commands": {
-    "reloadSelectedTabs": {
-      "description": "__MSG_command_reloadSelectedTabs__"
-    },
-    "bookmarkSelectedTabs": {
-      "description": "__MSG_command_bookmarkSelectedTabs__"
-    },
-    "duplicateSelectedTabs": {
-      "description": "__MSG_command_duplicateSelectedTabs__"
-    },
-    "pinSelectedTabs": {
-      "description": "__MSG_command_pinSelectedTabs__"
-    },
-    "unpinSelectedTabs": {
-      "description": "__MSG_command_unpinSelectedTabs__"
-    },
-    "muteSelectedTabs": {
-      "description": "__MSG_command_muteSelectedTabs__"
-    },
-    "unmuteSelectedTabs": {
-      "description": "__MSG_command_unmuteSelectedTabs__"
-    },
-    "moveSelectedTabsToNewWindow": {
-      "description": "__MSG_command_moveSelectedTabsToNewWindow__"
-    },
-    "moveSelectedTabsToOtherWindow": {
-      "description": "__MSG_command_moveSelectedTabsToOtherWindow__"
-    },
-    "removeSelectedTabs": {
-      "description": "__MSG_command_removeSelectedTabs__"
-    },
-    "removeUnselectedTabs": {
-      "description": "__MSG_command_removeUnselectedTabs__"
-    },
     "copySelectedTabs": {
       "description": "__MSG_command_copySelectedTabs__"
-    },
-    "saveSelectedTabs": {
-      "description": "__MSG_command_saveSelectedTabs__"
-    },
-    "printSelectedTabs": {
-      "description": "__MSG_command_printSelectedTabs__"
-    },
-    "groupSelectedTabs": {
-      "description": "__MSG_command_groupSelectedTabs__"
-    },
-    "suspendSelectedTabs": {
-      "description": "__MSG_command_suspendSelectedTabs__"
-    },
-    "resumeSelectedTabs": {
-      "description": "__MSG_command_resumeSelectedTabs__"
-    },
-    "toggleSelection": {
-      "description": "__MSG_command_toggleSelection__"
-    },
-    "selectAll": {
-      "description": "__MSG_command_selectAll__"
-    },
-    "invertSelection": {
-      "description": "__MSG_command_invertSelection__"
     }
   },
   "options_ui": {
@@ -121,8 +62,8 @@
   "default_locale": "en",
   "applications": {
     "gecko": {
-      "id": "multipletab@piro.sakura.ne.jp",
-      "strict_min_version": "60.0"
+      "id": "copy-selected-tabs-to-clipboard@piro.sakura.ne.jp",
+      "strict_min_version": "63.0"
     }
   }
 }
