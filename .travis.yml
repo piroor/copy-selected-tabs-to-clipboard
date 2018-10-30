@@ -6,7 +6,6 @@ notifications:
   recipients:
     - piro.outsider.reflex@gmail.com
 before_script:
-  - cd webextensions
   - npm install
   - make update_extlib
   - make install_extlib
