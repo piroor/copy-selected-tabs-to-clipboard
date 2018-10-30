@@ -16,7 +16,7 @@ format:
 
 xpi: update_extlib install_extlib lint
 	rm -f ./*.xpi
-	zip -r -0 multipletab-we.xpi manifest.json common resources background panel options _locales extlib -x '*/.*' >/dev/null 2>/dev/null
+	zip -r -0 copy-selected-tabs-to-clipboard.xpi manifest.json common resources background panel options _locales extlib -x '*/.*' >/dev/null 2>/dev/null
 
 update_extlib:
 	git submodule update --init
