@@ -1,134 +1,17 @@
 {
-  "extensionName": { "message": "マルチプルタブハンドラ" },
-  "extensionDescription": { "message": "複数のタブをまとめて操作する機能を提供します。" },
+  "extensionName": { "message": "選択したタブをクリップボードにコピー" },
+  "extensionDescription": { "message": "選択されたタブの情報をクリップボードにコピーする機能を提供します。" },
 
-  "bookmarkFolder_label": { "message": "$TITLE$ など",
-    "placeholders": {
-      "title": { "content": "$1", "example": "タイトル" }
-    }},
-  "bookmarkTabs_notification_title": { "message": "複数のタブをブックマークしました" },
-  "bookmarkTabs_notification_message": { "message": "「$TITLE$」を含む$COUNT$個のタブを「$PARENT$」内の新しいフォルダーにブックマークしました。",
-    "placeholders": {
-      "title": { "content": "$1", "example": "タイトル" },
-      "count": { "content": "$2", "example": "2" },
-      "parent": { "content": "$3", "example": "親フォルダー" }
-    }},
-
-  "notPermitted_allUrls_title": { "message": "権限のエラー" },
-  "notPermitted_allUrls_message": { "message": "Webページの内容にアクセスするために必要な権限を取得できませんでした。マルチプルタブハンドラの設定画面で権限を設定して下さい。" },
-  "notPermitted_bookmarks_title": { "message": "権限のエラー" },
-  "notPermitted_bookmarks_message": { "message": "ブックマーク作成に必要な権限を取得できませんでした。マルチプルタブハンドラの設定画面で権限を設定して下さい。" },
-  "notPermitted_clipboardWrite_title": { "message": "権限のエラー" },
-  "notPermitted_clipboardWrite_message": { "message": "クリップボードへのデータの書き込みに必要な権限を取得できませんでした。マルチプルタブハンドラの設定画面で権限を設定して下さい。" },
-
-
-  "panelTitle": { "message": "タブをまとめて操作" },
-  "panelCaptionTop": { "message": "タブを選択してください" },
-  "panelCaptionBottom": { "message": "その後、ここをクリックして操作を選択" },
-
-  "panelDisabledBy_treestyletab": { "message": "タブをまとめて操作するUIは無効になっています。代わりにツリー型タブが提供するサイドバー内の縦型タブバーを使用して下さい。タブは0.5秒以上の長押しで開始するドラッグ操作で選択でき、また、Ctrl-クリックは選択のトグル、Shift-クリックはクリックしたタブとアクティブなタブの間にあるタブ全てを選択します。" },
-
-  "message_updatedFromLegacy_description": { "message": "Firefox 57以降のバージョンに対応するため、マルチプルタブハンドラがWebExtensionsベースに生まれ変わりました。タブバー上でのドラッグ操作に代わって、今後はツールバー上の「タブをまとめて操作」ボタンからパネルを開いてタブを選択して下さい。\n\nまた、<a href=\"https://addons.mozilla.org/firefox/addon/tree-style-tab/\" target=\"_blank\">ツリー型タブ</a>と併用すると、サイドバー内に表示されたタブバーにおいて同様のタブ選択操作を行えます（この場合は、タブの上でマウスのボタンを押してからしばらく待つとタブの選択が始まります）。" },
-
-
-  "saveTabsPrefix_defaultValue": { "message": "保存されたタブ/" },
-
-
-  "context_selection_label":              { "message": "選択したタブを操作" },
-
-  "context_reloadTabs_label":             { "message": "再読み込み(&R)" },
-  "context_bookmarkTabs_label":           { "message": "ブックマーク(&B)" },
-  "context_removeBookmarkFromTabs_label": { "message": "ブックマークを削除" },
-  "context_duplicateTabs_label":          { "message": "複製(&D)" },
-  "context_pinTabs_label":                { "message": "ピン留め(&P)" },
-  "context_unpinTabs_label":              { "message": "ピン留めを解除(&B)" },
-  "context_muteTabs_label":               { "message": "ミュート(&M)" },
-  "context_unmuteTabs_label":             { "message": "ミュートを解除(&N)" },
-  "context_moveToNewWindow_label":        { "message": "新しいウィンドウに移動(&W)" },
-  "context_moveToOtherWindow_label":      { "message": "他のウィンドウに移動(&I)" },
-  "context_removeTabs_label":             { "message": "閉じる(&C)" },
-  "context_removeOther_label":            { "message": "選択されていないタブを閉じる(&O)" },
   "context_clipboard_label":              { "message": "クリップボードにコピー(&Y)" },
   "context_clipboard_url_label":           { "message": "URI" },
   "context_clipboard_title_and_url_label": { "message": "タイトルとURI" },
   "context_clipboard_html_link_label":     { "message": "HTMLのリンク" },
   "context_clipboard_markdown_label":      { "message": "Markdown" },
   "context_clipboard_markdown_list_label": { "message": "Markdown（リスト）" },
-  "context_saveTabs_label":               { "message": "ファイルに保存(&V)" },
-  "context_printTabs_label":              { "message": "印刷(&P)" },
-  "context_freezeTabs_label":             { "message": "凍結" },
-  "context_unfreezeTabs_label":           { "message": "凍結を解除" },
-  "context_protectTabs_label":            { "message": "保護" },
-  "context_unprotectTabs_label":          { "message": "保護を解除" },
-  "context_lockTabs_label":               { "message": "固定" },
-  "context_unlockTabs_label":             { "message": "固定を解除" },
-  "context_groupTabs_label":              { "message": "新しいグループにする(&G)" },
-  "context_suspendTabs_label":            { "message": "アンロード(&D)" },
-  "context_resumeTabs_label":             { "message": "読み込み(&E)" },
 
-  "context_select_label":                 { "message": "タブを選択(&S)" },
-  "context_unselect_label":               { "message": "タブの選択を解除(&U)" },
-  "context_selectAll_label":              { "message": "すべてを選択(&A)" },
-  "context_invertSelection_label":        { "message": "選択を反転(&I)" },
-
-
-  "command_reloadSelectedTabs":            { "message": "選択中のタブを再読み込み" },
-  "command_bookmarkSelectedTabs":          { "message": "選択中のタブをブックマーク" },
-  "command_duplicateSelectedTabs":         { "message": "選択中のタブを複製" },
-  "command_pinSelectedTabs":               { "message": "選択中のタブをピン留め" },
-  "command_unpinSelectedTabs":             { "message": "選択中のタブのピン留めを解除" },
-  "command_muteSelectedTabs":              { "message": "選択中のタブをミュート" },
-  "command_unmuteSelectedTabs":            { "message": "選択中のタブのミュートを解除" },
-  "command_moveSelectedTabsToNewWindow":   { "message": "選択中のタブを新しいウィンドウに移動" },
-  "command_moveSelectedTabsToOtherWindow": { "message": "選択中のタブを他のウィンドウに移動" },
-  "command_moveSelectedTabsToOtherWindow_message": { "message": "選択中のタブを移動する先のウィンドウを選んでください" },
-  "command_removeSelectedTabs":            { "message": "選択中のタブを閉じる" },
-  "command_removeUnselectedTabs":          { "message": "選択されていないタブを閉じる" },
   "command_copySelectedTabs":              { "message": "選択中のタブをクリップボードにコピー" },
   "command_copySelectedTabs_message":      { "message": "選択中のタブをどの形式でクリップボードにコピーするか選んでください" },
-  "command_saveSelectedTabs":              { "message": "選択中のタブをファイルに保存" },
-  "command_printSelectedTabs":             { "message": "選択中のタブを印刷" },
-  "command_groupSelectedTabs":             { "message": "選択中のタブを新しいグループにする" },
-  "command_suspendSelectedTabs":           { "message": "選択中のタブをアンロード" },
-  "command_resumeSelectedTabs":            { "message": "選択中のタブを読み込み" },
-  "command_toggleSelection":               { "message": "現在のタブを選択/選択を解除" },
-  "command_selectAll":                     { "message": "すべてのタブを選択" },
-  "command_invertSelection":               { "message": "すべてのタブの選択状態を反転" },
 
-
-  "config_general_caption": { "message": "全般" },
-
-  "config_appearance_caption": { "message": "外観" },
-
-  "config_theme_caption": { "message": "配色" },
-  "config_theme_default": { "message": "既定" },
-  "config_theme_dark":    { "message": "Dark" },
-
-  "config_panelSize_description": { "message": "※CSSの長さを指定する任意の値を使用可能です" },
-  "config_minSize_caption":       { "message": "パネルの最小サイズ:" },
-  "config_minSize_width_before":  { "message": "幅" },
-  "config_minSize_width_after":   { "message": "×" },
-  "config_minSize_height_before": { "message": "高さ" },
-  "config_minSize_height_after":  { "message": "\u200b" },
-  "config_maxSize_caption":       { "message": "パネルの最大サイズ:" },
-  "config_maxSize_width_before":  { "message": "幅" },
-  "config_maxSize_width_after":   { "message": "×" },
-  "config_maxSize_height_before": { "message": "高さ" },
-  "config_maxSize_height_after":  { "message": "\u200b" },
-
-  "config_fontSize_label": { "message": "パネルの文字サイズ:" },
-  "config_fontSize_description": { "message": "※CSSの文字サイズを指定する任意の値を使用可能です" },
-  "config_applyThemeColorToIcon_label": { "message": "ツールバーのボタンにテーマの配色を反映する（※Firefox 62以降で、「about:config」で「svg.context-properties.content.enabled」を「true」に設定する必要があります）" },
-
-
-  "config_dragSelection_caption": { "message": "長押しからのドラッグによるタブの選択操作" },
-
-  "config_autoOpenMenuOnDragEnd_label": { "message": "タブを選択した後に自動的にメニューを開く" },
-
-
-  "config_menu_caption": { "message": "コンテキストメニューに追加する項目" },
-
-  "config_clipboard_caption": { "message": "タブのクリップボードへのコピー" },
   "config_copyToClipboardFormats_label":    { "message": "ラベル" },
   "config_copyToClipboardFormats_template": { "message": "コピーする内容の書式" },
   "config_copyToClipboardFormats_add":      { "message": "書式を追加" },
@@ -138,29 +21,11 @@
   "config_copyToClipboardFormats_restoreDefaults": { "message": "追加した書式を維持して既定の書式を復元する" },
   "config_copyToClipboardFormats_placeholders": { "message": "書式には以下のプレースホルダを使えます：\n%URL%=ページのURL,\n%TITLE%=ページのタイトル,\n%AUTHOR%=metaタグで指定された作者名,\n%DESCRIPTION%=metaタグで指定された説明文,\n%KEYWORDS%=metaタグで指定された検索用キーワード,\n%URL_HTMLIFIED%=HTML用にエスケープされたURL,\n%TITLE_HTMLIFIED%=HTML用にエスケープされたタイトル,\n%AUTHOR_HTMLIFIED%=HTML用にエスケープされた作者名,\n%DESCRIPTION_HTMLIFIED%=HTML用にエスケープされた説明文,\n%KEYWORDS_HTMLIFIED%=HTML用にエスケープされた検索用キーワード,\n%TST_INDENT(indenter)%, %TST_INDENT(indenter1)(indenter2)...(indenterN)%=インデント（Tree Style Tabを使用）\n%TAB%=タブ文字,\n%EOL%=改行,\n%RT%=リッチテキストとしてコピーする（このプレースホルダ自体は空文字に変換されます）" },
 
-  "config_saveTabs_caption": { "message": "タブのファイルへの保存" },
-  "config_saveTabsPrefix_label_before": { "message": "タブを" },
-  "config_saveTabsPrefix_label_after": { "message": "以下に保存する" },
-  "config_saveTabsPrefix_description": { "message": "※ダウンロードフォルダ配下の保存先パスを指定できます。「/」はパスの区切り文字として解釈されます。" },
-
-  "config_permissions_caption": { "message": "コマンドの実行に必要な追加の権限" },
-  "config_permissions_fallbackToToolbarButton_title": { "message": "ツールバーの「選択したタブを操作」ボタンをクリックして下さい" },
-  "config_permissions_fallbackToToolbarButton_message": { "message": "Firefoxのバグのため、権限をこの画面から要求することができません。ツールバー上の「選択したタブを操作」ボタンをクリックして権限を承認して下さい。" },
-
-
-  "config_dependsOn_before": { "message": "※この機能を使うには" },
-  "config_dependsOn_after":  { "message": "が必要です。" },
-  "config_dependsOn_treestyletab_name": { "message": "ツリー型タブ" },
-  "config_dependsOn_treestyletab_uri":  { "message": "https://addons.mozilla.org/firefox/addon/tree-style-tab/" },
-
   "config_clearSelectionAfterCommandInvoked_label": { "message": "コマンドの実行後にタブの選択を解除する" },
-
 
   "config_shortcuts_caption": { "message": "キーボードショートカット" },
 
-
   "config_debug_caption": { "message": "開発用" },
-  "config_disablePanelWhenAlternativeTabBarIsAvailable_label": { "message": "代替のタブバーが利用可能な時はパネルを無効化する" },
   "config_debug_label": { "message": "デバッグモード" },
   "config_all_caption": { "message": "すべての設定" }
 }

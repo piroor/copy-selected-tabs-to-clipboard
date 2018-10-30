@@ -9,215 +9,19 @@
     <link rel="stylesheet" type="text/css" href="options.css"/>
   </head>
   <body>
-    <section id="section-general">
-    <h1>__MSG_config_general_caption__</h1>
+    <p><label id="clipboardWritePermissionCheck"><input id="clipboardWritePermissionGranted"
+              type="checkbox">
+       __MSG_context_clipboard_label__</label></p>
 
-    <fieldset>
-    <legend>__MSG_config_permissions_caption__</legend>
-    <ul>
-      <li><label id="bookmarksPermissionCheck"><input id="bookmarksPermissionGranted"
-                        type="checkbox">
-                __MSG_context_bookmarkTabs_label__</label></li>
-      <li><label id="clipboardWritePermissionCheck"><input id="clipboardWritePermissionGranted"
-                        type="checkbox">
-                __MSG_context_clipboard_label__</label></li>
-    </ul>
-    </fieldset>
-
-
-    <fieldset>
-    <legend>__MSG_config_appearance_caption__</legend>
-    <p>__MSG_config_theme_caption__
-       <label><input type="radio"
-                     name="theme" value="default">
-         __MSG_config_theme_default__</label>
-       <label><input type="radio"
-                     name="theme" value="dark">
-         __MSG_config_theme_dark__</label>
-    </p>
-    <p>__MSG_config_minSize_caption__
-       <label>__MSG_config_minSize_width_before__
-              <input type="text"
-                     name="panelMinWidth"
-                     style="width:5em">
-              __MSG_config_minSize_width_after__</label>
-       <label>__MSG_config_minSize_height_before__
-              <input type="text"
-                     name="panelMinHeight"
-                     style="width:5em">
-              __MSG_config_minSize_height_after__</label>
-    </p>
-    <p>__MSG_config_maxSize_caption__
-       <label>__MSG_config_maxSize_width_before__
-              <input type="text"
-                     name="panelMaxWidth"
-                     style="width:5em">
-              __MSG_config_maxSize_width_after__</label>
-       <label>__MSG_config_maxSize_height_before__
-              <input type="text"
-                     name="panelMaxHeight"
-                     style="width:5em">
-              __MSG_config_maxSize_height_after__</label>
-    </p>
-    <p class="sub">__MSG_config_panelSize_description__</p>
-    <p><label>__MSG_config_fontSize_label__
-              <input type="text"
-                     name="panelFontSize"
-                     style="width:5em"></label></p>
-    <p class="sub">__MSG_config_fontSize_description__</p>
-    <p><label><input id="applyThemeColorToIcon"
-                     type="checkbox">
-             __MSG_config_applyThemeColorToIcon_label__</label></p>
-    </fieldset>
-
-    <fieldset>
-    <legend><label><input id="enableDragSelection"
-                          type="checkbox">__MSG_config_dragSelection_caption__</label></legend>
-    <p><label><input id="autoOpenMenuOnDragEnd"
-                     type="checkbox">__MSG_config_autoOpenMenuOnDragEnd_label__</label></p>
-    </fieldset>
-
-    <fieldset>
-    <legend>__MSG_config_saveTabs_caption__</legend>
-    <p><label>__MSG_config_saveTabsPrefix_label_before__
-              <input id="saveTabsPrefix"
-                      type="text"
-                      size="40">
-              __MSG_config_saveTabsPrefix_label_after__</label></p>
-    <p class="sub">__MSG_config_saveTabsPrefix_description__</p>
-    </fieldset>
-    </section>
-
-
-    <section id="section-menu">
-    <h1>__MSG_config_menu_caption__</h1>
-    <div id="menu-items">
-    <ul>
-      <li><label><input id="context_reloadTabs"
-                        type="checkbox">
-                __MSG_context_reloadTabs_label__</label></li>
-      <li><label><input id="context_bookmarkTabs"
-                        type="checkbox">
-                __MSG_context_bookmarkTabs_label__</label></li>
-<!--
-      <li><label><input id="context_removeBookmarkFromTabs"
-                        type="checkbox">
-                __MSG_context_removeBookmarkFromTabs_label__</label></li>
--->
-    </ul>
-    <ul>
-      <li><label><input id="context_duplicateTabs"
-                        type="checkbox">
-                __MSG_context_duplicateTabs_label__</label></li>
-      <li><label><input id="context_pinTabs"
-                        type="checkbox">
-                __MSG_context_pinTabs_label__</label></li>
-      <li><label><input id="context_unpinTabs"
-                        type="checkbox">
-                __MSG_context_unpinTabs_label__</label></li>
-      <li><label><input id="context_muteTabs"
-                        type="checkbox">
-                __MSG_context_muteTabs_label__</label></li>
-      <li><label><input id="context_unmuteTabs"
-                        type="checkbox">
-                __MSG_context_unmuteTabs_label__</label></li>
-      <li><label><input id="context_moveToNewWindow"
-                        type="checkbox">
-                __MSG_context_moveToNewWindow_label__</label></li>
-      <li><label><input id="context_moveToOtherWindow"
-                        type="checkbox">
-                __MSG_context_moveToOtherWindow_label__</label></li>
-    </ul>
-    <ul>
-      <li><label><input id="context_removeTabs"
-                        type="checkbox">
-                __MSG_context_removeTabs_label__</label></li>
-      <li><label><input id="context_removeOther"
-                        type="checkbox">
-                __MSG_context_removeOther_label__</label></li>
-    </ul>
-    <ul>
-      <li><label><input id="context_clipboard"
-                        type="checkbox">
-                __MSG_context_clipboard_label__</label></li>
-      <li><label><input id="context_saveTabs"
-                        type="checkbox">
-                __MSG_context_saveTabs_label__</label></li>
-    </ul>
-    <ul>
-      <li><label><input id="context_printTabs"
-                        type="checkbox">
-                __MSG_context_printTabs_label__</label></li>
-    </ul>
-<!--
-    <ul>
-      <li><label><input id="context_freezeTabs"
-                        type="checkbox">
-                __MSG_context_freezeTabs_label__</label></li>
-      <li><label><input id="context_unfreezeTabs"
-                        type="checkbox">
-                __MSG_context_unfreezeTabs_label__</label></li>
-      <li><label><input id="context_protectTabs"
-                        type="checkbox">
-                __MSG_context_protectTabs_label__</label></li>
-      <li><label><input id="context_unprotectTabs"
-                        type="checkbox">
-                __MSG_context_unprotectTabs_label__</label></li>
-      <li><label><input id="context_lockTabs"
-                        type="checkbox">
-                __MSG_context_lockTabs_label__</label></li>
-      <li><label><input id="context_lockTabs"
-                        type="checkbox">
-                __MSG_context_lockTabs_label__</label></li>
-      <li><label><input id="context_unlockTabs"
-                        type="checkbox">
-                __MSG_context_unlockTabs_label__</label></li>
-    </ul>
--->
-    <ul>
-      <li><label><input id="context_suspendTabs"
-                        type="checkbox">
-                __MSG_context_suspendTabs_label__</label></li>
-      <li><label><input id="context_resumeTabs"
-                        type="checkbox">
-                __MSG_context_resumeTabs_label__</label></li>
-    </ul>
-    <ul>
-      <li><label><input id="context_groupTabs"
-                        type="checkbox">
-                __MSG_context_groupTabs_label__</label>
-          <br>__MSG_config_dependsOn_before__<a href="__MSG_config_dependsOn_treestyletab_uri__">__MSG_config_dependsOn_treestyletab_name__</a>__MSG_config_dependsOn_after__</li>
-    </ul>
-    <ul>
-      <li><label><input id="context_select"
-                        type="checkbox">
-                __MSG_context_select_label__</label></li>
-      <li><label><input id="context_unselect"
-                        type="checkbox">
-                __MSG_context_unselect_label__</label></li>
-      <li><label><input id="context_selectAll"
-                        type="checkbox">
-                __MSG_context_selectAll_label__</label></li>
-      <li><label><input id="context_invertSelection"
-                        type="checkbox">
-                __MSG_context_invertSelection_label__</label></li>
-    </ul>
-    </div>
-    <hr>
     <p><label><input id="clearSelectionAfterCommandInvoked"
                      type="checkbox">__MSG_config_clearSelectionAfterCommandInvoked_label__</label></p>
-    </section>
 
-    <section id="section-clipboard">
-    <h1>__MSG_config_clipboard_caption__</h1>
     <div class="grid" id="copyToClipboardFormatsRows">
     </div>
     <p><button id="copyToClipboardFormatsAddNewRow"
                title="__MSG_config_copyToClipboardFormats_add__">+</button></p>
     <p><button id="copyToClipboardFormatsRestoreDefaults">__MSG_config_copyToClipboardFormats_restoreDefaults__</button></p>
     <p style="white-space:pre-wrap">__MSG_config_copyToClipboardFormats_placeholders__</p>
-    </section>
-
 
     <section id="section-shortcuts">
     <h1>__MSG_config_shortcuts_caption__</h1>
@@ -228,9 +32,6 @@
 
     <section id="section-debug">
     <h1>__MSG_config_debug_caption__</h1>
-    <p><label><input id="disablePanelWhenAlternativeTabBarIsAvailable"
-                     type="checkbox">
-             __MSG_config_disablePanelWhenAlternativeTabBarIsAvailable_label__</label></p>
     <p><label><input id="debug"
                      type="checkbox">
              __MSG_config_debug_label__</label></p>

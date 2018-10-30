@@ -4,9 +4,6 @@
 [submodule "submodules/webextensions-lib-l10n"]
 	path = submodules/webextensions-lib-l10n
 	url = https://github.com/piroor/webextensions-lib-l10n.git
-[submodule "submodules/webextensions-lib-menu-ui"]
-	path = submodules/webextensions-lib-menu-ui
-	url = https://github.com/piroor/webextensions-lib-menu-ui.git
 [submodule "submodules/webextensions-lib-options"]
 	path = submodules/webextensions-lib-options
 	url = https://github.com/piroor/webextensions-lib-options.git
@@ -16,12 +13,3 @@
 [submodule "submodules/webextensions-lib-shortcut-customize-ui"]
 	path = submodules/webextensions-lib-shortcut-customize-ui
 	url = https://github.com/piroor/webextensions-lib-shortcut-customize-ui.git
-[submodule "submodules/webextensions-lib-tab-favicon-helper"]
-	path = submodules/webextensions-lib-tab-favicon-helper
-	url = https://github.com/piroor/webextensions-lib-tab-favicon-helper.git
-[submodule "submodules/webextensions-lib-tab-id-fixer"]
-	path = submodules/webextensions-lib-tab-id-fixer
-	url = https://github.com/piroor/webextensions-lib-tab-id-fixer.git
-[submodule "submodules/webextensions-lib-event-listener-manager"]
-	path = submodules/webextensions-lib-event-listener-manager
-	url = https://github.com/piroor/webextensions-lib-event-listener-manager.git

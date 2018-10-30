@@ -32,11 +32,6 @@ function onConfigChanged(key) {
 
 configs.$addObserver(onConfigChanged);
 window.addEventListener('DOMContentLoaded', () => {
-  // remove accesskey mark
-  for (const label of Array.slice(document.querySelectorAll('#menu-items label, #bookmarksPermissionCheck, #clipboardWritePermissionCheck'))) {
-    label.lastChild.nodeValue = label.lastChild.nodeValue.replace(/\(&[a-z]\)|&([a-z])/i, '$1');
-  }
-
   gFormatRows = document.querySelector('#copyToClipboardFormatsRows');
   gFormatRows.addEventListener('input', onFormatInput);
   addButtonCommandListener(
@@ -58,10 +53,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   configs.$loaded.then(() => {
     Permissions.bindToCheckbox(
-      Permissions.BOOKMARKS,
-      document.querySelector('#bookmarksPermissionGranted')
-    );
-    Permissions.bindToCheckbox(
       Permissions.CLIPBOARD_WRITE,
       document.querySelector('#clipboardWritePermissionGranted')
     );
@@ -69,7 +60,6 @@ window.addEventListener('DOMContentLoaded', () => {
     options.buildUIForAllConfigs(document.querySelector('#debug-configs'));
     onConfigChanged('debug');
     rebuildFormatRows();
-    initCollapsibleSections();
   });
 }, { once: true });
 
@@ -249,20 +239,3 @@ function onRowControlButtonClick(event) {
   });
 }
 
-
-function initCollapsibleSections() {
-  for (const heading of Array.slice(document.querySelectorAll('body > section > h1'))) {
-    const section = heading.parentNode;
-    section.style.maxHeight = `${heading.offsetHeight}px`;
-    if (configs.optionsExpandedSections.indexOf(section.id) < 0)
-      section.classList.add('collapsed');
-    heading.addEventListener('click', () => {
-      section.classList.toggle('collapsed');
-      const otherExpandedSections = configs.optionsExpandedSections.filter(id => id != section.id);
-      if (section.classList.contains('collapsed'))
-        configs.optionsExpandedSections = otherExpandedSections;
-      else
-        configs.optionsExpandedSections = otherExpandedSections.concat([section.id]);
-    });
-  }
-}
