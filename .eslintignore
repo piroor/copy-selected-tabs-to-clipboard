@@ -1,5 +1,6 @@
 # from external
 extlib/*
+submodules/*
 
 # include as a lint target.
 !.eslintrc.js
