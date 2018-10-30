@@ -1,5 +1,5 @@
 {
-  "name": "multipletab-we",
+  "name": "copy-selected-tabs-to-clipboard",
   "version": "0.0.0",
   "engines": {
     "node": ">=8.6.0"
