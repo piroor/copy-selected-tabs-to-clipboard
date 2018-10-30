@@ -36,76 +36,13 @@ defaultClipboardFormats.push({
 });
 
 export const configs = new Configs({
-  optionsExpandedSections: ['section-general'],
-
-  context_reloadTabs: true,
-  context_bookmarkTabs: true,
-  context_removeBookmarkFromTabs: false,
-  context_duplicateTabs: true,
-  context_pinTabs: true,
-  context_unpinTabs: true,
-  context_muteTabs: true,
-  context_unmuteTabs: true,
-  context_moveToNewWindow: true,
-  context_moveToOtherWindow: true,
-  context_removeTabs: true,
-  context_removeOther: true,
-  context_clipboard: true,
-  context_saveTabs: true,
-  context_printTabs: false,
-  context_freezeTabs: false,
-  context_unfreezeTabs: false,
-  context_protectTabs: false,
-  context_unprotectTabs: false,
-  context_lockTabs: false,
-  context_unlockTabs: false,
-  context_groupTabs: false,
-  context_suspendTabs: true,
-  context_resumeTabs: true,
-  context_selectAll: true,
-  context_select: true,
-  context_unselect: true,
-  context_invertSelection: true,
-
   clearSelectionAfterCommandInvoked: false,
-  autoOpenMenuOnDragEnd: true,
   copyToClipboardFormats: defaultClipboardFormats,
-  theme: 'default',
   useCRLF: false,
-  useWorkaroundForBug1272869: true,
-
-  panelMinWidth: '25em',
-  panelMaxWidth: '30em',
-  panelMinHeight: '20em',
-  panelMaxHeight: '25em',
-  panelFontSize: 'medium',
-
-  saveTabsPrefix: browser.i18n.getMessage('saveTabsPrefix_defaultValue'),
-
-  disablePanelWhenAlternativeTabBarIsAvailable: true,
-
-  cachedExternalAddons: {},
-
-  enableDragSelection: true,
-  enableIntegrationWithTST: true,
-
-  requestingPermissions: null,
-  requestingPermissionsNatively: null,
-
-  applyThemeColorToIcon: false,
-
-  shouldNotifyUpdatedFromLegacyVersion: false,
   debug: false
 }, {
   localKeys: `
-    optionsExpandedSections
-    theme
     useCRLF
-    useWorkaroundForBug1272869
-    cachedExternalAddons
-    requestingPermissions
-    requestingPermissionsNatively
-    shouldNotifyUpdatedFromLegacyVersion
     debug
   `.trim().split('\n').map(key => key.trim()).filter(key => key && key.indexOf('//') != 0)
 });
@@ -137,23 +74,6 @@ export async function wait(task = 0, timeout = 0) {
       resolve();
     }, timeout);
   });
-}
-
-export async function notify(params = {}) {
-  const id = await browser.notifications.create({
-    type:    'basic',
-    iconUrl: params.icon,
-    title:   params.title,
-    message: params.message
-  });
-
-  let timeout = params.timeout;
-  if (typeof timeout != 'number')
-    timeout = configs.notificationTimeout;
-  if (timeout >= 0)
-    await wait(timeout);
-
-  await browser.notifications.clear(id);
 }
 
 export function handleMissingReceiverError(error) {

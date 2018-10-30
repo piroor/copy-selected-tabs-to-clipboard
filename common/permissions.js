@@ -7,7 +7,6 @@
 
 import {
   log,
-  notify,
   configs
 } from './common.js';
 import * as Constants from './constants.js';
@@ -81,20 +80,7 @@ export function bindToCheckbox(permissions, checkbox, options = {}) {
       if (configs.requestingPermissionsNatively)
         return;
 
-      // Following code will throw error on Firefox 60 and earlier (but not on Firefox ESR 60)
-      // due to https://bugzilla.mozilla.org/show_bug.cgi?id=1382953
-      // Also must not have used await before calling browser.permissions.request or it will throw an error.
-      let granted;
-      try {
-        configs.requestingPermissionsNatively = permissions;
-        granted = await browser.permissions.request(permissions);
-      }
-      catch (_error) {
-      }
-      finally {
-        configs.requestingPermissionsNatively = null;
-      }
-
+      const granted = await browser.permissions.request(permissions);
       if (granted === undefined)
         granted = await isGranted(permissions);
       else if (!granted)
@@ -106,25 +92,6 @@ export function bindToCheckbox(permissions, checkbox, options = {}) {
           options.onChanged(true);
         return;
       }
-
-      configs.requestingPermissions = permissions;
-      browser.browserAction.setBadgeText({ text: '!' });
-      browser.browserAction.setPopup({ popup: '' });
-
-      notify({
-        title:   browser.i18n.getMessage('config_permissions_fallbackToToolbarButton_title'),
-        message: browser.i18n.getMessage('config_permissions_fallbackToToolbarButton_message'),
-        icon:    '/resources/24x24-light.svg'
-      });
-      return;
-
-      /*
-        // following codes don't work as expected due to https://bugzilla.mozilla.org/show_bug.cgi?id=1382953
-        if (!await browser.permissions.request(permissions)) {
-          checkbox.checked = false;
-          return;
-        }
-        */
     }
     catch(error) {
       console.log(error);

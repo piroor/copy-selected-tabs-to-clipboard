@@ -55,6 +55,7 @@ configs.$addObserver(key => {
       break;
   }
 });
+configs.$loaded.then(refreshFormatItems);
 
 function reserveRefreshFormatItems() {
   if (reserveRefreshFormatItems.timeout)
@@ -71,21 +72,14 @@ async function refreshFormatItems() {
 
   let formatIds;
   const formats = configs.copyToClipboardFormats;
-  if (Array.isArray(formats)) {
-    formatIds = formats
-      .map((item, index) => `clipboard/clipboard:${index}:${item.label}`)
-      .filter((item, index) => formats[index].label);
-  }
-  else {
-    const labels = Object.keys(formats);
-    formatIds = labels
-      .map((label, index) => `clipboard/clipboard:${index}:${label}`)
-      .filter((item, index) => labels[index]);
-  }
-  for (const id of formatIds) {
-    const item = {
+  for (let i = 0, maxi = formats.length; i < maxi; i++) {
+    const format = formats[i];
+    const id     = `clipboard:${i}:${format.label}`;
+    const item   = {
       id,
-      title: id.replace(/^clipboard\/clipboard:[0-9]+:/, '')
+      parentId: 'clipboard',
+      title:    format.label,
+      visible:  true
     };
     mFormatItems.set(id, item);
     await createItem(item);
