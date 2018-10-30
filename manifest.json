@@ -6,6 +6,7 @@
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "activeTab",
+    "clipboardWrite",
     "menus",
     "menus.overrideContext",
     "notifications",
@@ -13,8 +14,7 @@
     "tabs"
   ],
   "optional_permissions": [
-    "<all_urls>",
-    "clipboardWrite"
+    "<all_urls>"
   ],
   "icons": {
     "16": "/resources/16x16.svg",
