@@ -102,7 +102,11 @@ async function registerToTST() {
       type:  Constants.kTSTAPI_REGISTER_SELF,
       name:  browser.i18n.getMessage('extensionName'),
       icons: browser.runtime.getManifest().icons,
-      listeningTypes: [Constants.kTSTAPI_NOTIFY_READY]
+      listeningTypes: [
+        Constants.kTSTAPI_NOTIFY_READY,
+        Constants.kTSTAPI_CONTEXT_MENU_CLICK,
+        Constants.kTSTAPI_CONTEXT_MENU_SHOWN
+      ]
     }).catch(handleMissingReceiverError);
   }
   catch(_e) {
