@@ -23,6 +23,15 @@ function createItem(item) {
   }
   catch(_e) {
   }
+  try {
+    if (item.id != 'clipboard')
+      browser.runtime.sendMessage(Constants.kMTH_ID, Object.assign({}, item, {
+        type:  Constants.kMTHAPI_ADD_SELECTED_TAB_COMMAND,
+        title: `${mMenuItem.title}:${item.title}`
+      })).catch(handleMissingReceiverError);
+  }
+  catch(_e) {
+  }
 }
 
 function removeItem(id) {
@@ -31,6 +40,14 @@ function removeItem(id) {
     browser.runtime.sendMessage(Constants.kTST_ID, {
       type:   Constants.kTSTAPI_CONTEXT_MENU_REMOVE,
       params: id
+    }).catch(handleMissingReceiverError);
+  }
+  catch(_e) {
+  }
+  try {
+    browser.runtime.sendMessage(Constants.kMTH_ID, {
+      type: Constants.kMTHAPI_REMOVE_SELECTED_TAB_COMMAND,
+      id
     }).catch(handleMissingReceiverError);
   }
   catch(_e) {

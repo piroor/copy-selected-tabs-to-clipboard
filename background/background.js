@@ -24,6 +24,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   registerToTST();
   window.addEventListener('pagehide', async () => {
     unregisterFromTST();
+    unregisterFromMTH();
   }, { once: true });
 }, { once: true });
 
@@ -72,21 +73,31 @@ async function onShortcutCommand(command) {
   }
 }
 
-function onTSTAPIMessage(message) {
-  switch (message.type) {
-    case Constants.kTSTAPI_NOTIFY_READY:
-      registerToTST();
-      ContextMenu.init();
-      return Promise.resolve(true);
-  }
-}
-
 function onMessageExternal(message, sender) {
   log('onMessageExternal: ', message, sender);
 
   switch (sender.id) {
     case Constants.kTST_ID: { // Tree Style Tab API
-      const result = onTSTAPIMessage(message);
+      let result;
+      switch (message.type) {
+        case Constants.kTSTAPI_NOTIFY_READY:
+          registerToTST();
+          ContextMenu.init();
+          result = true;
+          break;
+      }
+      if (result !== undefined)
+        return result;
+    }; break;
+
+    case Constants.kMTH_ID: { // Multiple Tab Handler API
+      let result;
+      switch (message.type) {
+        case Constants.kMTHAPI_READY:
+          ContextMenu.init();
+          result = true;
+          break;
+      }
       if (result !== undefined)
         return result;
     }; break;
@@ -121,6 +132,16 @@ function unregisterFromTST() {
     }).catch(handleMissingReceiverError);
     browser.runtime.sendMessage(Constants.kTST_ID, {
       type: Constants.kTSTAPI_UNREGISTER_SELF
+    }).catch(handleMissingReceiverError);
+  }
+  catch(_e) {
+  }
+}
+
+function unregisterFromMTH() {
+  try {
+    browser.runtime.sendMessage(Constants.kMTH_ID, {
+      type: Constants.kMTHAPI_REMOVE_ALL_SELECTED_TAB_COMMANDS
     }).catch(handleMissingReceiverError);
   }
   catch(_e) {

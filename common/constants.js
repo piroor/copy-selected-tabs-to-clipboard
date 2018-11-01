@@ -19,3 +19,15 @@ export const kTSTAPI_CONTEXT_MENU_REMOVE     = 'fake-contextMenu-remove';
 export const kTSTAPI_CONTEXT_MENU_REMOVE_ALL = 'fake-contextMenu-remove-all';
 export const kTSTAPI_CONTEXT_MENU_CLICK      = 'fake-contextMenu-click';
 export const kTSTAPI_CONTEXT_MENU_SHOWN      = 'fake-contextMenu-shown';
+
+
+export const kMTH_ID = 'multipletab@piro.sakura.ne.jp';
+
+export const kMTHAPI_READY                       = 'ready';
+export const kMTHAPI_GET_TAB_SELECTION           = 'get-tab-selection';
+export const kMTHAPI_SET_TAB_SELECTION           = 'set-tab-selection';
+export const kMTHAPI_CLEAR_TAB_SELECTION         = 'clear-tab-selection';
+export const kMTHAPI_ADD_SELECTED_TAB_COMMAND    = 'add-selected-tab-command';
+export const kMTHAPI_REMOVE_SELECTED_TAB_COMMAND = 'remove-selected-tab-command';
+export const kMTHAPI_REMOVE_ALL_SELECTED_TAB_COMMANDS = 'remove-all-selected-tab-commands';
+export const kMTHAPI_INVOKE_SELECTED_TAB_COMMAND = 'selected-tab-command';
