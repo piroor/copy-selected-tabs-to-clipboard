@@ -13,6 +13,16 @@ import {
 import * as Constants from '/common/constants.js';
 import * as Commands from '/common/commands.js';
 
+const mMenuItem = {
+  id:       'clipboard',
+  type:     'normal',
+  visible:  true,
+  title:    browser.i18n.getMessage('context_copyTabs_label'),
+  icons:    browser.runtime.getManifest().icons,
+  contexts: ['tab', 'page']
+};
+const mFormatItems = new Map();
+
 function createItem(item) {
   browser.menus.create(item);
   try {
@@ -53,16 +63,6 @@ function removeItem(id) {
   catch(_e) {
   }
 }
-
-const mMenuItem = {
-  id:       'clipboard',
-  type:     'normal',
-  visible:  true,
-  title:    browser.i18n.getMessage('context_copyTabs_label'),
-  icons:    browser.runtime.getManifest().icons,
-  contexts: ['tab', 'page']
-};
-const mFormatItems = new Map();
 
 export function init() {
   createItem(mMenuItem);
