@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.0.2 (2018.11.3)
+   * Improve compatibility with Multiple Tab Handler.
  - 1.0.1 (2018.10.31)
    * Improve compatibility with Tree Style Tab.
  - 1.0 (2018.10.30)
