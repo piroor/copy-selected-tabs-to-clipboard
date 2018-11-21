@@ -214,6 +214,7 @@ function createFormatRow(params = {}) {
 function onRowControlButtonClick(event) {
   const button = getButtonFromEvent(event);
   const row = button.parentNode.parentNode;
+  const container = row.parentNode;
   const formats = configs.copyToClipboardFormats;
   const item = formats[row.itemIndex];
   if (button.classList.contains('remove')) {
@@ -237,7 +238,7 @@ function onRowControlButtonClick(event) {
       row.parentNode.insertBefore(row, row.nextSibling.nextSibling);
     }
   }
-  Array.slice(row.parentNode.childNodes).forEach((aRow, index) => {
+  Array.slice(container.childNodes).forEach((aRow, index) => {
     aRow.itemIndex = index;
   });
 }
