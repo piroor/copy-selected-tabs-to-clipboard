@@ -47,6 +47,7 @@ ul p.sub {
 .grid .column {
   display: inline-flex;
   flex-grow: 1;
+  white-space: no-wrap;
 }
 .grid .column.label {
   flex-grow: 3;
@@ -55,7 +56,11 @@ ul p.sub {
   flex-grow: 6;
 }
 
-.grid .column.remove {
+.grid button {
+  min-width: 0;
+}
+
+.grid .remove {
   margin-left: 1em;
 }
 

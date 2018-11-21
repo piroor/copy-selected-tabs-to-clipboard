@@ -187,20 +187,20 @@ function createFormatRow(params = {}) {
   if (params.format)
     formatField.value = params.format;
 
-  const upButton = row.appendChild(document.createElement('button'));
-  upButton.classList.add('column');
+  const buttons = row.appendChild(document.createElement('span'));
+  buttons.classList.add('column');
+
+  const upButton = buttons.appendChild(document.createElement('button'));
   upButton.classList.add('up');
   upButton.setAttribute('title', browser.i18n.getMessage('config_copyToClipboardFormats_up'));
   upButton.appendChild(document.createTextNode('▲'));
 
-  const downButton = row.appendChild(document.createElement('button'));
-  downButton.classList.add('column');
+  const downButton = buttons.appendChild(document.createElement('button'));
   downButton.classList.add('down');
   downButton.setAttribute('title', browser.i18n.getMessage('config_copyToClipboardFormats_down'));
   downButton.appendChild(document.createTextNode('▼'));
 
-  const removeButton = row.appendChild(document.createElement('button'));
-  removeButton.classList.add('column');
+  const removeButton = buttons.appendChild(document.createElement('button'));
   removeButton.classList.add('remove');
   removeButton.setAttribute('title', browser.i18n.getMessage('config_copyToClipboardFormats_remove'));
   removeButton.appendChild(document.createTextNode('✖'));
