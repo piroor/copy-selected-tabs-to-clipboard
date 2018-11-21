@@ -100,7 +100,7 @@ function onFormatInput(event) {
     clearTimeout(field.throttleInputTimer);
   field.throttleInputTimer = setTimeout(() => {
     delete field.throttleInputTimer;
-    const row = field.parentNode;
+    const row = field.parentNode.parentNode;
     const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
     const item = formats[row.itemIndex];
     if (field.classList.contains('label'))
@@ -213,7 +213,7 @@ function createFormatRow(params = {}) {
 
 function onRowControlButtonClick(event) {
   const button = getButtonFromEvent(event);
-  const row = button.parentNode;
+  const row = button.parentNode.parentNode;
   const formats = configs.copyToClipboardFormats;
   const item = formats[row.itemIndex];
   if (button.classList.contains('remove')) {
