@@ -142,7 +142,7 @@ function rebuildFormatRows() {
 }
 
 function addFormatRow() {
-  const formats = configs.copyToClipboardFormats;
+  const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
   const row = gFormatRows.appendChild(createFormatRow({
     index: formats.length
   }));
@@ -215,7 +215,7 @@ function onRowControlButtonClick(event) {
   const button = getButtonFromEvent(event);
   const row = button.parentNode.parentNode;
   const container = row.parentNode;
-  const formats = configs.copyToClipboardFormats;
+  const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
   const item = formats[row.itemIndex];
   if (button.classList.contains('remove')) {
     formats.splice(row.itemIndex, 1);
