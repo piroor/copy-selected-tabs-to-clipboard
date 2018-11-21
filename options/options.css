@@ -46,14 +46,18 @@ ul p.sub {
 
 .grid .column {
   display: inline-flex;
+  white-space: nowrap;
+}
+
+.grid .column.fields {
   flex-grow: 1;
-  white-space: no-wrap;
 }
-.grid .column.label {
-  flex-grow: 3;
+
+.grid .fields .label {
+  width: 35%;
 }
-.grid .column.format {
-  flex-grow: 6;
+.grid .fields .format {
+  width: 65%;
 }
 
 .grid button {

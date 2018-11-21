@@ -171,16 +171,18 @@ function createFormatRow(params = {}) {
   row.classList.add('row');
   row.itemIndex= params.index;
 
-  const labelField = row.appendChild(document.createElement('input'));
-  labelField.classList.add('column');
+  const fields = row.appendChild(document.createElement('span'));
+  fields.classList.add('fields');
+  fields.classList.add('column');
+
+  const labelField = fields.appendChild(document.createElement('input'));
   labelField.classList.add('label');
   labelField.setAttribute('type', 'text');
   labelField.setAttribute('placeholder', browser.i18n.getMessage('config_copyToClipboardFormats_label'));
   if (params.label)
     labelField.value = params.label;
 
-  const formatField = row.appendChild(document.createElement('input'));
-  formatField.classList.add('column');
+  const formatField = fields.appendChild(document.createElement('input'));
   formatField.classList.add('format');
   formatField.setAttribute('type', 'text');
   formatField.setAttribute('placeholder', browser.i18n.getMessage('config_copyToClipboardFormats_template'));
@@ -188,6 +190,7 @@ function createFormatRow(params = {}) {
     formatField.value = params.format;
 
   const buttons = row.appendChild(document.createElement('span'));
+  buttons.classList.add('buttons');
   buttons.classList.add('column');
 
   const upButton = buttons.appendChild(document.createElement('button'));
