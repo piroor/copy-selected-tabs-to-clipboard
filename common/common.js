@@ -36,7 +36,7 @@ defaultClipboardFormats.push({
 });
 
 export const configs = new Configs({
-  showContextCommandForSingleTab: false,
+  showContextCommandForSingleTab: true,
   clearSelectionAfterCommandInvoked: false,
   copyToClipboardFormats: defaultClipboardFormats,
   useCRLF: false,
