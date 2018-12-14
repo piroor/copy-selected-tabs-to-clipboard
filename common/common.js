@@ -59,7 +59,7 @@ export function log(message, ...args)
   for (let i = 0; i < nest; i++) {
     indent += ' ';
   }
-  console.log(`mth<${log.context}>: ${indent}${message}`, ...args);
+  console.log(`clipboard<${log.context}>: ${indent}${message}`, ...args);
 }
 log.context = '?';
 
