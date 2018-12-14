@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.0.4 (2018.12.15)
+   * Invoke command from Multiple Tab Handler correctly.
  - 1.0.3 (2018.11.30)
    * Show context menu item without multiselection by default.
    * Save removal of "copy to clipboard" formats correctly.
