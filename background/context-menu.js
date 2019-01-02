@@ -14,24 +14,24 @@ import * as Constants from '/common/constants.js';
 import * as Commands from '/common/commands.js';
 
 const mMenuItems = [
-{
-  id:       'clipboardOnTab',
-  type:     'normal',
-  visible:  true,
-  title:    browser.i18n.getMessage('context_copyTabs_label'),
-  icons:    browser.runtime.getManifest().icons,
-  contexts: ['tab'],
-  config:   'showContextCommandOnTab'
-},
-{
-  id:       'clipboardOnPage',
-  type:     'normal',
-  visible:  true,
-  title:    browser.i18n.getMessage('context_copyTabs_label'),
-  icons:    browser.runtime.getManifest().icons,
-  contexts: ['page'],
-  config:   'showContextCommandOnPage'
-}
+  {
+    id:       'clipboardOnTab',
+    type:     'normal',
+    visible:  true,
+    title:    browser.i18n.getMessage('context_copyTabs_label'),
+    icons:    browser.runtime.getManifest().icons,
+    contexts: ['tab'],
+    config:   'showContextCommandOnTab'
+  },
+  {
+    id:       'clipboardOnPage',
+    type:     'normal',
+    visible:  true,
+    title:    browser.i18n.getMessage('context_copyTabs_label'),
+    icons:    browser.runtime.getManifest().icons,
+    contexts: ['page'],
+    config:   'showContextCommandOnPage'
+  }
 ];
 const mFormatItems = new Map();
 
@@ -143,30 +143,30 @@ async function onShown(info, tab) {
   const tabs = await Commands.getMultiselectedTabs(tab);
   let updated = false;
   for (const item of mMenuItems) {
-  const lastVisible = item.visible;
-  const lastTitle   = item.title;
-  item.visible = configs[item.config] && mFormatItems.size > 0 && (tabs.length > 1 || configs.showContextCommandForSingleTab);
-  item.title   = browser.i18n.getMessage(tabs.length > 1 ? 'context_copyTabs_label' : 'context_copyTab_label');
-  if (lastVisible == item.visible &&
-      lastTitle == item.title)
-    continue;
+    const lastVisible = item.visible;
+    const lastTitle   = item.title;
+    item.visible = configs[item.config] && mFormatItems.size > 0 && (tabs.length > 1 || configs.showContextCommandForSingleTab);
+    item.title   = browser.i18n.getMessage(tabs.length > 1 ? 'context_copyTabs_label' : 'context_copyTab_label');
+    if (lastVisible == item.visible &&
+        lastTitle == item.title)
+      continue;
 
-  const params = {
-    visible: item.visible,
-    title:   item.title
-  };
-  browser.menus.update(item.id, params);
-  updated = true;
-  if (!item.contexts.includes('tab'))
-    continue;
-  try {
-    browser.runtime.sendMessage(Constants.kTST_ID, {
-      type:   Constants.kTSTAPI_CONTEXT_MENU_UPDATE,
-      params: [item.id, params]
-    }).catch(handleMissingReceiverError);
-  }
-  catch(_e) {
-  }
+    const params = {
+      visible: item.visible,
+      title:   item.title
+    };
+    browser.menus.update(item.id, params);
+    updated = true;
+    if (!item.contexts.includes('tab'))
+      continue;
+    try {
+      browser.runtime.sendMessage(Constants.kTST_ID, {
+        type:   Constants.kTSTAPI_CONTEXT_MENU_UPDATE,
+        params: [item.id, params]
+      }).catch(handleMissingReceiverError);
+    }
+    catch(_e) {
+    }
   }
   if (updated)
     browser.menus.refresh();
