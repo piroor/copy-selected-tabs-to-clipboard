@@ -25,6 +25,8 @@
 
   "config_allUrlsPermissionGranted_label": { "message": "ページの内容からデータを取得することを許可する / データをリッチテキスト形式でコピーすることを許可する" },
 
+  "config_showContextCommandOnTab_label": { "message": "タブのコンテキストメニューにメニュー項目を表示する" },
+  "config_showContextCommandOnPage_label": { "message": "コンテンツ領域のコンテキストメニューにメニュー項目を表示する" },
   "config_showContextCommandForSingleTab_label": { "message": "タブが複数選択されていない場合でもコンテキストメニューの項目を有効化する" },
 
   "config_clearSelectionAfterCommandInvoked_label": { "message": "コマンドの実行後にタブの選択を解除する" },

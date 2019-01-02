@@ -13,31 +13,56 @@ import {
 import * as Constants from '/common/constants.js';
 import * as Commands from '/common/commands.js';
 
-const mMenuItem = {
-  id:       'clipboard',
+const mMenuItems = [
+{
+  id:       'clipboardOnTab',
   type:     'normal',
   visible:  true,
   title:    browser.i18n.getMessage('context_copyTabs_label'),
   icons:    browser.runtime.getManifest().icons,
-  contexts: ['tab', 'page']
-};
+  contexts: ['tab'],
+  config:   'showContextCommandOnTab'
+},
+{
+  id:       'clipboardOnPage',
+  type:     'normal',
+  visible:  true,
+  title:    browser.i18n.getMessage('context_copyTabs_label'),
+  icons:    browser.runtime.getManifest().icons,
+  contexts: ['page'],
+  config:   'showContextCommandOnPage'
+}
+];
 const mFormatItems = new Map();
 
 function createItem(item) {
-  browser.menus.create(item);
+  const params = {
+    id:       item.id,
+    type:     item.type || 'normal',
+    visible:  true,
+    title:    item.title,
+    contexts: item.contexts
+  };
+  if (item.icons)
+    params.icons = item.icons;
+  if (item.parentId)
+    params.parentId = item.parentId;
+  browser.menus.create(params);
+  if (item.contexts && !item.contexts.includes('tab'))
+    return;
   try {
     browser.runtime.sendMessage(Constants.kTST_ID, {
       type:   Constants.kTSTAPI_CONTEXT_MENU_CREATE,
-      params: item
+      params: params
     }).catch(handleMissingReceiverError);
   }
   catch(_e) {
   }
   try {
-    if (item.id != 'clipboard')
-      browser.runtime.sendMessage(Constants.kMTH_ID, Object.assign({}, item, {
+    if (!/^clipboardOn(Tab|Page)$/.test(item.id))
+      browser.runtime.sendMessage(Constants.kMTH_ID, Object.assign({}, params, {
         type:  Constants.kMTHAPI_ADD_SELECTED_TAB_COMMAND,
-        title: `${mMenuItem.title}:${item.title}`
+        title: `${mMenuItems[0].title}:${item.title}`
       })).catch(handleMissingReceiverError);
   }
   catch(_e) {
@@ -65,7 +90,9 @@ function removeItem(id) {
 }
 
 export function init() {
-  createItem(mMenuItem);
+  for (const item of mMenuItems) {
+    createItem(item);
+  }
   configs.$loaded.then(refreshFormatItems);
 }
 
@@ -101,34 +128,48 @@ async function refreshFormatItems() {
       visible:  true
     };
     mFormatItems.set(id, item);
-    await createItem(item);
+    await createItem(Object.assign({}, item, {
+      id:       `${id}:under_clipboardOnTab`,
+      parentId: 'clipboardOnTab'
+    }));
+    await createItem(Object.assign({}, item, {
+      id:       `${id}:under_clipboardOnPage`,
+      parentId: 'clipboardOnPage'
+    }));
   }
 }
 
 async function onShown(info, tab) {
   const tabs = await Commands.getMultiselectedTabs(tab);
-  const lastVisible = mMenuItem.visible;
-  const lastTitle   = mMenuItem.title;
-  mMenuItem.visible = mFormatItems.size > 0 && (tabs.length > 1 || configs.showContextCommandForSingleTab);
-  mMenuItem.title   = browser.i18n.getMessage(tabs.length > 1 ? 'context_copyTabs_label' : 'context_copyTab_label');
-  if (lastVisible == mMenuItem.visible &&
-      lastTitle == mMenuItem.title)
-    return;
+  let updated = false;
+  for (const item of mMenuItems) {
+  const lastVisible = item.visible;
+  const lastTitle   = item.title;
+  item.visible = configs[item.config] && mFormatItems.size > 0 && (tabs.length > 1 || configs.showContextCommandForSingleTab);
+  item.title   = browser.i18n.getMessage(tabs.length > 1 ? 'context_copyTabs_label' : 'context_copyTab_label');
+  if (lastVisible == item.visible &&
+      lastTitle == item.title)
+    continue;
 
   const params = {
-    visible: mMenuItem.visible,
-    title:   mMenuItem.title
+    visible: item.visible,
+    title:   item.title
   };
-  browser.menus.update(mMenuItem.id, params);
-  browser.menus.refresh();
+  browser.menus.update(item.id, params);
+  updated = true;
+  if (!item.contexts.includes('tab'))
+    continue;
   try {
     browser.runtime.sendMessage(Constants.kTST_ID, {
       type:   Constants.kTSTAPI_CONTEXT_MENU_UPDATE,
-      params: [mMenuItem.id, params]
+      params: [item.id, params]
     }).catch(handleMissingReceiverError);
   }
   catch(_e) {
   }
+  }
+  if (updated)
+    browser.menus.refresh();
 }
 browser.menus.onShown.addListener(onShown);
 
@@ -140,7 +181,7 @@ async function onClick(info, tab, selectedTabs = null) {
   if (info.menuItemId.indexOf('clipboard:') != 0)
     return;
 
-  const id = info.menuItemId.replace(/^clipboard:/, '');
+  const id = info.menuItemId.replace(/^clipboard:|:under_clipboardOn(Tab|Page)$/g, '');
   let format;
   if (Array.isArray(configs.copyToClipboardFormats)) {
     let index = id.match(/^([0-9]+):/);

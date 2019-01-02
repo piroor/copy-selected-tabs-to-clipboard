@@ -24,6 +24,8 @@
 
   "config_allUrlsPermissionGranted_label": { "message": "Allow to collect data from page contents / Allow to copy data as rich text format" },
 
+  "config_showContextCommandOnTab_label": { "message": "Show context menu item in the context menu on tabs" },
+  "config_showContextCommandOnPage_label": { "message": "Show context menu item in the context menu on the content area" },
   "config_showContextCommandForSingleTab_label": { "message": "Show context menu item even if there is no multiselection" },
 
   "config_clearSelectionAfterCommandInvoked_label": { "message": "Clear selection after a command is invoked" },
