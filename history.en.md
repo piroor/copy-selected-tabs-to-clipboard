@@ -1,6 +1,7 @@
 # History
 
  - master/HEAD
+   * Add ability co control visibility of context menu items for each: tab context menu and page context menu.
  - 1.0.4 (2018.12.15)
    * Invoke command from Multiple Tab Handler correctly.
  - 1.0.3 (2018.11.30)
