@@ -16,10 +16,10 @@
     "<all_urls>"
   ],
   "icons": {
-    "16": "/resources/Copy.svg"
+    "16": "resources/Copy.svg"
   },
   "background": {
-    "page": "/background/background.html"
+    "page": "background/background.html"
   },
   "commands": {
     "copySelectedTabs": {
@@ -27,7 +27,7 @@
     }
   },
   "options_ui": {
-    "page": "/options/options.html",
+    "page": "options/options.html",
     "browser_style": true
   },
   "default_locale": "en",
