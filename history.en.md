@@ -1,6 +1,7 @@
 # History
 
  - master/HEAD
+   * Add ability to export and import all configurations except keyboard shortcuts. (Options => "Development" => "Debug mode" => "All Configs" => "Import/Export")
  - 1.0.5 (2019.1.3)
    * Add ability co control visibility of context menu items for each: tab context menu and page context menu.
  - 1.0.4 (2018.12.15)
