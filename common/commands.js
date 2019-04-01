@@ -14,6 +14,8 @@ import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
 
 export async function getMultiselectedTabs(tab) {
+  if (!tab)
+    return [];
   if (tab.highlighted)
     return browser.tabs.query({
       windowId:    tab.windowId,
