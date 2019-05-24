@@ -235,17 +235,21 @@ browser.runtime.onMessageExternal.addListener(onMessageExternal);
 function onTSTAPIMessage(message) {
   switch (message.type) {
     case Constants.kTSTAPI_CONTEXT_MENU_CLICK:
-      return onClick(message.info, message.tab);
+      if (!message.tab)
+        return;
+      return browser.tabs.get(message.tab.id).then(tab => onClick(message.info, tab));
 
     case Constants.kTSTAPI_CONTEXT_MENU_SHOWN:
-      return onShown(message.info, message.tab);
+      if (!message.tab)
+        return;
+      return browser.tabs.get(message.tab.id).then(tab => onClick(message.info, tab));
   }
 }
 
 function onMTHAPIMessage(message) {
   switch (message.type) {
     case Constants.kMTHAPI_INVOKE_SELECTED_TAB_COMMAND:
-      return onClick({ menuItemId: message.id }, null, message.selection.selected);
+      return Commands.getMultiselectedTabs({ windowId: message.windowId, highlighted: true }).then(tabs => onClick({ menuItemId: message.id }, null, tabs));
   }
 }
 
