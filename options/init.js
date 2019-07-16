@@ -238,7 +238,7 @@ function onRowControlButtonClick(event) {
       row.parentNode.insertBefore(row, row.nextSibling.nextSibling);
     }
   }
-  Array.slice(container.childNodes).forEach((aRow, index) => {
+  Array.from(container.childNodes).forEach((aRow, index) => {
     aRow.itemIndex = index;
   });
 }
