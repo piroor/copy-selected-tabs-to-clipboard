@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.0.7 (2019.8.8)
+   * Remove obsolete codes deprecated at Firefox 70.
  - 1.0.6 (2019.5.24)
    * Follow to changes on Tree Style Tab 3.0.12 and Multiple Tab Handler 3.0.7.
    * Add ability to export and import all configurations except keyboard shortcuts. (Options => "Development" => "Debug mode" => "All Configs" => "Import/Export")
