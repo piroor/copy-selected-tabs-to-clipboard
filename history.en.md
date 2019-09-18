@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.0.8 (2019.9.18)
+   * Correct dynamic update of context menu items on user interactions in the options page.
  - 1.0.7 (2019.8.8)
    * Remove obsolete codes deprecated at Firefox 70.
  - 1.0.6 (2019.5.24)
