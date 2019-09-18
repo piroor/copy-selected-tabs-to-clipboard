@@ -113,7 +113,8 @@ function reserveRefreshFormatItems() {
 }
 async function refreshFormatItems() {
   for (const id of mFormatItems.keys()) {
-    removeItem(id);
+    removeItem(`${id}:under_clipboardOnTab`);
+    removeItem(`${id}:under_clipboardOnPage`);
   }
   mFormatItems.clear();
 
