@@ -12,8 +12,8 @@
     "babel-plugin-module-resolver": "^3.0.0",
     "eslint": "^5.0.1",
     "eslint-import-resolver-babel-module": "^4.0.0",
-    "eslint-plugin-import": "^2.13.0",
-    "jsonlint": "*",
+    "eslint-plugin-import": "*",
+    "jsonlint-cli": "*",
     "tunnel-agent": "^0.6.0"
   }
 }
