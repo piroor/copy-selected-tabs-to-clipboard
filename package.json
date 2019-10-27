@@ -8,11 +8,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "eslint": "^5.0.1",
-    "eslint-plugin-import": "^2.13.0",
     "babel-core": "^6.0.0",
     "babel-plugin-module-resolver": "^3.0.0",
+    "eslint": "^5.0.1",
     "eslint-import-resolver-babel-module": "^4.0.0",
-    "jsonlint": "*"
+    "eslint-plugin-import": "^2.13.0",
+    "jsonlint": "*",
+    "tunnel-agent": "^0.6.0"
   }
 }
