@@ -1,0 +1,22 @@
+name: CI/CD
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: prepare manifest.json with a revision number
+      run: |
+        cp manifest.json manifest.json.bak
+        version=$(cat manifest.json.bak | jq -r ".version" | sed -r -e "s/$/.$(git log --oneline | wc -l)/")
+        cat manifest.json.bak | jq ".version |= \"$version\"" > manifest.json
+    - name: build xpi
+      run: make
+    - uses: actions/upload-artifact@master
+      with:
+        name: copy-selected-tabs-to-clipboard.xpi
+        path: copy-selected-tabs-to-clipboard.xpi
