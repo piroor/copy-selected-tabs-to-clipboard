@@ -9,7 +9,7 @@ install_dependency:
 	[ -e "$(NPM_BIN_DIR)/eslint" -a -e "$(NPM_BIN_DIR)/jsonlint-cli" ] || npm install
 
 install_hook:
-	echo -e '#!/bin/sh\nmake lint' > "$(CURDIR)/.git/hooks/pre-commit" && chmod +x "$(CURDIR)/.git/hooks/pre-commit"
+	echo '#!/bin/sh\nmake lint' > "$(CURDIR)/.git/hooks/pre-commit" && chmod +x "$(CURDIR)/.git/hooks/pre-commit"
 
 lint: install_dependency
 	"$(NPM_BIN_DIR)/eslint" . --ext=.js --report-unused-disable-directives
