@@ -31,7 +31,7 @@ function onConfigChanged(key) {
 }
 
 configs.$addObserver(onConfigChanged);
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   gFormatRows = document.querySelector('#copyToClipboardFormatsRows');
   gFormatRows.addEventListener('input', onFormatInput);
   addButtonCommandListener(
@@ -51,16 +51,18 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('shortcuts').appendChild(aUI);
   });
 
-  configs.$loaded.then(() => {
-    Permissions.bindToCheckbox(
-      Permissions.ALL_URLS,
-      document.querySelector('#allUrlsPermissionGranted')
-    );
+  await configs.$loaded;
 
-    options.buildUIForAllConfigs(document.querySelector('#debug-configs'));
-    onConfigChanged('debug');
-    rebuildFormatRows();
-  });
+  Permissions.bindToCheckbox(
+    Permissions.ALL_URLS,
+    document.querySelector('#allUrlsPermissionGranted')
+  );
+
+  options.buildUIForAllConfigs(document.querySelector('#debug-configs'));
+  onConfigChanged('debug');
+  rebuildFormatRows();
+
+  document.documentElement.classList.add('initialized');
 }, { once: true });
 
 
