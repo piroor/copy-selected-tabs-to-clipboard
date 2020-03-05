@@ -1,6 +1,7 @@
 # History
 
  - master/HEAD
+ - 1.0.9 (2020.3.6)
    * Show in-content confirmation dialog correctly on lately versions of Firefox.
    * Remove keyboard shorctut customization UI, because Firefox ESR68 has it.
    * Uninitialized options page is now invisible.
