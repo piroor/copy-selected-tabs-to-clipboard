@@ -1,6 +1,9 @@
 # History
 
  - master/HEAD
+   * Show in-content confirmation dialog correctly on lately versions of Firefox.
+   * Remove keyboard shorctut customization UI, because Firefox ESR68 has it.
+   * Uninitialized options page is now invisible.
  - 1.0.8 (2019.9.18)
    * Correct dynamic update of context menu items on user interactions in the options page.
  - 1.0.7 (2019.8.8)
