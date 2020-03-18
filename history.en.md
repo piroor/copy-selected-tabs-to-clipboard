@@ -1,6 +1,9 @@
 # History
 
  - master/HEAD
+ - 1.1.0 (2020.3.18)
+   * Introduce "Enabled" checkbox for each format to hide it without deletion.
+   * Show menu item directly in the context menu when only one item is available.
  - 1.0.9 (2020.3.6)
    * Show in-content confirmation dialog correctly on lately versions of Firefox.
    * Remove keyboard shorctut customization UI, because Firefox ESR68 has it.
