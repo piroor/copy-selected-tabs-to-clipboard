@@ -48,8 +48,9 @@ async function onShortcutCommand(command) {
         formats = [];
         for (const label of Object.keys(configs.copyToClipboardFormats)) {
           formats.push({
-            label:  label,
-            format: configs.copyToClipboardFormats[label]
+            label:   label,
+            format:  configs.copyToClipboardFormats[label],
+            enabled: true
           });
         }
       }

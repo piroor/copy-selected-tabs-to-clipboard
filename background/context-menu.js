@@ -39,7 +39,7 @@ function createItem(item) {
   const params = {
     id:       item.id,
     type:     item.type || 'normal',
-    visible:  true,
+    visible:  item.visible,
     title:    item.title,
     contexts: item.contexts
   };
@@ -126,7 +126,7 @@ async function refreshFormatItems() {
       id,
       parentId: 'clipboard',
       title:    format.label,
-      visible:  true
+      visible:  !!format.enabled
     };
     mFormatItems.set(id, item);
     await createItem(Object.assign({}, item, {
