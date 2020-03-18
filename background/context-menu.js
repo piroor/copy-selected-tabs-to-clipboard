@@ -113,40 +113,67 @@ function reserveRefreshFormatItems() {
 }
 async function refreshFormatItems() {
   for (const id of mFormatItems.keys()) {
+    removeItem(`${id}:clipboardOnPageTopLevel`);
+    removeItem(`${id}:clipboardOnTabTopLevel`);
     removeItem(`${id}:under_clipboardOnTab`);
     removeItem(`${id}:under_clipboardOnPage`);
   }
   mFormatItems.clear();
 
   const formats = configs.copyToClipboardFormats;
+  const topLevelShown = (formats.length - formats.filter(format => format.enabled === false).length) == 1;
   for (let i = 0, maxi = formats.length; i < maxi; i++) {
     const format = formats[i];
     const id     = `clipboard:${i}:${format.label}`;
     const item   = {
       id,
-      parentId: 'clipboard',
-      title:    format.label,
-      visible:  !!format.enabled
+      title:   format.label,
+      visible: !!format.enabled
     };
     mFormatItems.set(id, item);
-    await createItem(Object.assign({}, item, {
-      id:       `${id}:under_clipboardOnTab`,
-      parentId: 'clipboardOnTab'
-    }));
-    await createItem(Object.assign({}, item, {
-      id:       `${id}:under_clipboardOnPage`,
-      parentId: 'clipboardOnPage'
-    }));
+    await Promise.all([
+      createItem(Object.assign({}, item, {
+        id:       `${id}:clipboardOnTabTopLevel`,
+        icons:    browser.runtime.getManifest().icons,
+        contexts: ['tab'],
+        visible:  topLevelShown && item.visible
+      })),
+      createItem(Object.assign({}, item, {
+        id:       `${id}:under_clipboardOnTab`,
+        parentId: 'clipboardOnTab'
+      })),
+      createItem(Object.assign({}, item, {
+        id:       `${id}:clipboardOnPageTopLevel`,
+        icons:    browser.runtime.getManifest().icons,
+        contexts: ['page'],
+        visible:  topLevelShown && item.visible
+      })),
+      createItem(Object.assign({}, item, {
+        id:       `${id}:under_clipboardOnPage`,
+        parentId: 'clipboardOnPage'
+      }))
+    ]);
+  }
+  for (const item of mMenuItems) {
+    item.hiddenForTopLevelItem = topLevelShown;
   }
 }
 
 async function onShown(info, tab) {
   const tabs = await Commands.getMultiselectedTabs(tab);
   let updated = false;
+  let useTopLevelItem = false;
   for (const item of mMenuItems) {
+    if (item.hiddenForTopLevelItem)
+      useTopLevelItem = true;
     const lastVisible = item.visible;
     const lastTitle   = item.title;
-    item.visible = configs[item.config] && mFormatItems.size > 0 && (tabs.length > 1 || configs.showContextCommandForSingleTab);
+    item.visible = (
+      !item.hiddenForTopLevelItem &&
+      configs[item.config] &&
+      mFormatItems.size > 0 &&
+      (tabs.length > 1 || configs.showContextCommandForSingleTab)
+    );
     item.title   = browser.i18n.getMessage(tabs.length > 1 ? 'context_copyTabs_label' : 'context_copyTab_label');
     if (lastVisible == item.visible &&
         lastTitle == item.title)
@@ -167,6 +194,26 @@ async function onShown(info, tab) {
       }).catch(handleMissingReceiverError);
     }
     catch(_e) {
+    }
+  }
+  if (useTopLevelItem) {
+    const prefix = browser.i18n.getMessage(tabs.length > 1 ? 'context_copyTabs_label' : 'context_copyTab_label');
+    for (const id of mFormatItems.keys()) {
+      const params = {
+        title: `${prefix}: ${mFormatItems.get(id).title}`
+      };
+      for (const idWithSuffix of [`${id}:clipboardOnTabTopLevel`, `${id}:clipboardOnPageTopLevel`]) {
+        browser.menus.update(idWithSuffix, params);
+        try {
+          browser.runtime.sendMessage(Constants.kTST_ID, {
+            type:   Constants.kTSTAPI_CONTEXT_MENU_UPDATE,
+            params: [idWithSuffix, params]
+          }).catch(handleMissingReceiverError);
+        }
+        catch(_e) {
+        }
+      }
+      updated = true;
     }
   }
   if (updated)
