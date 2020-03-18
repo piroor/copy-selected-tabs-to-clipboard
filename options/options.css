@@ -44,6 +44,7 @@ ul p.sub {
 .grid {
   display: flex;
   flex-direction: column;
+  margin: 1em 0 0.25em;
 }
 
 .grid .row {
