@@ -32,6 +32,8 @@ function onConfigChanged(key) {
 
 configs.$addObserver(onConfigChanged);
 window.addEventListener('DOMContentLoaded', async () => {
+  await configs.$loaded;
+
   // migrate to array
   if (!Array.isArray(configs.copyToClipboardFormats)) {
     const formats = [];
@@ -69,8 +71,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     document.querySelector('#copyToClipboardFormatsRestoreDefaults'),
     (_event) => { restoreDefaultFormats(); }
   );
-
-  await configs.$loaded;
 
   Permissions.bindToCheckbox(
     Permissions.ALL_URLS,
