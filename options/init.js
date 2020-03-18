@@ -11,7 +11,8 @@ import {
 } from '/common/common.js';
 import * as Permissions from '/common/permissions.js';
 import Options from '/extlib/Options.js';
-import '../extlib/l10n.js';
+import { DOMUpdater } from '/extlib/dom-updater.js';
+import '/extlib/l10n.js';
 
 log.context = 'Options';
 const options = new Options(configs);
@@ -31,6 +32,29 @@ function onConfigChanged(key) {
 
 configs.$addObserver(onConfigChanged);
 window.addEventListener('DOMContentLoaded', async () => {
+  // migrate to array
+  if (!Array.isArray(configs.copyToClipboardFormats)) {
+    const formats = [];
+    for (const label of Object.keys(configs.copyToClipboardFormats)) {
+      formats.push({
+        label:  label,
+        format: configs.copyToClipboardFormats[label]
+      });
+    }
+    configs.copyToClipboardFormats = formats;
+  }
+
+  // migrate formats
+  if (configs.copyToClipboardFormats.some(format => !('id' in format))) {
+    const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
+    for (const format of formats) {
+      if (!('id' in format))
+        format.id = createNewId();
+    }
+    configs.copyToClipboardFormats = formats;
+  }
+
+
   gFormatRows = document.querySelector('#copyToClipboardFormatsRows');
   gFormatRows.addEventListener('input', onFormatInput);
   addButtonCommandListener(
@@ -68,17 +92,17 @@ function getButtonFromEvent(event) {
   return target.localName == 'button' && target;
 }
 
-function addButtonCommandListener(aButton, aOnCommand) {
-  aButton.addEventListener('click', (event) => {
+function addButtonCommandListener(button, onCommand) {
+  button.addEventListener('click', (event) => {
     if (!getButtonFromEvent(event))
       return;
-    aOnCommand(event);
+    onCommand(event);
   });
-  aButton.addEventListener('keyup', (event) => {
+  button.addEventListener('keyup', (event) => {
     if (!getButtonFromEvent(event))
       return;
     if (event.key == 'Enter')
-      aOnCommand(event);
+      onCommand(event);
   });
 }
 
@@ -99,7 +123,7 @@ function onFormatInput(event) {
     delete field.throttleInputTimer;
     const row = field.parentNode.parentNode;
     const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
-    const item = formats[row.itemIndex];
+    const item = formats[row.dataset.index];
     if (field.classList.contains('label'))
       item.label = field.value;
     else if (field.classList.contains('format'))
@@ -113,39 +137,28 @@ function onFormatInput(event) {
 function rebuildFormatRows() {
   const range = document.createRange();
   range.selectNodeContents(gFormatRows);
-  range.deleteContents();
-
-  const rows = document.createDocumentFragment();
-  if (!Array.isArray(configs.copyToClipboardFormats)) { // migrate to array
-    const items = [];
-    for (const label of Object.keys(configs.copyToClipboardFormats)) {
-      items.push({
-        label:  label,
-        format: configs.copyToClipboardFormats[label]
-      });
-    }
-    configs.copyToClipboardFormats = items;
-  }
-  configs.copyToClipboardFormats.forEach((item, index) => {
-    rows.appendChild(createFormatRow({
-      index:  index,
-      label:  item.label,
-      format: item.format
-    }));
-  });
-  range.insertNode(rows);
-
+  const contents = range.createContextualFragment(
+    configs.copyToClipboardFormats
+      .map((format, index) =>
+        createFormatRow(Object.assign({}, format, { index })))
+      .join('')
+  );
   range.detach();
+  DOMUpdater.update(gFormatRows, contents);
 }
 
 function addFormatRow() {
-  const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
-  const row = gFormatRows.appendChild(createFormatRow({
-    index: formats.length
-  }));
-  row.querySelector('input.label').focus();
-  formats.push({ label: '', format: '' });
-  configs.copyToClipboardFormats = formats;
+  configs.copyToClipboardFormats = configs.copyToClipboardFormats.concat([{
+    label:   '',
+    format:  '',
+    id:      createNewId()
+  }]);
+  rebuildFormatRows();
+  gFormatRows.querySelector(`div.row[data-index="${configs.copyToClipboardFormats.length - 1}"] input.label`).focus();
+}
+
+function createNewId() {
+  return `format-${Date.now()}-${Math.round(Math.random() * 65000)}`;
 }
 
 function restoreDefaultFormats() {
@@ -163,80 +176,65 @@ function restoreDefaultFormats() {
   rebuildFormatRows();
 }
 
-function createFormatRow(params = {}) {
-  const row = document.createElement('div');
-  row.classList.add('row');
-  row.itemIndex= params.index;
+function createFormatRow({ id, index, label, format } = {}) {
+  return `
+    <div id="row-${id}"
+         class="row"
+         data-index="${index}">
+      <span class="fields column">
+        <input type="text"
+               class="label"
+               placeholder="${sanitizeForHTML(browser.i18n.getMessage('config_copyToClipboardFormats_label'))}"
+               value="${label ? sanitizeForHTML(label) : ''}">
+        <input type="text"
+               class="format"
+               placeholder="${sanitizeForHTML(browser.i18n.getMessage('config_copyToClipboardFormats_template'))}"
+               value="${format ? sanitizeForHTML(format) : ''}">
+      </span>
+      <span class="buttons column">
+        <button class="up"
+                title="${sanitizeForHTML(browser.i18n.getMessage('config_copyToClipboardFormats_up'))}"
+                >▲</button>
+        <button class="down"
+                title="${sanitizeForHTML(browser.i18n.getMessage('config_copyToClipboardFormats_down'))}"
+                >▼</button>
+        <button class="remove"
+                title="${sanitizeForHTML(browser.i18n.getMessage('config_copyToClipboardFormats_remove'))}"
+                >✖</button>
+      </span>
+    </div>
+  `.trim();
+}
 
-  const fields = row.appendChild(document.createElement('span'));
-  fields.classList.add('fields');
-  fields.classList.add('column');
-
-  const labelField = fields.appendChild(document.createElement('input'));
-  labelField.classList.add('label');
-  labelField.setAttribute('type', 'text');
-  labelField.setAttribute('placeholder', browser.i18n.getMessage('config_copyToClipboardFormats_label'));
-  if (params.label)
-    labelField.value = params.label;
-
-  const formatField = fields.appendChild(document.createElement('input'));
-  formatField.classList.add('format');
-  formatField.setAttribute('type', 'text');
-  formatField.setAttribute('placeholder', browser.i18n.getMessage('config_copyToClipboardFormats_template'));
-  if (params.format)
-    formatField.value = params.format;
-
-  const buttons = row.appendChild(document.createElement('span'));
-  buttons.classList.add('buttons');
-  buttons.classList.add('column');
-
-  const upButton = buttons.appendChild(document.createElement('button'));
-  upButton.classList.add('up');
-  upButton.setAttribute('title', browser.i18n.getMessage('config_copyToClipboardFormats_up'));
-  upButton.appendChild(document.createTextNode('▲'));
-
-  const downButton = buttons.appendChild(document.createElement('button'));
-  downButton.classList.add('down');
-  downButton.setAttribute('title', browser.i18n.getMessage('config_copyToClipboardFormats_down'));
-  downButton.appendChild(document.createTextNode('▼'));
-
-  const removeButton = buttons.appendChild(document.createElement('button'));
-  removeButton.classList.add('remove');
-  removeButton.setAttribute('title', browser.i18n.getMessage('config_copyToClipboardFormats_remove'));
-  removeButton.appendChild(document.createTextNode('✖'));
-
-  return row;
+function sanitizeForHTML(string) {
+  return string.replace(/&/g, '&amp;').replace(/\"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function onRowControlButtonClick(event) {
   const button = getButtonFromEvent(event);
   const row = button.parentNode.parentNode;
-  const container = row.parentNode;
   const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
-  const item = formats[row.itemIndex];
+  const rowIndex = parseInt(row.dataset.index);
+  const item = formats[rowIndex];
   if (button.classList.contains('remove')) {
-    formats.splice(row.itemIndex, 1);
+    formats.splice(rowIndex, 1);
     configs.copyToClipboardFormats = formats;
-    row.parentNode.removeChild(row);
+    rebuildFormatRows();
   }
-  else if( button.classList.contains('up')) {
-    if (row.itemIndex > 0) {
-      formats.splice(row.itemIndex, 1);
-      formats.splice(row.itemIndex - 1, 0, item);
+  else if (button.classList.contains('up')) {
+    if (rowIndex > 0) {
+      formats.splice(rowIndex, 1);
+      formats.splice(rowIndex - 1, 0, item);
       configs.copyToClipboardFormats = formats;
-      row.parentNode.insertBefore(row, row.previousSibling);
+      rebuildFormatRows();
     }
   }
-  else if( button.classList.contains('down')) {
-    if (row.itemIndex < formats.length - 1) {
-      formats.splice(row.itemIndex, 1);
-      formats.splice(row.itemIndex + 1, 0, item);
+  else if (button.classList.contains('down')) {
+    if (rowIndex < formats.length - 1) {
+      formats.splice(rowIndex, 1);
+      formats.splice(rowIndex + 1, 0, item);
       configs.copyToClipboardFormats = formats;
-      row.parentNode.insertBefore(row, row.nextSibling.nextSibling);
+      rebuildFormatRows();
     }
   }
-  Array.from(container.childNodes).forEach((aRow, index) => {
-    aRow.itemIndex = index;
-  });
 }
-
