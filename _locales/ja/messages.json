@@ -13,6 +13,7 @@
   "command_copySelectedTabs":              { "message": "選択中のタブをクリップボードにコピー" },
   "command_copySelectedTabs_message":      { "message": "選択中のタブをどの形式でクリップボードにコピーするか選んでください" },
 
+  "config_copyToClipboardFormats_enabled":  { "message": "有効にする" },
   "config_copyToClipboardFormats_label":    { "message": "ラベル" },
   "config_copyToClipboardFormats_template": { "message": "コピーする内容の書式" },
   "config_copyToClipboardFormats_add":      { "message": "書式を追加" },

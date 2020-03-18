@@ -39,26 +39,30 @@ window.addEventListener('DOMContentLoaded', async () => {
     const formats = [];
     for (const label of Object.keys(configs.copyToClipboardFormats)) {
       formats.push({
-        label:  label,
-        format: configs.copyToClipboardFormats[label]
+        label:   label,
+        format:  configs.copyToClipboardFormats[label],
+        id:      createNewId(),
+        enabled: true
       });
     }
     configs.copyToClipboardFormats = formats;
   }
 
   // migrate formats
-  if (configs.copyToClipboardFormats.some(format => !('id' in format))) {
+  if (configs.copyToClipboardFormats.some(format => !('id' in format) || !('enabled' in format))) {
     const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
     for (const format of formats) {
       if (!('id' in format))
         format.id = createNewId();
+      if (!('enabled' in format))
+        format.enabled = true;
     }
     configs.copyToClipboardFormats = formats;
   }
 
-
   gFormatRows = document.querySelector('#copyToClipboardFormatsRows');
   gFormatRows.addEventListener('input', onFormatInput);
+  gFormatRows.addEventListener('change', onFormatInput);
   addButtonCommandListener(
     gFormatRows,
     (event) => { onRowControlButtonClick(event); }
@@ -121,13 +125,15 @@ function onFormatInput(event) {
     clearTimeout(field.throttleInputTimer);
   field.throttleInputTimer = setTimeout(() => {
     delete field.throttleInputTimer;
-    const row = field.parentNode.parentNode;
+    const row = field.closest('.row');
     const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
     const item = formats[row.dataset.index];
     if (field.classList.contains('label'))
       item.label = field.value;
     else if (field.classList.contains('format'))
       item.format = field.value;
+    else if (field.classList.contains('enabled'))
+      item.enabled = field.checked;
     else
       return;
     configs.copyToClipboardFormats = formats;
@@ -151,7 +157,8 @@ function addFormatRow() {
   configs.copyToClipboardFormats = configs.copyToClipboardFormats.concat([{
     label:   '',
     format:  '',
-    id:      createNewId()
+    id:      createNewId(),
+    enabled: true
   }]);
   rebuildFormatRows();
   gFormatRows.querySelector(`div.row[data-index="${configs.copyToClipboardFormats.length - 1}"] input.label`).focus();
@@ -176,11 +183,15 @@ function restoreDefaultFormats() {
   rebuildFormatRows();
 }
 
-function createFormatRow({ id, index, label, format } = {}) {
+function createFormatRow({ id, index, label, format, enabled } = {}) {
   return `
     <div id="row-${id}"
          class="row"
          data-index="${index}">
+      <input type="checkbox"
+             class="enabled"
+             title="${sanitizeForHTML(browser.i18n.getMessage('config_copyToClipboardFormats_enabled'))}"
+             ${enabled ? 'checked' : ''}>
       <span class="fields column">
         <input type="text"
                class="label"
@@ -212,7 +223,7 @@ function sanitizeForHTML(string) {
 
 function onRowControlButtonClick(event) {
   const button = getButtonFromEvent(event);
-  const row = button.parentNode.parentNode;
+  const row = button.closest('.row');
   const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
   const rowIndex = parseInt(row.dataset.index);
   const item = formats[rowIndex];

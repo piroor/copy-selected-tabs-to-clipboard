@@ -12,6 +12,7 @@
   "command_copySelectedTabs":              { "message": "Copy Selected Tabs to Clipboard" },
   "command_copySelectedTabs_message":      { "message": "Choose the format you want selected tabs to be copied as." },
 
+  "config_copyToClipboardFormats_enabled":  { "message": "Enabled" },
   "config_copyToClipboardFormats_label":    { "message": "Label" },
   "config_copyToClipboardFormats_template": { "message": "Format of Copied Data" },
   "config_copyToClipboardFormats_add":      { "message": "Add New Format" },
