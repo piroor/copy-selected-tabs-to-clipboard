@@ -100,6 +100,8 @@ export function init() {
 configs.$addObserver(key => {
   switch (key) {
     case 'copyToClipboardFormats':
+    case 'showContextCommandOnTab':
+    case 'showContextCommandOnPage':
       reserveRefreshFormatItems();
       break;
   }
@@ -137,7 +139,7 @@ async function refreshFormatItems() {
         id:       `${id}:clipboardOnTabTopLevel`,
         icons:    browser.runtime.getManifest().icons,
         contexts: ['tab'],
-        visible:  topLevelShown && item.visible
+        visible:  topLevelShown && item.visible && configs.showContextCommandOnTab
       })),
       createItem(Object.assign({}, item, {
         id:       `${id}:under_clipboardOnTab`,
@@ -147,7 +149,7 @@ async function refreshFormatItems() {
         id:       `${id}:clipboardOnPageTopLevel`,
         icons:    browser.runtime.getManifest().icons,
         contexts: ['page'],
-        visible:  topLevelShown && item.visible
+        visible:  topLevelShown && item.visible && configs.showContextCommandOnPage
       })),
       createItem(Object.assign({}, item, {
         id:       `${id}:under_clipboardOnPage`,
