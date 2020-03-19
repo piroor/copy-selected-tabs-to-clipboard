@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "YUKI \"Piro\" Hiroshi",
   "description": "__MSG_extensionDescription__",
   "permissions": [
@@ -34,7 +34,7 @@
   "applications": {
     "gecko": {
       "id": "copy-selected-tabs-to-clipboard@piro.sakura.ne.jp",
-      "strict_min_version": "63.0"
+      "strict_min_version": "64.0"
     }
   }
 }

@@ -1,6 +1,11 @@
 # History
 
  - master/HEAD
+ - 1.1.1 (2020.3.19)
+   * Don't show top level context menu items when extra context menu items are globally hidden.
+   * Show formats correctly even if they are not migrated yet.
+   * Restore default formats correctly.
+   * Drop support for Firefox 63 and older versions.
  - 1.1.0 (2020.3.18)
    * Introduce "Enabled" checkbox for each format to hide it without deletion.
    * Show menu item directly in the context menu when only one item is available.
