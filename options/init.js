@@ -169,17 +169,20 @@ function createNewId() {
 }
 
 function restoreDefaultFormats() {
-  const checked = {};
-  const unifiedFormats = configs.$default.copyToClipboardFormats.concat(configs.copyToClipboardFormats);
-  const uniqueFormats = [];
-  for (const format of unifiedFormats) {
-    const key = JSON.stringify(format);
-    if (key in checked)
+  let added = false;
+  const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
+  for (const defaultFormat of configs.$default.copyToClipboardFormats) {
+    if (formats.some(format => format.label == defaultFormat.label && format.format == defaultFormat.format))
       continue;
-    checked[key] = true;
-    uniqueFormats.push(format);
+    formats.push(Object.assign({}, defaultFormat, {
+      id:      createNewId(),
+      enabled: true
+    }));
+    added = true;
   }
-  configs.copyToClipboardFormats = uniqueFormats;
+  if (!added)
+    return;
+  configs.copyToClipboardFormats = formats;
   rebuildFormatRows();
 }
 
