@@ -40,11 +40,12 @@ function createItem(item) {
     id:       item.id,
     type:     item.type || 'normal',
     visible:  item.visible,
-    title:    item.title,
-    contexts: item.contexts
+    title:    item.title
   };
   if (item.icons)
     params.icons = item.icons;
+  if (item.contexts)
+    params.contexts = item.contexts;
   if (item.parentId)
     params.parentId = item.parentId;
   browser.menus.create(params);
@@ -128,7 +129,7 @@ async function refreshFormatItems() {
     const item   = {
       id,
       title:   format.label,
-      visible: !!format.enabled
+      visible: format.enabled !== false
     };
     mFormatItems.set(id, item);
     await Promise.all([
