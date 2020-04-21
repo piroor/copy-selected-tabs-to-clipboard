@@ -57,7 +57,8 @@ async function onShortcutCommand(command) {
       else {
         formats = configs.copyToClipboardFormats;
       }
-      const result = await RichConfirm.showInTab(activeTab.id, {
+      const result = await RichConfirm.showInPopup(activeTab.windowId, {
+        title:   browser.i18n.getMessage('command_copySelectedTabs_title'),
         message: browser.i18n.getMessage('command_copySelectedTabs_message'),
         buttons: formats.map(format => format.label)
       });

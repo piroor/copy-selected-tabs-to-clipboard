@@ -11,6 +11,7 @@
   "context_clipboard_markdown_list_label": { "message": "Markdown（リスト）" },
 
   "command_copySelectedTabs":              { "message": "選択中のタブをクリップボードにコピー" },
+  "command_copySelectedTabs_title":        { "message": "どの形式でコピーしますか？" },
   "command_copySelectedTabs_message":      { "message": "選択中のタブをどの形式でクリップボードにコピーするか選んでください" },
 
   "config_copyToClipboardFormats_enabled":  { "message": "有効にする" },
