@@ -34,32 +34,6 @@ configs.$addObserver(onConfigChanged);
 window.addEventListener('DOMContentLoaded', async () => {
   await configs.$loaded;
 
-  // migrate to array
-  if (!Array.isArray(configs.copyToClipboardFormats)) {
-    const formats = [];
-    for (const label of Object.keys(configs.copyToClipboardFormats)) {
-      formats.push({
-        label:   label,
-        format:  configs.copyToClipboardFormats[label],
-        id:      createNewId(),
-        enabled: true
-      });
-    }
-    configs.copyToClipboardFormats = formats;
-  }
-
-  // migrate formats
-  if (configs.copyToClipboardFormats.some(format => !('id' in format) || !('enabled' in format))) {
-    const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
-    for (const format of formats) {
-      if (!('id' in format))
-        format.id = createNewId();
-      if (!('enabled' in format))
-        format.enabled = true;
-    }
-    configs.copyToClipboardFormats = formats;
-  }
-
   gFormatRows = document.querySelector('#copyToClipboardFormatsRows');
   gFormatRows.addEventListener('input', onFormatInput);
   gFormatRows.addEventListener('change', onFormatInput);

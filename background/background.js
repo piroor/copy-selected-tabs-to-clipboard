@@ -19,6 +19,31 @@ log.context = 'BG';
 
 window.addEventListener('DOMContentLoaded', async () => {
   await configs.$loaded;
+
+  // migrate formats
+  if (!Array.isArray(configs.copyToClipboardFormats)) {
+    // from object to array
+    const formats = [];
+    for (const label of Object.keys(configs.copyToClipboardFormats)) {
+      formats.push({
+        label:   label,
+        format:  configs.copyToClipboardFormats[label]
+      });
+    }
+    configs.copyToClipboardFormats = formats;
+  }
+  if (configs.copyToClipboardFormats.some(format => !('id' in format) || !('enabled' in format))) {
+    // fixup missing property
+    const formats = JSON.parse(JSON.stringify(configs.copyToClipboardFormats));
+    for (const format of formats) {
+      if (!('id' in format))
+        format.id = `format-${Date.now()}-${Math.round(Math.random() * 65000)}`;
+      if (!('enabled' in format))
+        format.enabled = true;
+    }
+    configs.copyToClipboardFormats = formats;
+  }
+
   browser.commands.onCommand.addListener(onShortcutCommand);
   browser.runtime.onMessageExternal.addListener(onMessageExternal);
   registerToTST();
@@ -43,20 +68,7 @@ async function onShortcutCommand(command) {
 
   switch (command) {
     case 'copySelectedTabs': {
-      let formats;
-      if (!Array.isArray(configs.copyToClipboardFormats)) { // migrate to array
-        formats = [];
-        for (const label of Object.keys(configs.copyToClipboardFormats)) {
-          formats.push({
-            label:   label,
-            format:  configs.copyToClipboardFormats[label],
-            enabled: true
-          });
-        }
-      }
-      else {
-        formats = configs.copyToClipboardFormats;
-      }
+      const formats = configs.copyToClipboardFormats;
       const result = await RichConfirm.showInPopup(activeTab.windowId, {
         modal:   true,
         title:   browser.i18n.getMessage('command_copySelectedTabs_title'),
