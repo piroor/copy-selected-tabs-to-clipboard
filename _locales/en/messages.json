@@ -21,7 +21,7 @@
   "config_copyToClipboardFormats_up":       { "message": "Move Up" },
   "config_copyToClipboardFormats_down":     { "message": "Move Down" },
   "config_copyToClipboardFormats_restoreDefaults": { "message": "Restore default formats keeping added formats" },
-  "config_copyToClipboardFormats_accesskey": { "message": "A non-whitespace character next to \"&\" (for example \"L\" in \"&Location\") will become the accesskey for the item." },
+  "config_copyToClipboardFormats_accesskey": { "message": "A non-whitespace character next to \"&\" (for example \"L\" in \"&Location\") in the label will become the accesskey for the item." },
   "config_copyToClipboardFormats_placeholders": { "message": "Available place holders for formats:\n%URL%=Page URL,\n%TITLE%=Page Title,\n%URL_HTMLIFIED%=URL escaped for HTML,\n%TITLE_HTMLIFIED%=Title escaped for HTML,\n%TST_INDENT(indenter)%, %TST_INDENT(indenter1)(indenter2)...(indenterN)%=Indent (powered by Tree Style Tab)\n%TAB%=Tab,\n%EOL%=Line Feed" },
   "config_copyToClipboardFormats_placeholders_special": { "message": "Place holders based on page contents (you need to grant required permission):\n%AUTHOR%=Author name (specified by META),\n%DESCRIPTION%=Description (specified by META),\n%KEYWORDS%=Search keywords (specified by META),\n%AUTHOR_HTMLIFIED%=Author name escaped for HTML,\n%DESCRIPTION_HTMLIFIED%=Description escaped for HTML,\n%KEYWORDS_HTMLIFIED%=Search keywords escaped for HTML,\n%RT%=Copy as a rich text (Note: this placeholder itself is cleared from the copied text)" },
 
