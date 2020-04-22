@@ -17,6 +17,8 @@ import RichConfirm from '/extlib/RichConfirm.js';
 
 log.context = 'BG';
 
+const ASSIGNABLE_SHORTCUT_COUNT = 20;
+
 window.addEventListener('DOMContentLoaded', async () => {
   await configs.$loaded;
 
@@ -51,7 +53,46 @@ window.addEventListener('DOMContentLoaded', async () => {
     unregisterFromTST();
     unregisterFromMTH();
   }, { once: true });
+
+  updateShortcutsForFormats();
+
+  configs.$addObserver(key => {
+    switch (key) {
+      case 'copyToClipboardFormats':
+        reserveToUpdateShortcutsForFormats();
+        break;
+    }
+  });
 }, { once: true });
+
+function reserveToUpdateShortcutsForFormats() {
+  if (reserveToUpdateShortcutsForFormats.reserved)
+    clearTimeout(reserveToUpdateShortcutsForFormats.reserved);
+  reserveToUpdateShortcutsForFormats.reserved = setTimeout(() => {
+    reserveToUpdateShortcutsForFormats.reserved = null;
+    updateShortcutsForFormats();
+  }, 250);
+}
+reserveToUpdateShortcutsForFormats.reserved = null;
+
+function updateShortcutsForFormats() {
+  for (let i = 0; i < ASSIGNABLE_SHORTCUT_COUNT; i++) {
+    if (i >= configs.copyToClipboardFormats.length) {
+      browser.commands.update({
+        name:        `copySelectedTabsWithFormat${i}`,
+        description: browser.i18n.getMessage('command_copySelectedTabsWithFormat_unassigned')
+      });
+    }
+    else {
+      const format = configs.copyToClipboardFormats[i];
+      const label = (format.label || format.format).replace(/\(&([^\s])\)/, '$1').replace(/&([^\s])/, '$1');
+      browser.commands.update({
+        name:        `copySelectedTabsWithFormat${i}`,
+        description: browser.i18n.getMessage('command_copySelectedTabsWithFormat', [label])
+      });
+    }
+  }
+}
 
 
 /*  listen events */
@@ -85,6 +126,23 @@ async function onShortcutCommand(command) {
         }
       }
     } break;
+
+    default:
+      if (/^copySelectedTabsWithFormat(\d+)$/.test(command)) {
+        const index   = parseInt(RegExp.$1);
+        const formats = configs.copyToClipboardFormats;
+        const format  = formats.length >= index ? formats[index] : null;
+        if (format) {
+          await Commands.copyToClipboard(tabs, format.format);
+          if (configs.clearSelectionAfterCommandInvoked) {
+            browser.tabs.highlight({
+              windowId: activeTab.windowId,
+              tabs:     [activeTab.index]
+            });
+          }
+        }
+      }
+      break;
   }
 }
 

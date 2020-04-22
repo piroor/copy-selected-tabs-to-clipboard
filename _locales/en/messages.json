@@ -13,6 +13,12 @@
   "command_copySelectedTabs_title":        { "message": "Which format to copy?" },
   "command_copySelectedTabs_message":      { "message": "Choose the format you want selected tabs to be copied as." },
 
+  "command_copySelectedTabsWithFormat":            { "message": "Copy Selected Tabs as: $FORMAT$",
+    "placeholders": {
+      "format": { "content": "$1", "example": "Plain Text" }
+    }},
+  "command_copySelectedTabsWithFormat_unassigned": { "message": "Copy Selected Tabs as: (Unassigned)" },
+
   "config_copyToClipboardFormats_enabled":  { "message": "Enabled" },
   "config_copyToClipboardFormats_label":    { "message": "Label" },
   "config_copyToClipboardFormats_template": { "message": "Format of Copied Data" },

@@ -14,6 +14,12 @@
   "command_copySelectedTabs_title":        { "message": "どの形式でコピーしますか？" },
   "command_copySelectedTabs_message":      { "message": "選択中のタブをどの形式でクリップボードにコピーするか選んでください" },
 
+  "command_copySelectedTabsWithFormat":            { "message": "選択中のタブを形式を指定してコピー: $FORMAT$",
+    "placeholders": {
+      "format": { "content": "$1", "example": "Plain Text" }
+    }},
+  "command_copySelectedTabsWithFormat_unassigned": { "message": "選択中のタブを形式を指定してコピー: (割り当てなし)" },
+
   "config_copyToClipboardFormats_enabled":  { "message": "有効にする" },
   "config_copyToClipboardFormats_label":    { "message": "ラベル" },
   "config_copyToClipboardFormats_template": { "message": "コピーする内容の書式" },

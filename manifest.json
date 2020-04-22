@@ -24,6 +24,66 @@
   "commands": {
     "copySelectedTabs": {
       "description": "__MSG_command_copySelectedTabs__"
+    },
+    "copySelectedTabsWithFormat0": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat1": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat2": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat3": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat4": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat5": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat6": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat7": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat8": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat9": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat10": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat11": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat12": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat13": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat14": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat15": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat16": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat17": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat18": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
+    },
+    "copySelectedTabsWithFormat19": {
+      "description": "__MSG_command_copySelectedTabsWithFormat_unassigned__"
     }
   },
   "options_ui": {
