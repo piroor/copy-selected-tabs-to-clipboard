@@ -4,11 +4,11 @@
 
   "context_copyTab_label":                 { "message": "クリップボードにコピー(&Y)" },
   "context_copyTabs_label":                { "message": "クリップボードにコピー(&Y)" },
-  "context_clipboard_url_label":           { "message": "URI" },
-  "context_clipboard_title_and_url_label": { "message": "タイトルとURI" },
-  "context_clipboard_html_link_label":     { "message": "HTMLのリンク" },
-  "context_clipboard_markdown_label":      { "message": "Markdown" },
-  "context_clipboard_markdown_list_label": { "message": "Markdown（リスト）" },
+  "context_clipboard_url_label":           { "message": "UR&L" },
+  "context_clipboard_title_and_url_label": { "message": "タイトルとURL(&T)" },
+  "context_clipboard_html_link_label":     { "message": "&HTMLのリンク" },
+  "context_clipboard_markdown_label":      { "message": "&Markdown" },
+  "context_clipboard_markdown_list_label": { "message": "M&arkdown（リスト）" },
 
   "command_copySelectedTabs":              { "message": "選択中のタブをクリップボードにコピー" },
   "command_copySelectedTabs_title":        { "message": "どの形式でコピーしますか？" },
@@ -22,6 +22,7 @@
   "config_copyToClipboardFormats_up":       { "message": "上へ移動" },
   "config_copyToClipboardFormats_down":     { "message": "下へ移動" },
   "config_copyToClipboardFormats_restoreDefaults": { "message": "追加した書式を維持して既定の書式を復元する" },
+  "config_copyToClipboardFormats_accesskey": { "message": "「&」に続く空白以外の文字（例：「&Location」の「L」）はその項目のアクセスキーになります。" },
   "config_copyToClipboardFormats_placeholders": { "message": "書式には以下のプレースホルダを使えます：\n%URL%=ページのURL,\n%TITLE%=ページのタイトル,\n%URL_HTMLIFIED%=HTML用にエスケープされたURL,\n%TITLE_HTMLIFIED%=HTML用にエスケープされたタイトル,\n%TST_INDENT(indenter)%, %TST_INDENT(indenter1)(indenter2)...(indenterN)%=インデント（Tree Style Tabを使用）\n%TAB%=タブ文字,\n%EOL%=改行" },
   "config_copyToClipboardFormats_placeholders_special": { "message": "ページの内容に基づくプレースホルダー（権限の許可が必要です）：\n%AUTHOR%=metaタグで指定された作者名,\n%DESCRIPTION%=metaタグで指定された説明文,\n%KEYWORDS%=metaタグで指定された検索用キーワード,\n%AUTHOR_HTMLIFIED%=HTML用にエスケープされた作者名,\n%DESCRIPTION_HTMLIFIED%=HTML用にエスケープされた説明文,\n%KEYWORDS_HTMLIFIED%=HTML用にエスケープされた検索用キーワード,\n%RT%=リッチテキストとしてコピーする（このプレースホルダ自体は空文字に変換されます）" },
 
