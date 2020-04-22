@@ -58,6 +58,7 @@ async function onShortcutCommand(command) {
         formats = configs.copyToClipboardFormats;
       }
       const result = await RichConfirm.showInPopup(activeTab.windowId, {
+        modal:   true,
         title:   browser.i18n.getMessage('command_copySelectedTabs_title'),
         message: browser.i18n.getMessage('command_copySelectedTabs_message'),
         buttons: formats.map(format => format.label)
