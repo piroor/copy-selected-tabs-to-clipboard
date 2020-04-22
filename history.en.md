@@ -1,6 +1,9 @@
 # History
 
  - master/HEAD
+   * Add ability to set an accesskey for each format with the `&` mark in the label.
+   * Add ability to set custom keyboard shortcut for each format.
+   * Show format choosed dialog as a semi-modal popup window.
  - 1.1.1 (2020.3.19)
    * Don't show top level context menu items when extra context menu items are globally hidden.
    * Show formats correctly even if they are not migrated yet.
