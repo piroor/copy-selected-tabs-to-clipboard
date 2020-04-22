@@ -145,8 +145,7 @@ function rebuildFormatRows() {
   range.selectNodeContents(gFormatRows);
   const contents = range.createContextualFragment(
     configs.copyToClipboardFormats
-      .map((format, index) =>
-        createFormatRow(Object.assign({}, format, { index })))
+      .map((format, index) => createFormatRow({ ...format, index }))
       .join('')
   );
   range.detach();
@@ -174,10 +173,11 @@ function restoreDefaultFormats() {
   for (const defaultFormat of configs.$default.copyToClipboardFormats) {
     if (formats.some(format => format.label == defaultFormat.label && format.format == defaultFormat.format))
       continue;
-    formats.push(Object.assign({}, defaultFormat, {
+    formats.push({
+      ...defaultFormat,
       id:      createNewId(),
       enabled: true
-    }));
+    });
     added = true;
   }
   if (!added)

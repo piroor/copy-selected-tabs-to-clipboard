@@ -61,10 +61,11 @@ function createItem(item) {
   }
   try {
     if (!/^clipboardOn(Tab|Page)$/.test(item.id))
-      browser.runtime.sendMessage(Constants.kMTH_ID, Object.assign({}, params, {
+      browser.runtime.sendMessage(Constants.kMTH_ID, {
+        ...params,
         type:  Constants.kMTHAPI_ADD_SELECTED_TAB_COMMAND,
         title: `${mMenuItems[0].title}:${item.title}`
-      })).catch(handleMissingReceiverError);
+      }).catch(handleMissingReceiverError);
   }
   catch(_e) {
   }
@@ -135,26 +136,30 @@ async function refreshFormatItems() {
     };
     mFormatItems.set(id, item);
     await Promise.all([
-      createItem(Object.assign({}, item, {
+      createItem({
+        ...item,
         id:       `${id}:clipboardOnTabTopLevel`,
         icons:    browser.runtime.getManifest().icons,
         contexts: ['tab'],
         visible:  topLevelShown && item.visible && configs.showContextCommandOnTab
-      })),
-      createItem(Object.assign({}, item, {
+      }),
+      createItem({
+        ...item,
         id:       `${id}:under_clipboardOnTab`,
         parentId: 'clipboardOnTab'
-      })),
-      createItem(Object.assign({}, item, {
+      }),
+      createItem({
+        ...item,
         id:       `${id}:clipboardOnPageTopLevel`,
         icons:    browser.runtime.getManifest().icons,
         contexts: ['page'],
         visible:  topLevelShown && item.visible && configs.showContextCommandOnPage
-      })),
-      createItem(Object.assign({}, item, {
+      }),
+      createItem({
+        ...item,
         id:       `${id}:under_clipboardOnPage`,
         parentId: 'clipboardOnPage'
-      }))
+      })
     ]);
   }
   for (const item of mMenuItems) {
