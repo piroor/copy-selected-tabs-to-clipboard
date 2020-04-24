@@ -2,7 +2,7 @@
 
  - master/HEAD
  - 1.2.1 (2020.4.23)
-   * Show popup windows correctly on Firefox ESR68.
+   * Show popup windows correctly on Firefox ESR68. (regression on 1.2.0)
  - 1.2.0 (2020.4.22)
    * Add ability to set an accesskey for each format with the `&` mark in the label.
    * Add ability to set custom keyboard shortcut for each format.
