@@ -1,6 +1,9 @@
 # History
 
  - master/HEAD
+ - 1.2.3 (2020.4.28)
+   * Handle dismissed semi-modal dialogs correctly.
+   * Optimize semi-modal dialogs a little.
  - 1.2.2 (2020.4.25)
    * Improve implementation of semi-modal dialogs. Now it is more stable, more similar to native dialogs, more friendly for dark color scheme, and don't appear in the "Recently Closed Windows" list.
  - 1.2.1 (2020.4.24)
