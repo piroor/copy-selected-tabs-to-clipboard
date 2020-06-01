@@ -178,7 +178,7 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
 }
 
 function fillPlaceHoldersInternal(format, params) {
-  return Replacer.processAll(format, fillPlaceHoldersInternal, params)
+  return Replacer.processAll(format, (input, ..._replacePairs) => fillPlaceHoldersInternal(input, params))
     .replace(/%(?:RLINK|RLINK_HTML(?:IFIED)?|SEL|SEL_HTML(?:IFIED)?)%/gi, '')
     .replace(/%URL%/gi, params.tab.url)
     .replace(/%URL_NO_FRAGMENT%/gi, params.tab.url.replace(/#.*$/, ''))

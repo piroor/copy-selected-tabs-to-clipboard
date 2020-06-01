@@ -5,13 +5,13 @@
 */
 'use strict';
 
-class ReplacerSyntaxError extends Error {
+export class ReplacerError extends Error {
   constructor(...args) {
     super(...args);
   }
 }
 
-export function processAll(input, filler, fillerParams) {
+export function processAll(input, filter) {
   let output = '';
   while (true) {
     const index = input.search(/%REPLACE\(/i);
@@ -26,12 +26,11 @@ export function processAll(input, filler, fillerParams) {
 
     let pendingChar  = '';
     let lastToken    = '';
-    let lastRawToken = '';
     let inSingleQuoteString = false;
     let inDoubleQuoteString = false;
     let count = 0;
     let args = [];
-    let rawArgs = [];
+    let rawArgs = '';
     parse:
     for (const c of input) {
       switch (c) {
@@ -39,30 +38,29 @@ export function processAll(input, filler, fillerParams) {
           if (!inSingleQuoteString &&
               !inDoubleQuoteString &&
               pendingChar == ')') {
-            if (args.length > 0)
+            if (args.length > 0 || lastToken != '')
               args.push(lastToken);
-            output += processOne(args, filler, fillerParams);
+            output += processOne(args, filter);
             input = input.substring(count + 1);
             lastToken    = '';
-            lastRawToken = '';
             args         = [];
-            rawArgs      = [];
+            rawArgs      = '';
             break parse;
           }
           lastToken += pendingChar + c;
-          lastRawToken += pendingChar + c;
+          rawArgs += pendingChar + c;
           pendingChar = '';
           break;
 
         case ')':
           if (inSingleQuoteString || inDoubleQuoteString) {
             lastToken += pendingChar + c;
-            lastRawToken += pendingChar + c;
+            rawArgs += pendingChar + c;
             pendingChar = '';
           }
           else {
             lastToken += pendingChar;
-            lastRawToken += pendingChar;
+            rawArgs += pendingChar;
             pendingChar = c;
           }
           break;
@@ -70,15 +68,14 @@ export function processAll(input, filler, fillerParams) {
         case ',':
           if (inSingleQuoteString || inDoubleQuoteString) {
             lastToken += pendingChar + c;
-            lastRawToken += pendingChar + c;
+            rawArgs += pendingChar + c;
             pendingChar = '';
           }
           else {
             args.push(lastToken + pendingChar);
-            rawArgs.push(lastRawToken + pendingChar);
+            rawArgs += pendingChar + c;
             pendingChar = '';
             lastToken = '';
-            lastRawToken = '';
           }
           break;
 
@@ -91,9 +88,9 @@ export function processAll(input, filler, fillerParams) {
             inDoubleQuoteString = true;
           }
           else {
-            lastToken += pendingChar;
+            lastToken += pendingChar + c;
           }
-          lastRawToken += pendingChar + c;
+          rawArgs += pendingChar + c;
           pendingChar = '';
           break;
 
@@ -106,45 +103,48 @@ export function processAll(input, filler, fillerParams) {
             inSingleQuoteString = true;
           }
           else {
-            lastToken += pendingChar;
+            lastToken += pendingChar + c;
           }
-          lastRawToken += pendingChar + c;
+          rawArgs += pendingChar + c;
           pendingChar = '';
           break;
 
         default:
           if (inSingleQuoteString || inDoubleQuoteString) {
             lastToken += pendingChar + c;
-            lastRawToken += pendingChar + c;
+            rawArgs += pendingChar + c;
             pendingChar = '';
           }
           else if (!/\s/.test(c)) {
-            lastRawToken += pendingChar
-            if (lastRawToken != '')
-              rawArgs.push(lastRawToken);
-            throw new ReplacerSyntaxError(`Invalid Character "${c}" after "${replacer}${rawArgs.join(',')}", it must be quoted>`);
+            rawArgs += pendingChar;
+            throw new ReplacerError(`Invalid character "${c}" after "${replacer}${rawArgs}", you may forgot to wrap any argument with quotations`);
+          }
+          else {
+            rawArgs += pendingChar + c;
+            pendingChar = '';
           }
           break;
       }
       count++;
     }
-    if (lastRawToken != '') {
-      rawArgs.push(lastRawToken);
-      throw new ReplacerSyntaxError(`<ReplacerSyntaxError: Untermited Replacer "${replacer}${rawArgs.join(',')}", it must be terminated with ")%">`);
+    if (rawArgs != '') {
+      throw new ReplacerError(`Untermited replacer "${replacer}${rawArgs}", you may forgot to put close-quote for any argument`);
     }
   }
   return output;
 }
 
-function processOne(args, filler, fillerParams) {
-  if (args.length < 1)
-    throw new ReplacerSyntaxError(`<ReplacerSyntaxError: Replacer must take one or more arguments>`);
+function processOne(args, filter) {
+  if (args.length == 0)
+    throw new ReplacerError(`Missing argument: Replacer must take one base text and one or more matcher/replace-text pairs`);
   if (args.length % 2 == 0)
-    throw new ReplacerSyntaxError(`<ReplacerSyntaxError: Replacer must take one base text and pairs of matcher and replaced string>`);
+    throw new ReplacerError(`Missing replace text for the last matcher: Replacer must take one base text and one or more matcher/replace-text pairs`);
+  if (args.length < 2)
+    throw new ReplacerError(`Missing matcher/replace-text pair: Replacer must take one base text and one or more matcher/replace-text pairs`);
 
   let filled = args.shift();
-  if (typeof filler == 'function')
-    filled = filler(filled, fillerParams);
+  if (typeof filter == 'function')
+    filled = filter(filled, ...args);
   for (let i = 0, maxi = args.length; i < maxi; i += 2) {
     filled = filled.replace(new RegExp(args[i], 'i'), args[i + 1]);
   }
