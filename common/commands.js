@@ -12,6 +12,7 @@ import {
 } from './common.js';
 import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
+import * as Replacer from './replacer.js';
 
 export async function getMultiselectedTabs(tab) {
   if (!tab)
@@ -140,42 +141,63 @@ export async function copyToClipboard(tabs, format) {
 
 export async function fillPlaceHolders(format, tab, indentLevel) {
   log('fillPlaceHolders ', tab.id, format, indentLevel);
-  const lineFeed = configs.useCRLF ? '\r\n' : '\n' ;
-  let contentsData = {};
+  const now = new Date();
+  let params = {
+    tab,
+    indentLevel,
+    lineFeed:  configs.useCRLF ? '\r\n' : '\n',
+    timeUTC:   now.toUTCString(),
+    timeLocal: now.toLocaleString()
+  };
   if (!tab.discarded &&
       Permissions.isPermittedTab(tab) &&
       /%(AUTHOR|DESC(?:RIPTION)?|KEYWORDS)(?:_HTML(?:IFIED)?)?%/i.test(format)) {
     log('trying to get data from content ', tab.id);
-    contentsData = await browser.tabs.executeScript(tab.id, {
+    params = await browser.tabs.executeScript(tab.id, {
       file: '/common/get-content-text.js'
     });
-    if (Array.isArray(contentsData))
-      contentsData = contentsData[0];
-    log('contentsData ', contentsData);
+    if (Array.isArray(params))
+      params = params[0];
+    log('params ', params);
   }
-  const now = new Date();
-  const timeUTC = now.toUTCString();
-  const timeLocal = now.toLocaleString();
-  const formatted = format
+
+  const filled = await fillPlaceHoldersInternal(format, params);
+
+  if (/%RT%/i.test(format)) {
+    return {
+      richText:  filled.trim() && filled ||
+                   `<a href="${sanitizeHtmlText(tab.url)}">${sanitizeHtmlText(tab.title)}</a>`,
+      plainText: filled.trim() && filled ||
+                   `${tab.title}<${tab.url}>`
+    };
+  }
+  return {
+    richText:  '',
+    plainText: filled
+  };
+}
+
+function fillPlaceHoldersInternal(format, params) {
+  return Replacer.processAll(format, fillPlaceHoldersInternal, params)
     .replace(/%(?:RLINK|RLINK_HTML(?:IFIED)?|SEL|SEL_HTML(?:IFIED)?)%/gi, '')
-    .replace(/%URL%/gi, tab.url)
-    .replace(/%URL_NO_FRAGMENT%/gi, tab.url.replace(/#.*$/, ''))
-    .replace(/%URL_NO_QUERY%/gi, tab.url.replace(/\?.*$/, ''))
-    .replace(/%(?:TITLE|TEXT)%/gi, tab.title)
-    .replace(/%URL_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url))
-    .replace(/%URL_NO_FRAGMENT_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url.replace(/#.*$/, '')))
-    .replace(/%URL_NO_QUERY_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url.replace(/\?.*$/, '')))
-    .replace(/%TITLE_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.title))
-    .replace(/%AUTHOR%/gi, contentsData.author || '')
-    .replace(/%AUTHOR_HTML(?:IFIED)?%/gi, sanitizeHtmlText(contentsData.author || ''))
-    .replace(/%DESC(?:RIPTION)?%/gi, contentsData.description || '')
-    .replace(/%DESC(?:RIPTION)?_HTML(?:IFIED)?%/gi, sanitizeHtmlText(contentsData.description || ''))
-    .replace(/%KEYWORDS%/gi, contentsData.keywords || '')
-    .replace(/%KEYWORDS_HTML(?:IFIED)?%/gi, sanitizeHtmlText(contentsData.keywords || ''))
-    .replace(/%UTC_TIME%/gi, timeUTC)
-    .replace(/%LOCAL_TIME%/gi, timeLocal)
+    .replace(/%URL%/gi, params.tab.url)
+    .replace(/%URL_NO_FRAGMENT%/gi, params.tab.url.replace(/#.*$/, ''))
+    .replace(/%URL_NO_QUERY%/gi, params.tab.url.replace(/\?.*$/, ''))
+    .replace(/%(?:TITLE|TEXT)%/gi, params.tab.title)
+    .replace(/%URL_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.tab.url))
+    .replace(/%URL_NO_FRAGMENT_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.tab.url.replace(/#.*$/, '')))
+    .replace(/%URL_NO_QUERY_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.tab.url.replace(/\?.*$/, '')))
+    .replace(/%TITLE_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.tab.title))
+    .replace(/%AUTHOR%/gi, params.author || '')
+    .replace(/%AUTHOR_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.author || ''))
+    .replace(/%DESC(?:RIPTION)?%/gi, params.description || '')
+    .replace(/%DESC(?:RIPTION)?_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.description || ''))
+    .replace(/%KEYWORDS%/gi, params.keywords || '')
+    .replace(/%KEYWORDS_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.keywords || ''))
+    .replace(/%UTC_TIME%/gi, params.timeUTC)
+    .replace(/%LOCAL_TIME%/gi, params.timeLocal)
     .replace(/%TAB%/gi, '\t')
-    .replace(/%EOL%/gi, lineFeed)
+    .replace(/%EOL%/gi, params.lineFeed)
     .replace(/%RT%/gi, '')
     .replace(kFORMAT_MATCHER_TST_INDENT, matched => {
       let indenters = matched.replace(/^%TST_INDENT|%$/g, '');
@@ -189,25 +211,12 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
           .reverse();
       }
       let indent = '';
-      for (let i = 0; i < indentLevel; i++) {
+      for (let i = 0; i < params.indentLevel; i++) {
         const indenter = indenters[Math.min(i, indenters.length - 1)];
         indent = `${indenter}${indent}`;
       }
       return indent;
     });
-
-  if (/%RT%/i.test(format)) {
-    return {
-      richText:  formatted.trim() && formatted ||
-                   `<a href="${sanitizeHtmlText(tab.url)}">${sanitizeHtmlText(tab.title)}</a>`,
-      plainText: formatted.trim() && formatted ||
-                   `${tab.title}<${tab.url}>`
-    };
-  }
-  return {
-    richText:  '',
-    plainText: formatted
-  };
 }
 
 export function sanitizeHtmlText(text) {
