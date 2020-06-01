@@ -2,18 +2,24 @@
   "name": "copy-selected-tabs-to-clipboard",
   "version": "0.0.0",
   "engines": {
-    "node": ">=8.6.0"
+    "node": ">=13.2"
   },
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint . --ext=.js --report-unused-disable-directives",
+    "format": "eslint . --ext=.js --report-unused-disable-directives --fix",
+    "test": "node test/runner.js"
   },
   "dependencies": {
     "babel-core": "^6.0.0",
     "babel-plugin-module-resolver": "^3.0.0",
-    "eslint": "^5.0.1",
+    "eslint": "^6.8.0",
     "eslint-import-resolver-babel-module": "^4.0.0",
-    "eslint-plugin-import": "*",
+    "eslint-plugin-import": "^2.20.1",
     "jsonlint-cli": "*",
     "tunnel-agent": ">=0.6.0"
+  },
+  "devDependencies": {
+    "assert": "^2.0.0"
   }
 }
