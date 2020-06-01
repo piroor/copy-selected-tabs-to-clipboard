@@ -159,8 +159,12 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
   const formatted = format
     .replace(/%(?:RLINK|RLINK_HTML(?:IFIED)?|SEL|SEL_HTML(?:IFIED)?)%/gi, '')
     .replace(/%URL%/gi, tab.url)
+    .replace(/%URL_NO_FRAGMENT%/gi, tab.url.replace(/#.*$/, ''))
+    .replace(/%URL_NO_QUERY%/gi, tab.url.replace(/\?.*$/, ''))
     .replace(/%(?:TITLE|TEXT)%/gi, tab.title)
     .replace(/%URL_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url))
+    .replace(/%URL_NO_FRAGMENT_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url.replace(/#.*$/, '')))
+    .replace(/%URL_NO_QUERY_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url.replace(/\?.*$/, '')))
     .replace(/%TITLE_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.title))
     .replace(/%AUTHOR%/gi, contentsData.author || '')
     .replace(/%AUTHOR_HTML(?:IFIED)?%/gi, sanitizeHtmlText(contentsData.author || ''))
