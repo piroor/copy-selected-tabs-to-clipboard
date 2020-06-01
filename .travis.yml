@@ -10,7 +10,7 @@ before_script:
   - make update_extlib
   - make install_extlib
 script:
-  - make lint
+  - make test
 before_deploy:
   - make
 deploy:

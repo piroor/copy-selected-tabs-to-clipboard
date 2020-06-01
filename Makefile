@@ -1,7 +1,7 @@
 NPM_MOD_DIR := $(CURDIR)/node_modules
 NPM_BIN_DIR := $(NPM_MOD_DIR)/.bin
 
-.PHONY: xpi install_dependency install_hook lint format update_extlib install_extlib
+.PHONY: xpi install_dependency install_hook lint format update_extlib install_extlib test
 
 all: xpi
 
@@ -15,10 +15,13 @@ lint: install_dependency
 	"$(NPM_BIN_DIR)/eslint" . --ext=.js --report-unused-disable-directives
 	find . -type d -name node_modules -prune -o -type f -name '*.json' -print | xargs "$(NPM_BIN_DIR)/jsonlint-cli"
 
+test: lint
+	npm run test
+
 format: install_dependency
 	"$(NPM_BIN_DIR)/eslint" . --ext=.js --report-unused-disable-directives --fix
 
-xpi: update_extlib install_extlib lint
+xpi: update_extlib install_extlib test
 	rm -f ./*.xpi
 	zip -r -9 copy-selected-tabs-to-clipboard.xpi manifest.json common resources background panel options _locales extlib -x '*/.*' >/dev/null 2>/dev/null
 
