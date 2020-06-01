@@ -64,7 +64,7 @@
         "hash": "7292b900eb5211e2a5c8cc8219de8a1b"
     },
     "config_copyToClipboardFormats_placeholders": {
-        "message": "格式栏可用的占位符：\n%URL%=页面网址, \n%URL_NO_QUERY%=Page URL with stripped after \"?\", \n%URL_NO_FRAGMENT%=Page URL with stripped after \"#\"，\n%TITLE%=页面标题，\n%AUTHOR%=作者名（META 信息指定），\n%DESCRIPTION%=描述（META 信息指定），\n%KEYWORDS%=搜索关键词（META 信息指定），\n%URL_HTMLIFIED%=为 HTML 转义的 URL, \n%URL_NO_QUERY_HTMLIFIED%=Escaped URL with stripped after \"?\", \n%URL_NO_FRAGMENT_HTMLIFIED%=Escaped URL with stripped after \"#\"，\n%TITLE_HTMLIFIED%=为 HTML 转义的标题，\n%AUTHOR_HTMLIFIED%=为 HTML 转义的作者名，\n%DESCRIPTION_HTMLIFIED%=为 HTML 转义的描述，\n%KEYWORDS_HTMLIFIED%=为 HTML 转义的关键词，\n%TST_INDENT(indenter)%、%TST_INDENT(indenter1)(indenter2)...(indenterN)%=层级（由 Tree Style Tab 提供）\n%TAB%=Tab，\n%EOL%=换行，\n%RT%=复制为富文本（注：复制的文本中不含此占位符）",
+        "message": "格式栏可用的占位符：\n%URL%=页面网址，\n%TITLE%=页面标题，\n%AUTHOR%=作者名（META 信息指定），\n%DESCRIPTION%=描述（META 信息指定），\n%KEYWORDS%=搜索关键词（META 信息指定），\n%URL_HTMLIFIED%=为 HTML 转义的 URL，\n%TITLE_HTMLIFIED%=为 HTML 转义的标题，\n%AUTHOR_HTMLIFIED%=为 HTML 转义的作者名，\n%DESCRIPTION_HTMLIFIED%=为 HTML 转义的描述，\n%KEYWORDS_HTMLIFIED%=为 HTML 转义的关键词，\n%TST_INDENT(indenter)%、%TST_INDENT(indenter1)(indenter2)...(indenterN)%=层级（由 Tree Style Tab 提供）\n%TAB%=Tab，\n%EOL%=换行，\n%RT%=复制为富文本（注：复制的文本中不含此占位符）",
         "hash": "e4fa53727b5f0e073c95814d82357d4a"
     },
     "config_shortcuts_caption": {
