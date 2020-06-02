@@ -2,6 +2,10 @@ name: CI/CD
 
 on: [push]
 
+strategy:
+  matrix:
+    node-version: [13.x]
+
 jobs:
   build:
 
