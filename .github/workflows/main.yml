@@ -2,16 +2,16 @@ name: CI/CD
 
 on: [push]
 
-strategy:
-  matrix:
-    node-version: [13.x]
-
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
     steps:
+    - name: setup minimum version Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '13.x'
     - uses: actions/checkout@v1
     - name: prepare manifest.json with a revision number
       run: |
