@@ -92,8 +92,8 @@ export function processAll(input, filter) {
               lastToken += c;
             }
             else {
-            inDoubleQuoteString = false;
-            lastToken += pendingChar;
+              inDoubleQuoteString = false;
+              lastToken += pendingChar;
             }
           }
           else if (!inSingleQuoteString) {
@@ -113,8 +113,8 @@ export function processAll(input, filter) {
               lastToken += c;
             }
             else {
-            inSingleQuoteString = false;
-            lastToken += pendingChar;
+              inSingleQuoteString = false;
+              lastToken += pendingChar;
             }
           }
           else if (!inDoubleQuoteString) {
