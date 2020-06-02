@@ -3,6 +3,25 @@
 */
 'use strict';
 
+/*
+This is an automated test for the `%REPLACE(...)%` placeholder function.
+It accepts one base text and one or more pairs of matcher/replaced-text,
+for example:
+
+  %REPLACE("base text", "^ba", "ca", "se\b", "ke")%
+  => This will return "cake text".
+
+All arguments must be defined as strings wrapped with quotations (single or
+double), and delimited with ",". Any whitespace outside strings is ignored.
+
+The matcher part is parsed as a full-featured JavaScript regular expression,
+case-insensitive and not global match. Available syntax depends on the runtime
+JavaScript engine.
+
+See also:
+https://developer.mozilla.org/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet
+*/
+
 import { is, ok, ng } from './assert.js';
 import * as Replacer from '../common/replacer.js';
 
@@ -133,6 +152,11 @@ export function testReplaced() {
     'prefix output text middle second output text suffix'
   );
 
+  assertReplaced( // meta character
+    '%REPLACE("base text", "\\bba", "ca", "se\\b", "ke")%',
+    ['base text', '\\bba', 'ca', 'se\\b', 'ke'],
+    'cake text'
+  );
   assertReplaced( // remove query part
     '%REPLACE("http://example.com/?query", "\\?.*$", "")%',
     ['http://example.com/?query', '\\?.*$', ''],
