@@ -3,9 +3,8 @@
 */
 'use strict';
 
-import * as TestReplacer from './test-replacer.js';
-
 async function run() {
+  const TestReplacer = await import('./test-replacer.js');
   const testCases = [
     TestReplacer,
   ];
