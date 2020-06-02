@@ -162,20 +162,20 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
   }
 
   try {
-  const filled = fillPlaceHoldersInternal(format, params);
+    const filled = fillPlaceHoldersInternal(format, params);
 
-  if (/%RT%/i.test(format)) {
+    if (/%RT%/i.test(format)) {
+      return {
+        richText:  filled.trim() && filled ||
+                     `<a href="${sanitizeHtmlText(tab.url)}">${sanitizeHtmlText(tab.title)}</a>`,
+        plainText: filled.trim() && filled ||
+                     `${tab.title}<${tab.url}>`
+      };
+    }
     return {
-      richText:  filled.trim() && filled ||
-                   `<a href="${sanitizeHtmlText(tab.url)}">${sanitizeHtmlText(tab.title)}</a>`,
-      plainText: filled.trim() && filled ||
-                   `${tab.title}<${tab.url}>`
+      richText:  '',
+      plainText: filled
     };
-  }
-  return {
-    richText:  '',
-    plainText: filled
-  };
   }
   catch(error) {
     if (error instanceof Replacer.ReplacerError)
