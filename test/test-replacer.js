@@ -6,11 +6,12 @@
 import { is, ok, ng } from './assert.js';
 import * as Replacer from '../common/replacer.js';
 
-function assertReplaced(input, expectedArgs, expectedReplaced) {
+function assertReplaced(input, ...expectedArgs) {
+  const expectedReplaced = expectedArgs.pop();
   const replaced = Replacer.processAll(
     input,
     (base, ...replacePairs) => {
-      is(expectedArgs,
+      is(expectedArgs.shift(),
          [base, ...replacePairs]);
       return base;
     }
@@ -112,6 +113,12 @@ export function testReplaced() {
     'prefix %REPLACE("input text in replacer", "in[^ ]*", "output", "in[^ ]*", "of")% suffix',
     ['input text in replacer', 'in[^ ]*', 'output', 'in[^ ]*', 'of'],
     'prefix output text of replacer suffix'
+  );
+  assertReplaced( // should accept multiple replacers
+    'prefix %REPLACE("input text", "input", "output")% middle %REPLACE("second input text", "input", "output")% suffix',
+    ['input text', 'input', 'output'],
+    ['second input text', 'input', 'output'],
+    'prefix output text middle second output text suffix'
   );
 }
 
