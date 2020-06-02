@@ -161,7 +161,8 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
     log('params ', params);
   }
 
-  const filled = await fillPlaceHoldersInternal(format, params);
+  try {
+  const filled = fillPlaceHoldersInternal(format, params);
 
   if (/%RT%/i.test(format)) {
     return {
@@ -175,6 +176,20 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
     richText:  '',
     plainText: filled
   };
+  }
+  catch(error) {
+    if (error instanceof Replacer.ReplacerError)
+      return {
+        richText:  '',
+        plainText: error.message
+      };
+
+    console.error(error);
+    return {
+      richText:  '',
+      plainText: error instanceof Error ? `${error.message}\n${error.stack}` : String(error)
+    };
+  }
 }
 
 function fillPlaceHoldersInternal(format, params) {
