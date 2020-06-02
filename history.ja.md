@@ -1,6 +1,8 @@
 # 更新履歴
 
  - master/HEAD
+   * 特殊なプレースホルダーとして `%REPLACE(...)%` に対応した（詳細な仕様は[自動テスト](https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/master/test/test-replacer.js)を参照してください）
+   * エラーをコピー文字列として出力するようにした
  - 1.2.3 (2020.4.28)
    * モーダル風ダイアログがクローズボックスで閉じられた時の挙動を改善
    * モーダル風ダイアログを開くのに要する時間を若干短縮した

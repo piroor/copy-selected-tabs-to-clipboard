@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+   * Add a new special placeholder function `%REPLACE(...)%`. See also the [automated test](https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/master/test/test-replacer.js) for its detailed spec.
+   * Report errors as copied text.
  - 1.2.3 (2020.4.28)
    * Handle dismissed semi-modal dialogs correctly.
    * Optimize semi-modal dialogs a little.
