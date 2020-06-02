@@ -45,6 +45,11 @@ export function testDoubleQuote() {
     ['base)%', '1st', '2nd'],
     'prefix base)% suffix'
   );
+  assertReplaced( // should accept escaped close quote
+    'prefix %REPLACE("base\\"", "\\"1st", "2nd\\"")% suffix',
+    ['base"', '"1st', '2nd"'],
+    'prefix base" suffix'
+  );
 }
 
 export function testSingleQuote() {
@@ -72,6 +77,11 @@ export function testSingleQuote() {
     "prefix %REPLACE('base)%', '1st', '2nd')% suffix",
     ['base)%', '1st', '2nd'],
     'prefix base)% suffix'
+  );
+  assertReplaced( // should accept escaped close quote
+    "prefix %REPLACE('base\\'', '\\'1st', '2nd\\'')% suffix",
+    ["base'", "'1st", "2nd'"],
+    "prefix base' suffix"
   );
 }
 
@@ -104,11 +114,13 @@ export function testReplaced() {
     ['input text', 'INPUT', 'output'],
     'prefix output text suffix'
   );
+
   assertReplaced( // should not global match
     'prefix %REPLACE("input text in replacer", "in[^ ]*", "output")% suffix',
     ['input text in replacer', 'in[^ ]*', 'output'],
     'prefix output text in replacer suffix'
   );
+
   assertReplaced( // should accept multiple replace pairs
     'prefix %REPLACE("input text in replacer", "in[^ ]*", "output", "in[^ ]*", "of")% suffix',
     ['input text in replacer', 'in[^ ]*', 'output', 'in[^ ]*', 'of'],
@@ -120,6 +132,7 @@ export function testReplaced() {
     ['second input text', 'input', 'output'],
     'prefix output text middle second output text suffix'
   );
+
   assertReplaced( // remove query part
     '%REPLACE("http://example.com/?query", "\\?.*$", "")%',
     ['http://example.com/?query', '\\?.*$', ''],

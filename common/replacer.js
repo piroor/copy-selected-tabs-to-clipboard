@@ -65,6 +65,12 @@ export function processAll(input, filter) {
           }
           break;
 
+        case '\\':
+          lastToken += pendingChar;
+          rawArgs += pendingChar;
+          pendingChar = c;
+          break;
+
         case ',':
           if (inSingleQuoteString || inDoubleQuoteString) {
             lastToken += pendingChar + c;
@@ -81,8 +87,14 @@ export function processAll(input, filter) {
 
         case '"':
           if (inDoubleQuoteString) {
+            if (pendingChar == '\\') {
+              pendingChar = '';
+              lastToken += c;
+            }
+            else {
             inDoubleQuoteString = false;
             lastToken += pendingChar;
+            }
           }
           else if (!inSingleQuoteString) {
             inDoubleQuoteString = true;
@@ -96,8 +108,14 @@ export function processAll(input, filter) {
 
         case "'":
           if (inSingleQuoteString) {
+            if (pendingChar == '\\') {
+              pendingChar = '';
+              lastToken += c;
+            }
+            else {
             inSingleQuoteString = false;
             lastToken += pendingChar;
+            }
           }
           else if (!inDoubleQuoteString) {
             inSingleQuoteString = true;
