@@ -120,6 +120,23 @@ export function testReplaced() {
     ['second input text', 'input', 'output'],
     'prefix output text middle second output text suffix'
   );
+  assertReplaced( // remove query part
+    '%REPLACE("http://example.com/?query", "\\?.*$", "")%',
+    ['http://example.com/?query', '\\?.*$', ''],
+    'http://example.com/'
+  );
+  const matcher = '^((?!\\w+://([^/]*\\.)?(google\\.com|duckduckgo\\.com)/.*).*)\\?.*$';
+  assertReplaced( // remove query part except google and yahoo
+    `%REPLACE("http://example.com/?query", "${matcher}", "$1")% \n` +
+      `%REPLACE("https://www.google.com/search?query", "${matcher}", "$1")% \n` +
+      `%REPLACE("https://duckduckgo.com/search?query", "${matcher}", "$1")%`,
+    ['http://example.com/?query', matcher, '$1'],
+    ['https://www.google.com/search?query', matcher, '$1'],
+    ['https://duckduckgo.com/search?query', matcher, '$1'],
+    'http://example.com/ \n' +
+      'https://www.google.com/search?query \n' +
+      'https://duckduckgo.com/search?query'
+  );
 }
 
 export function testIgnoreCases() {
