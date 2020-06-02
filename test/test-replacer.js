@@ -22,8 +22,9 @@ See also:
 https://developer.mozilla.org/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet
 */
 
-import { assert } from 'tiny-esm-test-runner';
 import * as Replacer from '../common/replacer.js';
+
+import { assert } from 'tiny-esm-test-runner';
 const { is, ok, ng } = assert;
 
 function assertReplaced(input, ...expectedArgs) {
