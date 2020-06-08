@@ -99,28 +99,28 @@ export async function copyToClipboard(tabs, format) {
   const doCopy = function() {
     let done = false;
     return new Promise((resolve, _reject) => {
-    // This block won't work if dom.event.clipboardevents.enabled=false.
-    // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1396275
-    document.addEventListener('copy', event => {
-      if (done)
-        return;
-      event.stopImmediatePropagation();
-      event.preventDefault();
-      event.clipboardData.setData('text/plain', plainText);
-      event.clipboardData.setData('text/html',  richText);
-      done = true;
-      resolve(true);
-    }, {
-      once:    true,
-      capture: true
-    });
-    document.execCommand('copy');
-    setTimeout(() => {
-      if (done)
-        return;
-      done = true;
-      resolve(false);
-    }, 250);
+      // This block won't work if dom.event.clipboardevents.enabled=false.
+      // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1396275
+      document.addEventListener('copy', event => {
+        if (done)
+          return;
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        event.clipboardData.setData('text/plain', plainText);
+        event.clipboardData.setData('text/html',  richText);
+        done = true;
+        resolve(true);
+      }, {
+        once:    true,
+        capture: true
+      });
+      document.execCommand('copy');
+      setTimeout(() => {
+        if (done)
+          return;
+        done = true;
+        resolve(false);
+      }, 250);
     });
   };
 
