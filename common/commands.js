@@ -86,8 +86,8 @@ export async function copyToClipboard(tabs, format) {
     log('trying to write data to clipboard via Clipboard API');
     try {
       const dt = new DataTransfer();
-      dt.items.add('text/plain', plainText);
-      dt.items.add('text/html',  richText);
+      dt.items.add(plainText, 'text/plain');
+      dt.items.add(richText, 'text/html');
       return navigator.clipboard.write(dt);
     }
     catch(e) {
