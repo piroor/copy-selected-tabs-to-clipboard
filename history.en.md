@@ -1,6 +1,7 @@
 # History
 
  - master/HEAD
+ - 1.3.0 (2020.6.8)
    * Add a new special placeholder function `%REPLACE(...)%`. See also the [automated test](https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/master/test/test-replacer.js) for its detailed spec.
    * Report errors as copied text.
    * Fallback to plain text copy when failed to copy a rich text.

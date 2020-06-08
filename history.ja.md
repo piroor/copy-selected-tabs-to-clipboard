@@ -1,6 +1,7 @@
 # 更新履歴
 
  - master/HEAD
+ - 1.3.0 (2020.6.8)
    * 特殊なプレースホルダーとして `%REPLACE(...)%` に対応した（詳細な仕様は[自動テスト](https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/master/test/test-replacer.js)を参照してください）
    * エラーをコピー文字列として出力するようにした
    * リッチテキストのコピーに失敗した時はプレーンテキストのコピーにフォールバックするようにした
