@@ -3,6 +3,8 @@
  - master/HEAD
    * 特殊なプレースホルダーとして `%REPLACE(...)%` に対応した（詳細な仕様は[自動テスト](https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/master/test/test-replacer.js)を参照してください）
    * エラーをコピー文字列として出力するようにした
+   * リッチテキストのコピーに失敗した時はプレーンテキストのコピーにフォールバックするようにした
+   * `dom.events.asyncClipboard.dataTransfer`=`true`のときのリッチテキストのコピーに失敗していたのを修正
  - 1.2.3 (2020.4.28)
    * モーダル風ダイアログがクローズボックスで閉じられた時の挙動を改善
    * モーダル風ダイアログを開くのに要する時間を若干短縮した

@@ -3,6 +3,8 @@
  - master/HEAD
    * Add a new special placeholder function `%REPLACE(...)%`. See also the [automated test](https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/master/test/test-replacer.js) for its detailed spec.
    * Report errors as copied text.
+   * Fallback to plain text copy when failed to copy a rich text.
+   * Support rich text copy with `dom.events.asyncClipboard.dataTransfer`=`true`.
  - 1.2.3 (2020.4.28)
    * Handle dismissed semi-modal dialogs correctly.
    * Optimize semi-modal dialogs a little.
