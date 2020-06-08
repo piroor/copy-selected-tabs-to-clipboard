@@ -97,18 +97,31 @@ export async function copyToClipboard(tabs, format) {
   }
 
   const doCopy = function() {
+    let done = false;
+    return new Promise((resolve, _reject) => {
     // This block won't work if dom.event.clipboardevents.enabled=false.
     // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1396275
     document.addEventListener('copy', event => {
+      if (done)
+        return;
       event.stopImmediatePropagation();
       event.preventDefault();
       event.clipboardData.setData('text/plain', plainText);
       event.clipboardData.setData('text/html',  richText);
+      done = true;
+      resolve(true);
     }, {
       once:    true,
       capture: true
     });
     document.execCommand('copy');
+    setTimeout(() => {
+      if (done)
+        return;
+      done = true;
+      resolve(false);
+    }, 250);
+    });
   };
 
   log('trying to write data to clipboard via execCommand from content page');
@@ -118,7 +131,7 @@ export async function copyToClipboard(tabs, format) {
     if (permittedTabs.length == 0)
       throw new Error('no permitted tab to copy data to the clipboard');
   }
-  browser.tabs.executeScript(permittedTabs[0].id, {
+  const results = await browser.tabs.executeScript(permittedTabs[0].id, {
     /* Due to Firefox's limitation, we cannot copy text from background script.
        Moreover, when this command is called from context menu on a tab,
        there is no browser_action page.
@@ -130,13 +143,23 @@ export async function copyToClipboard(tabs, format) {
         https://bugzilla.mozilla.org/show_bug.cgi?id=1344410
     */
     code: `
-      {
+      (() => {
         let richText = ${JSON.stringify(richText)};
         let plainText = ${JSON.stringify(plainText)};
-        (${doCopy.toString()})();
-      }
+        return (${doCopy.toString()})();
+      })();
     `
   });
+  if (results[0])
+    return;
+
+  log('failed to write rich text data to the clipboard, so fallback to plain text data copy via Clipboard API');
+  try {
+    return navigator.clipboard.writeText(plainText);
+  }
+  catch(e) {
+    log('failed to write text to clipboard: ', e);
+  }
 }
 
 export async function fillPlaceHolders(format, tab, indentLevel) {
