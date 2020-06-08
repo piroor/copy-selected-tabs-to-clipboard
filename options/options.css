@@ -82,7 +82,14 @@ ul p.sub {
 }
 
 p.syntax-description {
+  white-space: pre-wrap;
+}
+
+.copyable {
   -moz-user-select: text;
   cursor: text;
-  white-space: pre-wrap;
+}
+
+#howToActivateNativeRichTextCopy {
+  font-weight: bold;
 }
