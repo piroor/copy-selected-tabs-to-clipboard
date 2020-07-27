@@ -176,11 +176,12 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
       Permissions.isPermittedTab(tab) &&
       /%(AUTHOR|DESC(?:RIPTION)?|KEYWORDS)(?:_HTML(?:IFIED)?)?%/i.test(format)) {
     log('trying to get data from content ', tab.id);
-    params = await browser.tabs.executeScript(tab.id, {
+    let paramsFromContent = await browser.tabs.executeScript(tab.id, {
       file: '/common/get-content-text.js'
     });
-    if (Array.isArray(params))
-      params = params[0];
+    if (Array.isArray(paramsFromContent))
+      paramsFromContent = paramsFromContent[0];
+    params = { ...params, ...paramsFromContent };
     log('params ', params);
   }
 
