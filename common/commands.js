@@ -215,23 +215,26 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
   }
 }
 
-function fillPlaceHoldersInternal(format, params) {
-  return Replacer.processAll(format, (input, ..._replacePairs) => fillPlaceHoldersInternal(input, params))
+function fillPlaceHoldersInternal(
+  format,
+  { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel } = {}
+) {
+  return Replacer.processAll(format, (input, ..._replacePairs) => fillPlaceHoldersInternal(input, { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel }))
     .replace(/%(?:RLINK|RLINK_HTML(?:IFIED)?|SEL|SEL_HTML(?:IFIED)?)%/gi, '')
-    .replace(/%URL%/gi, params.tab.url)
-    .replace(/%(?:TITLE|TEXT)%/gi, params.tab.title)
-    .replace(/%URL_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.tab.url))
-    .replace(/%TITLE_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.tab.title))
-    .replace(/%AUTHOR%/gi, params.author || '')
-    .replace(/%AUTHOR_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.author || ''))
-    .replace(/%DESC(?:RIPTION)?%/gi, params.description || '')
-    .replace(/%DESC(?:RIPTION)?_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.description || ''))
-    .replace(/%KEYWORDS%/gi, params.keywords || '')
-    .replace(/%KEYWORDS_HTML(?:IFIED)?%/gi, sanitizeHtmlText(params.keywords || ''))
-    .replace(/%UTC_TIME%/gi, params.timeUTC)
-    .replace(/%LOCAL_TIME%/gi, params.timeLocal)
+    .replace(/%URL%/gi, tab.url)
+    .replace(/%(?:TITLE|TEXT)%/gi, tab.title)
+    .replace(/%URL_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url))
+    .replace(/%TITLE_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.title))
+    .replace(/%AUTHOR%/gi, author || '')
+    .replace(/%AUTHOR_HTML(?:IFIED)?%/gi, sanitizeHtmlText(author || ''))
+    .replace(/%DESC(?:RIPTION)?%/gi, description || '')
+    .replace(/%DESC(?:RIPTION)?_HTML(?:IFIED)?%/gi, sanitizeHtmlText(description || ''))
+    .replace(/%KEYWORDS%/gi, keywords || '')
+    .replace(/%KEYWORDS_HTML(?:IFIED)?%/gi, sanitizeHtmlText(keywords || ''))
+    .replace(/%UTC_TIME%/gi, timeUTC)
+    .replace(/%LOCAL_TIME%/gi, timeLocal)
     .replace(/%TAB%/gi, '\t')
-    .replace(/%EOL%/gi, params.lineFeed)
+    .replace(/%EOL%/gi, lineFeed)
     .replace(/%RT%/gi, '')
     .replace(kFORMAT_MATCHER_TST_INDENT, matched => {
       let indenters = matched.replace(/^%TST_INDENT|%$/g, '');
@@ -245,7 +248,7 @@ function fillPlaceHoldersInternal(format, params) {
           .reverse();
       }
       let indent = '';
-      for (let i = 0; i < params.indentLevel; i++) {
+      for (let i = 0; i < indentLevel; i++) {
         const indenter = indenters[Math.min(i, indenters.length - 1)];
         indent = `${indenter}${indent}`;
       }
