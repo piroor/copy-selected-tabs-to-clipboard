@@ -1,6 +1,8 @@
 # 更新履歴
 
  - master/HEAD
+ - 1.3.1 (2020.7.29)
+   * `%DESCRIPTION%`などのコンテンツの内容を参照するプレースホルダがある時にタブのコピーに失敗する問題を修正
  - 1.3.0 (2020.6.8)
    * 特殊なプレースホルダーとして `%REPLACE(...)%` に対応した（詳細な仕様は[自動テスト](https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/master/test/test-replacer.js)を参照してください）
    * エラーをコピー文字列として出力するようにした

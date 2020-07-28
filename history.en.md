@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.3.1 (2020.7.29)
+   * Copy tabs correctly even if there is any placeholder for content fields like `%DESCRIPTION%`.
  - 1.3.0 (2020.6.8)
    * Add a new special placeholder function `%REPLACE(...)%`. See also the [automated test](https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/master/test/test-replacer.js) for its detailed spec.
    * Report errors as copied text.
