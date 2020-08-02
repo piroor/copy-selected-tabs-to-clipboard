@@ -131,27 +131,49 @@ export async function copyToClipboard(tabs, format) {
     if (permittedTabs.length == 0)
       throw new Error('no permitted tab to copy data to the clipboard');
   }
-  const results = await browser.tabs.executeScript(permittedTabs[0].id, {
-    /* Due to Firefox's limitation, we cannot copy text from background script.
-       Moreover, when this command is called from context menu on a tab,
-       there is no browser_action page.
-       Thus we need to embed text field into webpage and execute a command to copy,
-       but scripts in the webpage can steal the data - that's crazy and dangerous!
-       See also:
-        https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Interact_with_the_clipboard#Browser-specific_considerations
-        https://bugzilla.mozilla.org/show_bug.cgi?id=1272869
-        https://bugzilla.mozilla.org/show_bug.cgi?id=1344410
-    */
-    code: `
-      (() => {
-        let richText = ${JSON.stringify(richText)};
-        let plainText = ${JSON.stringify(plainText)};
-        return (${doCopy.toString()})();
-      })();
-    `
-  });
-  if (results[0])
-    return;
+  /* Due to Firefox's limitation, we cannot copy text from background script.
+     Moreover, when this command is called from context menu on a tab,
+     there is no browser_action page.
+     Thus we need to embed text field into webpage and execute a command to copy,
+     but scripts in the webpage can steal the data - that's crazy and dangerous!
+     See also:
+      https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Interact_with_the_clipboard#Browser-specific_considerations
+      https://bugzilla.mozilla.org/show_bug.cgi?id=1272869
+      https://bugzilla.mozilla.org/show_bug.cgi?id=1344410
+  */
+  const code = `
+    (() => {
+      let richText = ${JSON.stringify(richText)};
+      let plainText = ${JSON.stringify(plainText)};
+      return (${doCopy.toString()})();
+    })();
+  `;
+  try {
+    const results = await browser.tabs.executeScript(permittedTabs[0].id, {
+      matchAboutBlank: true,
+      code
+    });
+    if (results[0])
+      return;
+  }
+  catch(error) {
+    log(`cannot copy rich text data with the tab ${permittedTabs[0].id} (${permittedTabs[0].url}), retry with a temporary tab: `, error);
+    const win = await browser.windows.create({
+      type:   'popup',
+      url:    'about:blank',
+      width:  100,
+      height: 100,
+      left:   0,
+      top:    0
+    });
+    const results = await browser.tabs.executeScript(win.tabs[0].id, {
+      matchAboutBlank: true,
+      code
+    });
+    browser.windows.remove(win.id);
+    if (results[0])
+      return;
+  }
 
   log('failed to write rich text data to the clipboard, so fallback to plain text data copy via Clipboard API');
   try {
