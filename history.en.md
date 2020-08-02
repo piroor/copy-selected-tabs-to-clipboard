@@ -1,6 +1,9 @@
 # History
 
  - master/HEAD
+ - 1.3.2 (2020.8.3)
+   * Copy tabs as rich text data correctly even if there is no tab permitted to execute scripts.
+   * Just ignore placeholders for content fields like `%DESCRIPTION%` for unpermitted tabs.
  - 1.3.1 (2020.7.29)
    * Copy tabs correctly even if there is any placeholder for content fields like `%DESCRIPTION%`.
  - 1.3.0 (2020.6.8)
