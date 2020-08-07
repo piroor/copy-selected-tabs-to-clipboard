@@ -26,9 +26,18 @@
   "error_unpermitted_author":      { "message": "(Error: couldn't get author information from unpermitted tab)" },
   "error_unpermitted_description": { "message": "(Error: couldn't get description information from unpermitted tab)" },
   "error_unpermitted_keywords":    { "message": "(Error: couldn't get keywords information from unpermitted tab)" },
-  "error_failed_author":      { "message": "(Error: couldn't get author information from the tab content)" },
-  "error_failed_description": { "message": "(Error: couldn't get description information from the tab content)" },
-  "error_failed_keywords":    { "message": "(Error: couldn't get keywords information from the tab content)" },
+  "error_failed_author":      { "message": "(Error: couldn't get author information from the tab content [$ERROR$])",
+    "placeholders": {
+      "error": { "content": "$1", "example": "Error" }
+    }},
+  "error_failed_description": { "message": "(Error: couldn't get description information from the tab content [$ERROR$])",
+    "placeholders": {
+      "error": { "content": "$1", "example": "Error" }
+    }},
+  "error_failed_keywords":    { "message": "(Error: couldn't get keywords information from the tab content [$ERROR$])",
+    "placeholders": {
+      "error": { "content": "$1", "example": "Error" }
+    }},
 
   "config_copyToClipboardFormats_enabled":  { "message": "Enabled" },
   "config_copyToClipboardFormats_label":    { "message": "Label" },

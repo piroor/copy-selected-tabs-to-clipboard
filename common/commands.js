@@ -221,9 +221,10 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
     catch(error) {
       console.log(`failed to get data from content `, tab.id, tab.url, error);
       if (configs.reportErrors) {
-        params.author      = browser.i18n.getMessage('error_failed_author');
-        params.description = browser.i18n.getMessage('error_failed_description');
-        params.keywords    = browser.i18n.getMessage('error_failed_keywords');
+        const errorMessage = error instanceof Error ? `${String(error)}\n${error.stack}` : String(error);
+        params.author      = browser.i18n.getMessage('error_failed_author', [errorMessage]);
+        params.description = browser.i18n.getMessage('error_failed_description', [errorMessage]);
+        params.keywords    = browser.i18n.getMessage('error_failed_keywords', [errorMessage]);
       }
     }
     log('params ', params);
