@@ -11,7 +11,7 @@
       const upperCase = name.toUpperCase();
       const lowerCase = name.toLowerCase();
       return document.evaluate(
-        `/descendant::*[translate(local-name(), "META", "meta")="meta"][translate(@name, "${upperCase}", "${lowerCase}")="${lowerCase}"]/attribute::content`,
+        `/descendant::*[translate(local-name(), "META", "meta")="meta"][translate(@name, "${upperCase}", "${lowerCase}")="${lowerCase}" or translate(@property, "${upperCase}", "${lowerCase}")="${lowerCase}"]/attribute::content`,
         document,
         null,
         XPathResult.STRING_TYPE,
@@ -20,7 +20,7 @@
     }
 
     const author = getMetaInfo(document, 'author') || '';
-    const description = getMetaInfo(document, 'description') || '';
+    const description = getMetaInfo(document, 'description') || getMetaInfo(document, 'og:description') || '';
     const keywords = getMetaInfo(document, 'keywords') || '';
     return {
       author,
