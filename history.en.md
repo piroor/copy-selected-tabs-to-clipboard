@@ -1,6 +1,10 @@
 # History
 
  - master/HEAD
+ - 1.3.3 (2020.8.8)
+   * Fill `%DESCRIPTION%` with OGP description if it is provided.
+   * Fill `%AUTHOR%` with the Twitter account name of Twitter Card if it is provided.
+   * Add an option to expose errors while getting author, description, and keywords from tab content.
  - 1.3.2 (2020.8.3)
    * Copy tabs as rich text data correctly even if there is no tab permitted to execute scripts.
    * Just ignore placeholders for content fields like `%DESCRIPTION%` for unpermitted tabs.
