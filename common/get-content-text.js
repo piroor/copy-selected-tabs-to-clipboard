@@ -19,8 +19,10 @@
       ).stringValue;
     }
 
+    const OGPPrefix = (/\b([^\s:]+):\s+http:\/\/ogp.me\/ns#(?:\s|$)/.test(document.head.getAttribute('prefix')) && RegExp.$1) || 'og';
+
     const author = getMetaInfo(document, 'author') || '';
-    const description = getMetaInfo(document, 'description') || getMetaInfo(document, 'og:description') || '';
+    const description = getMetaInfo(document, 'description') || getMetaInfo(document, `${OGPPrefix}:description`) || '';
     const keywords = getMetaInfo(document, 'keywords') || '';
     return {
       author,
