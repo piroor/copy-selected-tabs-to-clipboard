@@ -41,6 +41,7 @@ export const configs = new Configs({
   showContextCommandForSingleTab: true,
   clearSelectionAfterCommandInvoked: false,
   copyToClipboardFormats: defaultClipboardFormats,
+  reportErrors: false,
   useCRLF: false,
   debug: false
 }, {

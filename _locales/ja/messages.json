@@ -20,6 +20,16 @@
     }},
   "command_copySelectedTabsWithFormat_unassigned": { "message": "選択中のタブを形式を指定してコピー: (割り当てなし)" },
 
+  "error_discarded_author":      { "message": "(エラー:待機状態のタブから作成者の情報を取得できませんでした)" },
+  "error_discarded_description": { "message": "(エラー:待機状態のタブから説明文の情報を取得できませんでした)" },
+  "error_discarded_keywords":    { "message": "(エラー:待機状態のタブからキーワードの情報を取得できませんでした)" },
+  "error_unpermitted_author":      { "message": "(エラー:許可されていないタブから作成者の情報を取得できませんでした)" },
+  "error_unpermitted_description": { "message": "(エラー:許可されていないタブから説明文の情報を取得できませんでした)" },
+  "error_unpermitted_keywords":    { "message": "(エラー:許可されていないタブからキーワードの情報を取得できませんでした)" },
+  "error_failed_author":      { "message": "(エラー:タブの内容から作成者の情報を取得できませんでした)" },
+  "error_failed_description": { "message": "(エラー:タブの内容から説明文の情報を取得できませんでした)" },
+  "error_failed_keywords":    { "message": "(エラー:タブの内容からキーワードの情報を取得できませんでした)" },
+
   "config_copyToClipboardFormats_enabled":  { "message": "有効にする" },
   "config_copyToClipboardFormats_label":    { "message": "ラベル" },
   "config_copyToClipboardFormats_template": { "message": "コピーする内容の書式" },
@@ -42,7 +52,7 @@
 
   "config_clearSelectionAfterCommandInvoked_label": { "message": "コマンドの実行後にタブの選択を解除する" },
 
-  "config_shortcuts_caption": { "message": "キーボードショートカット" },
+  "config_reportErrors_label": { "message": "処理中に発生したエラーをクリップボードへの出力に含める" },
 
   "config_debug_caption": { "message": "開発用" },
   "config_debug_label": { "message": "デバッグモード" },

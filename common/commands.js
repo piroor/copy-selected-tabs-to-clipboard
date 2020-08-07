@@ -194,9 +194,21 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
     timeUTC:   now.toUTCString(),
     timeLocal: now.toLocaleString()
   };
-  if (!tab.discarded &&
-      Permissions.isPermittedTab(tab) &&
-      /%(AUTHOR|DESC(?:RIPTION)?|KEYWORDS)(?:_HTML(?:IFIED)?)?%/i.test(format)) {
+  if (tab.discarded) {
+    if (configs.reportErrors) {
+      params.author      = browser.i18n.getMessage('error_discarded_author');
+      params.description = browser.i18n.getMessage('error_discarded_description');
+      params.keywords    = browser.i18n.getMessage('error_discarded_keywords');
+    }
+  }
+  else if (!Permissions.isPermittedTab(tab)) {
+    if (configs.reportErrors) {
+      params.author      = browser.i18n.getMessage('error_unpermitted_author');
+      params.description = browser.i18n.getMessage('error_unpermitted_description');
+      params.keywords    = browser.i18n.getMessage('error_unpermitted_keywords');
+    }
+  }
+  else if (/%(AUTHOR|DESC(?:RIPTION)?|KEYWORDS)(?:_HTML(?:IFIED)?)?%/i.test(format)) {
     log('trying to get data from content ', tab.id);
     try {
       let paramsFromContent = await browser.tabs.executeScript(tab.id, {
@@ -208,6 +220,11 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
     }
     catch(error) {
       console.log(`failed to get data from content `, tab.id, tab.url, error);
+      if (configs.reportErrors) {
+        params.author      = browser.i18n.getMessage('error_failed_author');
+        params.description = browser.i18n.getMessage('error_failed_description');
+        params.keywords    = browser.i18n.getMessage('error_failed_keywords');
+      }
     }
     log('params ', params);
   }

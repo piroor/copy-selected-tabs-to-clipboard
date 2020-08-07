@@ -9,6 +9,7 @@
   "context_clipboard_html_link_label":     { "message": "&HTML Link" },
   "context_clipboard_markdown_label":      { "message": "&Markdown" },
   "context_clipboard_markdown_list_label": { "message": "M&arkdown (List)" },
+
   "command_copySelectedTabs":              { "message": "Copy Selected Tabs to Clipboard" },
   "command_copySelectedTabs_title":        { "message": "Which format to copy?" },
   "command_copySelectedTabs_message":      { "message": "Choose the format you want selected tabs to be copied as." },
@@ -18,6 +19,16 @@
       "format": { "content": "$1", "example": "Plain Text" }
     }},
   "command_copySelectedTabsWithFormat_unassigned": { "message": "Copy Selected Tabs as: (Unassigned)" },
+
+  "error_discarded_author":      { "message": "(Error: couldn't get author information from discarded tab)" },
+  "error_discarded_description": { "message": "(Error: couldn't get description information from discarded tab)" },
+  "error_discarded_keywords":    { "message": "(Error: couldn't get keywords information from discarded tab)" },
+  "error_unpermitted_author":      { "message": "(Error: couldn't get author information from unpermitted tab)" },
+  "error_unpermitted_description": { "message": "(Error: couldn't get description information from unpermitted tab)" },
+  "error_unpermitted_keywords":    { "message": "(Error: couldn't get keywords information from unpermitted tab)" },
+  "error_failed_author":      { "message": "(Error: couldn't get author information from the tab content)" },
+  "error_failed_description": { "message": "(Error: couldn't get description information from the tab content)" },
+  "error_failed_keywords":    { "message": "(Error: couldn't get keywords information from the tab content)" },
 
   "config_copyToClipboardFormats_enabled":  { "message": "Enabled" },
   "config_copyToClipboardFormats_label":    { "message": "Label" },
@@ -41,7 +52,7 @@
 
   "config_clearSelectionAfterCommandInvoked_label": { "message": "Clear selection after a command is invoked" },
 
-  "config_shortcuts_caption": { "message": "Keyboard shortcuts" },
+  "config_reportErrors_label": { "message": "Report errors while internal operations to the clipboard output" },
 
   "config_debug_caption": { "message": "Development" },
   "config_debug_label": { "message": "Debug mode" },
