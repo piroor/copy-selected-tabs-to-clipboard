@@ -21,7 +21,7 @@
 
     const OGPPrefix = (/\b([^\s:]+):\s+http:\/\/ogp.me\/ns#(?:\s|$)/.test(document.head.getAttribute('prefix')) && RegExp.$1) || 'og';
 
-    const author = getMetaInfo(document, 'author') || '';
+    const author = getMetaInfo(document, 'author') || getMetaInfo(document, 'twitter:author') || getMetaInfo(document, 'twitter:site') || '';
     const description = getMetaInfo(document, 'description') || getMetaInfo(document, `${OGPPrefix}:description`) || '';
     const keywords = getMetaInfo(document, 'keywords') || '';
     return {
