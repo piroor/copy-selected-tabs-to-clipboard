@@ -29,10 +29,10 @@ update_extlib:
 	git submodule update --init
 
 install_extlib:
+	rm -f extlib/*.js
 	cp submodules/webextensions-lib-rich-confirm/RichConfirm.js extlib/; echo 'export default RichConfirm;' >> extlib/RichConfirm.js
 	cp submodules/webextensions-lib-configs/Configs.js extlib/; echo 'export default Configs;' >> extlib/Configs.js
 	cp submodules/webextensions-lib-options/Options.js extlib/; echo 'export default Options;' >> extlib/Options.js
 	cp submodules/webextensions-lib-l10n/l10n.js extlib/; echo 'export default l10n;' >> extlib/l10n.js
-	cp submodules/webextensions-lib-shortcut-customize-ui/ShortcutCustomizeUI.js extlib/; echo 'export default ShortcutCustomizeUI;' >> extlib/ShortcutCustomizeUI.js
 	cp submodules/webextensions-lib-dom-updater/src/diff.js extlib/
 	cp submodules/webextensions-lib-dom-updater/src/dom-updater.js extlib/
