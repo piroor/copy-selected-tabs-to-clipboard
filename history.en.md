@@ -1,6 +1,7 @@
 # History
 
  - master/HEAD
+   * Fix wrong behaviors of "All Configs" UI: apply imported configs to options UI immediately and treat decimal values as valid for some numeric options.
  - 1.3.3 (2020.8.8)
    * Fill `%DESCRIPTION%` with OGP description if it is provided.
    * Fill `%AUTHOR%` with the Twitter account name of Twitter Card if it is provided.
