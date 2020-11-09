@@ -108,7 +108,7 @@ async function onShortcutCommand(command) {
   const [selectedTabs, treeItem] = await Promise.all([
     Commands.getMultiselectedTabs(activeTab),
     browser.runtime.sendMessage(Constants.kTST_ID, {
-      type: 'get-tree',
+      type: Constants.kTSTAPI_GET_TREE,
       tab:  activeTab.id
     }).catch(_error => null)
   ]);

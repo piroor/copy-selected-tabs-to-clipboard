@@ -172,7 +172,7 @@ async function onShown(info, tab) {
   const [selectedTabs, treeItem] = await Promise.all([
     Commands.getMultiselectedTabs(tab),
     browser.runtime.sendMessage(Constants.kTST_ID, {
-      type: 'get-tree',
+      type: Constants.kTSTAPI_GET_TREE,
       tab:  tab.id
     }).catch(_error => null)
   ]);
@@ -267,7 +267,7 @@ async function onClick(info, tab, selectedTabs = null) {
     selectedTabs = await Commands.getMultiselectedTabs(tab);
 
   const treeItem = await browser.runtime.sendMessage(Constants.kTST_ID, {
-    type: 'get-tree',
+    type: Constants.kTSTAPI_GET_TREE,
     tab:  tab.id
   }).catch(_error => null);
   const isTree = (
