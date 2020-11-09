@@ -169,16 +169,12 @@ async function refreshFormatItems() {
 }
 
 async function onShown(info, tab) {
-  const [selectedTabs, treeItem] = await Promise.all([
-    Commands.getMultiselectedTabs(tab),
-    browser.runtime.sendMessage(Constants.kTST_ID, {
-      type: Constants.kTSTAPI_GET_TREE,
-      tab:  tab.id
-    }).catch(_error => null)
-  ]);
+  const selectedTabs = await Commands.getMultiselectedTabs(tab);
+  const treeItem = selectedTabs.length == 1 && configs.autoFallbackToTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
+    type: Constants.kTSTAPI_GET_TREE,
+    tab:  tab.id
+  }).catch(_error => null);
   const isTree = (
-    configs.autoFallbackToTree &&
-    selectedTabs.length == 1 &&
     treeItem &&
     treeItem.children.length > 0
   );
@@ -266,13 +262,11 @@ async function onClick(info, tab, selectedTabs = null) {
   if (!selectedTabs)
     selectedTabs = await Commands.getMultiselectedTabs(tab);
 
-  const treeItem = await browser.runtime.sendMessage(Constants.kTST_ID, {
+  const treeItem = selectedTabs.length == 1 && configs.autoFallbackToTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
     type: Constants.kTSTAPI_GET_TREE,
     tab:  tab.id
   }).catch(_error => null);
   const isTree = (
-    configs.autoFallbackToTree &&
-    selectedTabs.length == 1 &&
     treeItem &&
     treeItem.children.length > 0
   );

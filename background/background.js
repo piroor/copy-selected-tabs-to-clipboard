@@ -105,18 +105,12 @@ async function onShortcutCommand(command) {
     currentWindow: true
   }))[0];
   log('activeTab: ', activeTab);
-  const [selectedTabs, treeItem] = await Promise.all([
-    Commands.getMultiselectedTabs(activeTab),
-    browser.runtime.sendMessage(Constants.kTST_ID, {
-      type: Constants.kTSTAPI_GET_TREE,
-      tab:  activeTab.id
-    }).catch(_error => null)
-  ]);
-  log('selectedTabs: ', selectedTabs);
-  log('treeItem: ', treeItem);
+  const selectedTabs = await Commands.getMultiselectedTabs(activeTab);
+  const treeItem = selectedTabs.length == 1 && configs.autoFallbackToTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
+    type: Constants.kTSTAPI_GET_TREE,
+    tab:  activeTab.id
+  }).catch(_error => null);
   const isTree = (
-    configs.autoFallbackToTree &&
-    selectedTabs.length == 1 &&
     treeItem &&
     treeItem.children.length > 0
   );
