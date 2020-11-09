@@ -207,8 +207,8 @@ async function onShown(info, tab) {
     );
     const titleKey = onlyDescendants ? 'context_copyTreeDescendants_label' :
       isTree ? 'context_copyTree_label' :
-      hasMultipleTabs ? 'context_copyTabs_label' :
-        'context_copyTab_label';
+        hasMultipleTabs ? 'context_copyTabs_label' :
+          'context_copyTab_label';
     item.title = browser.i18n.getMessage(titleKey);
     if (lastVisible == item.visible &&
         lastTitle == item.title)
@@ -234,8 +234,8 @@ async function onShown(info, tab) {
   if (useTopLevelItem) {
     const prefixKey = onlyDescendants ? 'context_copyTreeDescendants_label' :
       isTree ? 'context_copyTree_label' :
-      hasMultipleTabs ? 'context_copyTabs_label' :
-        'context_copyTab_label';
+        hasMultipleTabs ? 'context_copyTabs_label' :
+          'context_copyTab_label';
     const prefix = browser.i18n.getMessage(prefixKey);
     for (const id of mFormatItems.keys()) {
       const params = {
