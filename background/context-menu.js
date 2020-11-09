@@ -182,8 +182,16 @@ async function onShown(info, tab) {
     treeItem &&
     treeItem.children.length > 0
   );
+  const onlyDescendants = (
+    isTree &&
+    configs.fallbackToTreeDescendantsByDefault
+  );
   // we don't collect real tabs here.
-  const hasMultipleTabs = ((isTree && [treeItem, ...treeItem.children]) || selectedTabs).length > 1;
+  const hasMultipleTabs = (
+    (isTree &&
+     [...(onlyDescendants ? [] : [treeItem]), ...treeItem.children]) ||
+    selectedTabs
+  ).length > 1;
   let updated = false;
   let useTopLevelItem = false;
   for (const item of mMenuItems) {
@@ -197,7 +205,8 @@ async function onShown(info, tab) {
       mFormatItems.size > 0 &&
       (hasMultipleTabs || configs.showContextCommandForSingleTab)
     );
-    const titleKey = isTree ? 'context_copyTree_label' :
+    const titleKey = onlyDescendants ? 'context_copyTreeDescendants_label' :
+      isTree ? 'context_copyTree_label' :
       hasMultipleTabs ? 'context_copyTabs_label' :
         'context_copyTab_label';
     item.title = browser.i18n.getMessage(titleKey);
@@ -223,7 +232,8 @@ async function onShown(info, tab) {
     }
   }
   if (useTopLevelItem) {
-    const prefixKey = isTree ? 'context_copyTree_label' :
+    const prefixKey = onlyDescendants ? 'context_copyTreeDescendants_label' :
+      isTree ? 'context_copyTree_label' :
       hasMultipleTabs ? 'context_copyTabs_label' :
         'context_copyTab_label';
     const prefix = browser.i18n.getMessage(prefixKey);
@@ -266,9 +276,13 @@ async function onClick(info, tab, selectedTabs = null) {
     treeItem &&
     treeItem.children.length > 0
   );
-  log('isTree: ', isTree);
+  const onlyDescendants = (
+    isTree &&
+    (configs.fallbackToTreeDescendantsByDefault ? info.button == 0 : info.button == 1)
+  );
+  log('isTree: ', { isTree, onlyDescendants });
 
-  const tabs = (isTree && await collectTabsFromTree(treeItem)) || selectedTabs;
+  const tabs = (isTree && await collectTabsFromTree(treeItem, { onlyDescendants })) || selectedTabs;
   log('tabs: ', tabs);
 
   if (info.menuItemId.indexOf('clipboard:') != 0)

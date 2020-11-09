@@ -120,21 +120,32 @@ async function onShortcutCommand(command) {
     treeItem &&
     treeItem.children.length > 0
   );
-  log('isTree: ', isTree);
-  const tabs = (isTree && await collectTabsFromTree(treeItem)) || selectedTabs;
+  const onlyDescendants = (
+    isTree &&
+    configs.fallbackToTreeDescendantsByDefault
+  );
+  log('isTree: ', { isTree, onlyDescendants });
+  const tabs = (isTree && await collectTabsFromTree(treeItem, { onlyDescendants })) || selectedTabs;
   log('tabs: ', tabs);
 
   if (tabs.length <= 0)
     return;
 
+
   switch (command) {
     case 'copySelectedTabs': {
+      const titleKey = onlyDescendants ? 'command_copyTreeDescendants_title' :
+        isTree ? 'command_copyTree_title' :
+          'command_copySelectedTabs_title';
+      const messageKey = onlyDescendants ? 'command_copyTreeDescendants_message' :
+        isTree ? 'command_copyTree_message' :
+          'command_copySelectedTabs_message';
       const formats = configs.copyToClipboardFormats;
       const result = await RichConfirm.showInPopup(activeTab.windowId, {
         modal:   true,
         url:     '/resources/blank.html', // required on Firefox ESR68
-        title:   browser.i18n.getMessage(isTree ? 'command_copyThisTree_title' : 'command_copySelectedTabs_title'),
-        message: browser.i18n.getMessage(isTree ? 'command_copyThisTree_message' : 'command_copySelectedTabs_message'),
+        title:   browser.i18n.getMessage(titleKey),
+        message: browser.i18n.getMessage(messageKey),
         buttons: formats.map(format => format.label)
       });
       if (result.buttonIndex > -1) {

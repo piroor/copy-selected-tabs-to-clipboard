@@ -42,6 +42,7 @@ export const configs = new Configs({
   clearSelectionAfterCommandInvoked: false,
   copyToClipboardFormats: defaultClipboardFormats,
   autoFallbackToTree: true,
+  fallbackToTreeDescendantsByDefault: false,
   reportErrors: false,
   useCRLF: false,
   debug: false
@@ -91,8 +92,10 @@ export function handleMissingReceiverError(error) {
 }
 
 
-export async function collectTabsFromTree(treeItem) {
+export async function collectTabsFromTree(treeItem, { onlyDescendants } = {}) {
   const treeItemIds = new Set(collectTreeItemIds(treeItem));
+  if (onlyDescendants)
+    treeItemIds.delete(treeItem.id);
   const allTabs     = await browser.tabs.query({ windowId: treeItem.windowId });
   return allTabs.filter(tab => treeItemIds.has(tab.id));
 }
