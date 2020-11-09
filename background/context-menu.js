@@ -262,7 +262,9 @@ async function onClick(info, tab, selectedTabs = null) {
   if (!selectedTabs)
     selectedTabs = await Commands.getMultiselectedTabs(tab);
 
-  const treeItem = selectedTabs.length == 1 && configs.autoFallbackToTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
+  const isModifiedAction = info.button == 1;
+  const shouldCollectTree = configs.autoFallbackToTree == !isModifiedAction;
+  const treeItem = selectedTabs.length == 1 && shouldCollectTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
     type: Constants.kTSTAPI_GET_TREE,
     tab:  tab.id
   }).catch(_error => null);
@@ -272,7 +274,9 @@ async function onClick(info, tab, selectedTabs = null) {
   );
   const onlyDescendants = (
     isTree &&
-    (configs.fallbackToTreeDescendantsByDefault ? info.button == 0 : info.button == 1)
+    configs.autoFallbackToTree ?
+      (configs.fallbackToTreeDescendantsByDefault == !isModifiedAction) :
+      configs.fallbackToTreeDescendantsByDefault
   );
   log('isTree: ', { isTree, onlyDescendants });
 
