@@ -41,6 +41,7 @@ export const configs = new Configs({
   showContextCommandForSingleTab: true,
   clearSelectionAfterCommandInvoked: false,
   copyToClipboardFormats: defaultClipboardFormats,
+  autoFallbackToTree: true,
   reportErrors: false,
   useCRLF: false,
   debug: false
@@ -87,4 +88,15 @@ export function handleMissingReceiverError(error) {
     throw error;
   // otherwise, this error is caused from missing receiver.
   // we just ignore it.
+}
+
+
+export async function collectTabsFromTree(treeItem) {
+  const treeItemIds = new Set(collectTreeItemIds(treeItem));
+  const allTabs     = await browser.tabs.query({ windowId: treeItem.windowId });
+  return allTabs.filter(tab => treeItemIds.has(tab.id));
+}
+
+function collectTreeItemIds(treeItem) {
+  return [treeItem.id, ...treeItem.children.map(collectTreeItemIds)].flat();
 }

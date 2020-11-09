@@ -8,7 +8,8 @@
 import {
   log,
   configs,
-  handleMissingReceiverError
+  handleMissingReceiverError,
+  collectTabsFromTree,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import * as Commands from '/common/commands.js';
@@ -168,7 +169,21 @@ async function refreshFormatItems() {
 }
 
 async function onShown(info, tab) {
-  const tabs = await Commands.getMultiselectedTabs(tab);
+  const [selectedTabs, treeItem] = await Promise.all([
+    Commands.getMultiselectedTabs(tab),
+    browser.runtime.sendMessage(Constants.kTST_ID, {
+      type: 'get-tree',
+      tab:  tab.id
+    }).catch(_error => null)
+  ]);
+  const isTree = (
+    configs.autoFallbackToTree &&
+    selectedTabs.length == 1 &&
+    treeItem &&
+    treeItem.children.length > 0
+  );
+  // we don't collect real tabs here.
+  const hasMultipleTabs = ((isTree && [treeItem, ...treeItem.children]) || selectedTabs).length > 1;
   let updated = false;
   let useTopLevelItem = false;
   for (const item of mMenuItems) {
@@ -180,9 +195,12 @@ async function onShown(info, tab) {
       !item.hiddenForTopLevelItem &&
       configs[item.config] &&
       mFormatItems.size > 0 &&
-      (tabs.length > 1 || configs.showContextCommandForSingleTab)
+      (hasMultipleTabs || configs.showContextCommandForSingleTab)
     );
-    item.title   = browser.i18n.getMessage(tabs.length > 1 ? 'context_copyTabs_label' : 'context_copyTab_label');
+    const titleKey = isTree ? 'context_copyTree_label' :
+      hasMultipleTabs ? 'context_copyTabs_label' :
+        'context_copyTab_label';
+    item.title = browser.i18n.getMessage(titleKey);
     if (lastVisible == item.visible &&
         lastTitle == item.title)
       continue;
@@ -205,7 +223,10 @@ async function onShown(info, tab) {
     }
   }
   if (useTopLevelItem) {
-    const prefix = browser.i18n.getMessage(tabs.length > 1 ? 'context_copyTabs_label' : 'context_copyTab_label');
+    const prefixKey = isTree ? 'context_copyTree_label' :
+      hasMultipleTabs ? 'context_copyTabs_label' :
+        'context_copyTab_label';
+    const prefix = browser.i18n.getMessage(prefixKey);
     for (const id of mFormatItems.keys()) {
       const params = {
         title: `${prefix}: ${mFormatItems.get(id).title}`
@@ -231,7 +252,23 @@ browser.menus.onShown.addListener(onShown);
 
 async function onClick(info, tab, selectedTabs = null) {
   log('context menu item clicked: ', info, tab);
-  const tabs = selectedTabs || await Commands.getMultiselectedTabs(tab);
+
+  if (!selectedTabs)
+    selectedTabs = await Commands.getMultiselectedTabs(tab);
+
+  const treeItem = await browser.runtime.sendMessage(Constants.kTST_ID, {
+    type: 'get-tree',
+    tab:  tab.id
+  }).catch(_error => null);
+  const isTree = (
+    configs.autoFallbackToTree &&
+    selectedTabs.length == 1 &&
+    treeItem &&
+    treeItem.children.length > 0
+  );
+  log('isTree: ', isTree);
+
+  const tabs = (isTree && await collectTabsFromTree(treeItem)) || selectedTabs;
   log('tabs: ', tabs);
 
   if (info.menuItemId.indexOf('clipboard:') != 0)
@@ -253,7 +290,7 @@ async function onClick(info, tab, selectedTabs = null) {
 
   if (configs.clearSelectionAfterCommandInvoked &&
       tabs.length > 1) {
-    const activeTab = tabs.filter(tab => tab.active)[0];
+    const activeTab = tabs.filter(tab => tab.active)[0] || (await browser.tabs.query({ windowId: tab.windowId, active: true }))[0];
     browser.tabs.highlight({
       windowId: activeTab.windowId,
       tabs:     [activeTab.index]

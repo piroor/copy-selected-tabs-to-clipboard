@@ -4,6 +4,7 @@
 
   "context_copyTab_label":                 { "message": "Cop&y to Clipboard" },
   "context_copyTabs_label":                { "message": "Cop&y to Clipboard" },
+  "context_copyTree_label":                { "message": "Cop&y this tree to Clipboard" },
   "context_clipboard_url_label":           { "message": "UR&L" },
   "context_clipboard_title_and_url_label": { "message": "&Title and URL" },
   "context_clipboard_html_link_label":     { "message": "&HTML Link" },
@@ -13,6 +14,8 @@
   "command_copySelectedTabs":              { "message": "Copy Selected Tabs to Clipboard" },
   "command_copySelectedTabs_title":        { "message": "Which format to copy?" },
   "command_copySelectedTabs_message":      { "message": "Choose the format you want selected tabs to be copied as." },
+  "command_copyThisTree_title":            { "message": "Which format to copy?" },
+  "command_copyThisTree_message":          { "message": "Choose the format you want this tree to be copied as." },
 
   "command_copySelectedTabsWithFormat":            { "message": "Copy Selected Tabs as: $FORMAT$",
     "placeholders": {
@@ -57,7 +60,10 @@
 
   "config_showContextCommandOnTab_label": { "message": "Show context menu item in the context menu on tabs" },
   "config_showContextCommandOnPage_label": { "message": "Show context menu item in the context menu on the content area" },
-  "config_showContextCommandForSingleTab_label": { "message": "Show context menu item even if there is no multiselection" },
+
+  "config_singleTab_caption": { "message": "When there is no multiselection" },
+  "config_showContextCommandForSingleTab_label": { "message": "Allow to copy just single tab" },
+  "config_autoFallbackToTree_label": { "message": "Copy Tree Style Tab's tree if the tab has a tree" },
 
   "config_clearSelectionAfterCommandInvoked_label": { "message": "Clear selection after a command is invoked" },
 

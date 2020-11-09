@@ -8,7 +8,8 @@
 import {
   log,
   configs,
-  handleMissingReceiverError
+  handleMissingReceiverError,
+  collectTabsFromTree,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import * as Commands from '/common/commands.js';
@@ -98,11 +99,30 @@ function updateShortcutsForFormats() {
 /*  listen events */
 
 async function onShortcutCommand(command) {
+  log('onShortcutCommand: ', command);
   const activeTab = (await browser.tabs.query({
     active:        true,
     currentWindow: true
   }))[0];
-  const tabs = await Commands.getMultiselectedTabs(activeTab);
+  log('activeTab: ', activeTab);
+  const [selectedTabs, treeItem] = await Promise.all([
+    Commands.getMultiselectedTabs(activeTab),
+    browser.runtime.sendMessage(Constants.kTST_ID, {
+      type: 'get-tree',
+      tab:  activeTab.id
+    }).catch(_error => null)
+  ]);
+  log('selectedTabs: ', selectedTabs);
+  log('treeItem: ', treeItem);
+  const isTree = (
+    configs.autoFallbackToTree &&
+    selectedTabs.length == 1 &&
+    treeItem &&
+    treeItem.children.length > 0
+  );
+  log('isTree: ', isTree);
+  const tabs = (isTree && await collectTabsFromTree(treeItem)) || selectedTabs;
+  log('tabs: ', tabs);
 
   if (tabs.length <= 0)
     return;
@@ -113,8 +133,8 @@ async function onShortcutCommand(command) {
       const result = await RichConfirm.showInPopup(activeTab.windowId, {
         modal:   true,
         url:     '/resources/blank.html', // required on Firefox ESR68
-        title:   browser.i18n.getMessage('command_copySelectedTabs_title'),
-        message: browser.i18n.getMessage('command_copySelectedTabs_message'),
+        title:   browser.i18n.getMessage(isTree ? 'command_copyThisTree_title' : 'command_copySelectedTabs_title'),
+        message: browser.i18n.getMessage(isTree ? 'command_copyThisTree_message' : 'command_copySelectedTabs_message'),
         buttons: formats.map(format => format.label)
       });
       if (result.buttonIndex > -1) {
