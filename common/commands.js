@@ -8,7 +8,8 @@
 import {
   log,
   configs,
-  handleMissingReceiverError
+  handleMissingReceiverError,
+  notify,
 } from './common.js';
 import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
@@ -74,7 +75,9 @@ export async function copyToClipboard(tabs, format) {
   if (!richText) {
     log('trying to write text to clipboard via Clipboard API');
     try {
-      return navigator.clipboard.writeText(plainText);
+      await navigator.clipboard.writeText(plainText);
+      notifyCopied(tabs.length, plainText);
+      return;
     }
     catch(e) {
       log('failed to write text to clipboard: ', e);
@@ -88,7 +91,9 @@ export async function copyToClipboard(tabs, format) {
       const dt = new DataTransfer();
       dt.items.add(plainText, 'text/plain');
       dt.items.add(richText, 'text/html');
-      return navigator.clipboard.write(dt);
+      await navigator.clipboard.write(dt);
+      notifyCopied(tabs.length, plainText);
+      return;
     }
     catch(e) {
       log('failed to write data to clipboard: ', e);
@@ -153,8 +158,10 @@ export async function copyToClipboard(tabs, format) {
       matchAboutBlank: true,
       code
     });
-    if (results[0])
+    if (results[0]) {
+      notifyCopied(tabs.length, plainText);
       return;
+    }
   }
   catch(error) {
     log(`cannot copy rich text data with the tab ${permittedTabs[0].id} (${permittedTabs[0].url}), retry with a temporary tab: `, error);
@@ -171,13 +178,17 @@ export async function copyToClipboard(tabs, format) {
       code
     });
     browser.windows.remove(win.id);
-    if (results[0])
+    if (results[0]) {
+      notifyCopied(tabs.length, plainText);
       return;
+    }
   }
 
   log('failed to write rich text data to the clipboard, so fallback to plain text data copy via Clipboard API');
   try {
-    return navigator.clipboard.writeText(plainText);
+    await navigator.clipboard.writeText(plainText);
+    notifyCopied(tabs.length, plainText);
+    return;
   }
   catch(e) {
     log('failed to write text to clipboard: ', e);
@@ -308,4 +319,11 @@ export function sanitizeHtmlText(text) {
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+async function notifyCopied(count, copied) {
+  return notify({
+    title:   browser.i18n.getMessage(count > 1 ? 'notification_copied_multiple_title' : 'notification_copied_title', [count]),
+    message: browser.i18n.getMessage(count > 1 ? 'notification_copied_multiple_message' : 'notification_copied_message', [count, copied])
+  });
 }

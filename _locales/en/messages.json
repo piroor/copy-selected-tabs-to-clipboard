@@ -26,6 +26,25 @@
     }},
   "command_copySelectedTabsWithFormat_unassigned": { "message": "Copy Selected Tabs as: (Unassigned)" },
 
+  "notification_copied_title":   { "message": "A tab is successfully copied.",
+    "placeholders": {
+      "count": { "content": "$1", "example": "1" }
+    }},
+  "notification_copied_message": { "message": "A tab is copied to the clipboard as:\n\n$COPIED$",
+    "placeholders": {
+      "count":  { "content": "$1", "example": "1" },
+      "copied": { "content": "$2", "example": "https://...\nhttp://..." }
+    }},
+  "notification_copied_multiple_title":   { "message": "$COUNT$ tabs are successfully copied.",
+    "placeholders": {
+      "count": { "content": "$1", "example": "1" }
+    }},
+  "notification_copied_multiple_message": { "message": "$COUNT$ tabs are copied to the clipboard as:\n\n$COPIED$",
+    "placeholders": {
+      "count":  { "content": "$1", "example": "1" },
+      "copied": { "content": "$2", "example": "https://...\nhttp://..." }
+    }},
+
   "error_discarded_author":      { "message": "(Error: couldn't get author information from discarded tab)" },
   "error_discarded_description": { "message": "(Error: couldn't get description information from discarded tab)" },
   "error_discarded_keywords":    { "message": "(Error: couldn't get keywords information from discarded tab)" },

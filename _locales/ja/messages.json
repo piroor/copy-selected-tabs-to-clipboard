@@ -26,6 +26,25 @@
     }},
   "command_copySelectedTabsWithFormat_unassigned": { "message": "選択中のタブを形式を指定してコピー: (割り当てなし)" },
 
+  "notification_copied_title":   { "message": "$COUNT$ 個のタブをコピーしました",
+    "placeholders": {
+      "count": { "content": "$1", "example": "1" }
+    }},
+  "notification_copied_message": { "message": "$COUNT$ 個のタブを以下の内容でクリップボードにコピーしました：\n\n$COPIED$",
+    "placeholders": {
+      "count":  { "content": "$1", "example": "1" },
+      "copied": { "content": "$2", "example": "https://...\nhttp://..." }
+    }},
+  "notification_copied_multiple_title":   { "message": "$COUNT$ 個のタブをコピーしました",
+    "placeholders": {
+      "count": { "content": "$1", "example": "1" }
+    }},
+  "notification_copied_multiple_message": { "message": "$COUNT$ 個のタブを以下の内容でクリップボードにコピーしました：\n\n$COPIED$",
+    "placeholders": {
+      "count":  { "content": "$1", "example": "1" },
+      "copied": { "content": "$2", "example": "https://...\nhttp://..." }
+    }},
+
   "error_discarded_author":      { "message": "(エラー:待機状態のタブから作成者の情報を取得できませんでした)" },
   "error_discarded_description": { "message": "(エラー:待機状態のタブから説明文の情報を取得できませんでした)" },
   "error_discarded_keywords":    { "message": "(エラー:待機状態のタブからキーワードの情報を取得できませんでした)" },
