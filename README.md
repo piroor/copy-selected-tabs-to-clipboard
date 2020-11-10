@@ -5,7 +5,7 @@
 Development builds for each commit are available at "Artifacts" of the CI/CD action:
 https://github.com/piroor/copy-selected-tabs-to-clipboard/actions?query=workflow%3ACI%2FCD
 
-## Examples copy formats
+## Example copy formats
 
 |type|format string|
 |----|-------------|
