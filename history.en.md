@@ -1,6 +1,9 @@
 # History
 
  - master/HEAD
+ - 1.4.0 (2020.11.10)
+   * Add ability to copy the tree (or descendants) instead of a tab. (require [Tree Style Tab](https://addons.mozilla.org/firefox/addon/tree-style-tab/))
+   * Show notification message after successfully copied.
    * Fix wrong behaviors of "All Configs" UI: apply imported configs to options UI immediately and treat decimal values as valid for some numeric options.
  - 1.3.3 (2020.8.8)
    * Fill `%DESCRIPTION%` with OGP description if it is provided.
