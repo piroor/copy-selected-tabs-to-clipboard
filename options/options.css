@@ -93,3 +93,34 @@ p.syntax-description {
 #howToActivateNativeRichTextCopy {
   font-weight: bold;
 }
+
+
+table#fallbackForSingleTabOptions {
+  border-collapse: collapse;
+}
+table#fallbackForSingleTabOptions th + *,
+table#fallbackForSingleTabOptions td + * {
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+table#fallbackForSingleTabOptions tbody tr {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+table#fallbackForSingleTabOptions tbody th {
+  font-weight: normal;
+}
+
+table#fallbackForSingleTabOptions thead th:nth-child(3),
+table#fallbackForSingleTabOptions tbody th {
+  text-align: left;
+}
+
+table#fallbackForSingleTabOptions td {
+  text-align: center;
+}
+
+table#fallbackForSingleTabOptions input[type="radio"] {
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+}
+

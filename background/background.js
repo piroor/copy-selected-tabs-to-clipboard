@@ -47,6 +47,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     configs.copyToClipboardFormats = formats;
   }
 
+  if (configs.showContextCommandForSingleTab !== null) {
+    configs.fallbackForSingleTab = configs.showContextCommandForSingleTab ? Constants.kCOPY_SINGLE_TAB : Constants.kCOPY_NOTHING;
+    configs.showContextCommandForSingleTab = null;
+  }
+
   browser.commands.onCommand.addListener(onShortcutCommand);
   browser.runtime.onMessageExternal.addListener(onMessageExternal);
   registerToTST();
@@ -106,7 +111,8 @@ async function onShortcutCommand(command) {
   }))[0];
   log('activeTab: ', activeTab);
   const selectedTabs = await Commands.getMultiselectedTabs(activeTab);
-  const treeItem = selectedTabs.length == 1 && configs.autoFallbackToTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
+  const shouldCollectTree = configs.fallbackForSingleTab == Constants.kCOPY_TREE || configs.fallbackForSingleTab == Constants.kCOPY_TREE_DESCENDANTS;
+  const treeItem = selectedTabs.length == 1 && shouldCollectTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
     type: Constants.kTSTAPI_GET_TREE,
     tab:  activeTab.id
   }).catch(_error => null);
@@ -116,7 +122,7 @@ async function onShortcutCommand(command) {
   );
   const onlyDescendants = (
     isTree &&
-    configs.fallbackToTreeDescendantsByDefault
+    configs.fallbackForSingleTab == Constants.kCOPY_TREE_DESCENDANTS
   );
   log('isTree: ', { isTree, onlyDescendants });
   const tabs = (isTree && await collectTabsFromTree(treeItem, { onlyDescendants })) || selectedTabs;

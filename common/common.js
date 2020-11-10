@@ -6,6 +6,7 @@
 'use strict';
 
 import Configs from '/extlib/Configs.js';
+import * as Constants from './constants.js';
 
 const defaultClipboardFormats = [];
 defaultClipboardFormats.push({
@@ -38,11 +39,11 @@ defaultClipboardFormats.push({
 export const configs = new Configs({
   showContextCommandOnTab: true,
   showContextCommandOnPage: false,
-  showContextCommandForSingleTab: true,
+  fallbackForSingleTab:         Constants.kCOPY_SINGLE_TAB,
+  fallbackForSingleTabModified: Constants.kCOPY_TREE,
+  showContextCommandForSingleTab: null, // obsolete: migrated to fallbackForSingleTab=kCOPY_SINGLE_TAB
   clearSelectionAfterCommandInvoked: false,
   copyToClipboardFormats: defaultClipboardFormats,
-  autoFallbackToTree: false,
-  fallbackToTreeDescendantsByDefault: false,
   reportErrors: false,
   useCRLF: false,
   debug: false

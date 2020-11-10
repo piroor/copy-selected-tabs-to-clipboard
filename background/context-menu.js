@@ -170,7 +170,8 @@ async function refreshFormatItems() {
 
 async function onShown(info, tab) {
   const selectedTabs = await Commands.getMultiselectedTabs(tab);
-  const treeItem = selectedTabs.length == 1 && configs.autoFallbackToTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
+  const shouldCollectTree = configs.fallbackForSingleTab == Constants.kCOPY_TREE || configs.fallbackForSingleTab == Constants.kCOPY_TREE_DESCENDANTS;
+  const treeItem = selectedTabs.length == 1 && shouldCollectTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
     type: Constants.kTSTAPI_GET_TREE,
     tab:  tab.id
   }).catch(_error => null);
@@ -180,7 +181,7 @@ async function onShown(info, tab) {
   );
   const onlyDescendants = (
     isTree &&
-    configs.fallbackToTreeDescendantsByDefault
+    configs.fallbackForSingleTab == Constants.kCOPY_TREE_DESCENDANTS
   );
   // we don't collect real tabs here.
   const hasMultipleTabs = (
@@ -199,7 +200,7 @@ async function onShown(info, tab) {
       !item.hiddenForTopLevelItem &&
       configs[item.config] &&
       mFormatItems.size > 0 &&
-      (hasMultipleTabs || configs.showContextCommandForSingleTab)
+      (hasMultipleTabs || (configs.fallbackForSingleTab != Constants.kCOPY_NOTHING))
     );
     const titleKey = onlyDescendants ? 'context_copyTreeDescendants_label' :
       isTree ? 'context_copyTree_label' :
@@ -263,7 +264,8 @@ async function onClick(info, tab, selectedTabs = null) {
     selectedTabs = await Commands.getMultiselectedTabs(tab);
 
   const isModifiedAction = info.button == 1;
-  const shouldCollectTree = configs.autoFallbackToTree == !isModifiedAction;
+  const fallbackOption = isModifiedAction ? configs.fallbackForSingleTabModified : configs.fallbackForSingleTab;
+  const shouldCollectTree = fallbackOption == Constants.kCOPY_TREE || fallbackOption == Constants.kCOPY_TREE_DESCENDANTS;
   const treeItem = selectedTabs.length == 1 && shouldCollectTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
     type: Constants.kTSTAPI_GET_TREE,
     tab:  tab.id
@@ -274,9 +276,7 @@ async function onClick(info, tab, selectedTabs = null) {
   );
   const onlyDescendants = (
     isTree &&
-    configs.autoFallbackToTree ?
-      (configs.fallbackToTreeDescendantsByDefault == !isModifiedAction) :
-      configs.fallbackToTreeDescendantsByDefault
+    fallbackOption == Constants.kCOPY_TREE_DESCENDANTS
   );
   log('isTree: ', { isTree, onlyDescendants });
 

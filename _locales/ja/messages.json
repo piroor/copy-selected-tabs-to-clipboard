@@ -63,15 +63,16 @@
 
   "config_showContextCommandOnTab_label": { "message": "タブのコンテキストメニューにメニュー項目を表示する" },
   "config_showContextCommandOnPage_label": { "message": "コンテンツ領域のコンテキストメニューにメニュー項目を表示する" },
-
-  "config_singleTab_caption": { "message": "タブが複数選択されていない場合" },
-  "config_showContextCommandForSingleTab_label": { "message": "単独のタブをコピーできるようにする" },
-  "config_autoFallbackToTree_label": { "message": "Tree Style Tabのツリーがある場合はツリーをコピーする" },
-  "config_fallbackToTreeDescendantsByDefault_label": { "message": "ツリー全体ではなく子孫タブだけをコピーする" },
-
   "config_clearSelectionAfterCommandInvoked_label": { "message": "コマンドの実行後にタブの選択を解除する" },
-
   "config_reportErrors_label": { "message": "処理中に発生したエラーをクリップボードへの出力に含める" },
+
+  "config_singleTab_caption":                          { "message": "タブが複数選択されていない場合の動作" },
+  "config_fallbackForSingleTab_label":                 { "message": "通常の操作" },
+  "config_fallbackForSingleTab_nothing_label":         { "message": "(何もしない)" },
+  "config_fallbackForSingleTab_singleTab_label":       { "message": "単独のタブをコピー" },
+  "config_fallbackForSingleTab_tree_label":            { "message": "ツリーをコピー（Tree Style Tabが必要）" },
+  "config_fallbackForSingleTab_treeDescendants_label": { "message": "ツリー全体ではなく子孫タブだけをコピー（Tree Style Tabが必要）" },
+  "config_fallbackForSingleTabModified_label":         { "message": "中ボタンクリック" },
 
   "config_debug_caption": { "message": "開発用" },
   "config_debug_label": { "message": "デバッグモード" },

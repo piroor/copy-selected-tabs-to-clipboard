@@ -5,6 +5,12 @@
 */
 'use strict';
 
+export const kCOPY_NOTHING          = 0;
+export const kCOPY_SINGLE_TAB       = 1;
+export const kCOPY_TREE             = 2;
+export const kCOPY_TREE_DESCENDANTS = 3;
+
+
 export const kTST_ID = 'treestyletab@piro.sakura.ne.jp';
 
 export const kTSTAPI_REGISTER_SELF           = 'register-self';
