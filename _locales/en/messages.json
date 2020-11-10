@@ -59,6 +59,11 @@
   "config_copyToClipboardFormats_placeholders_replace": { "message": "There is one more epecial placeholder function: %REPLACE(\"base text\", \"match pattern regular expression 1\", \"replaced text 1\", \"match pattern regular expression 2\", \"replaced text 2\", ...)% It will useful for post-edit of placeholder values. \nFor example: \n%REPLACE(\"%URL%\", \"\\?.*$\", \"\")% \n => URL with stripped query parameters \n%REPLACE(\"%URL%\", \"^((?!\\w+://([^/]*\\.)?(google\\.com|duckduckgo\\.com)/.*).*)\\?.*$\", \"$$1\")% \n => URL with stripped query parameters, except Google and DuckDuckGo" },
   "config_howToActivateNativeRichTextCopy_description": { "message": "If you hope to use any rich text format with less troubles, you should go to \"about:config\" and set \"dom.events.asyncClipboard.dataTransfer\" to \"true\"." },
 
+  "config_examples_before":    { "message": "Please check " },
+  "config_examples_link":      { "message": "example copy formats" },
+  "config_examples_link_href": { "message": "https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/trunk/README.md#example-copy-formats" },
+  "config_examples_after":     { "message": " for more cases." },
+
   "config_allUrlsPermissionGranted_label": { "message": "Allow to collect data from page contents / Allow to copy data as rich text format" },
 
   "config_showContextCommandOnTab_label": { "message": "Show context menu item in the context menu on tabs" },

@@ -59,6 +59,11 @@
   "config_copyToClipboardFormats_placeholders_replace": { "message": "%REPLACE(\"置換対象の文字列\", \"置換箇所の正規表現1\", \"置換後の文字列1\", \"置換箇所の正規表現2\", \"置換後の文字列2\", ...)% という書式で高度な置換も行えます。これを使うとプレースホルダーの値を加工できます。\n例： \n%REPLACE(\"%URL%\", \"\\?.*$\", \"\")% \n →常にURL末尾のクエリ文字列を除去\n%REPLACE(\"%URL%\", \"^((?!\\w+://([^/]*\\.)?(google\\.com|duckduckgo\\.com)/.*).*)\\?.*$\", \"$$1\")% \n → GoogleとDuckDuckGo以外でURL末尾のクエリ文字列を除去" },
   "config_howToActivateNativeRichTextCopy_description": { "message": "リッチテキスト形式でのコピー機能をより安定して動作するようにするためには、 about:config で dom.events.asyncClipboard.dataTransfer を true に設定してくだい。" },
 
+  "config_examples_before":    { "message": "実際に使用できる設定の例は、" },
+  "config_examples_link":      { "message": "コピー形式の例" },
+  "config_examples_link_href": { "message": "https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/trunk/README.md#example-copy-formats" },
+  "config_examples_after":     { "message": "を参照して下さい。" },
+
   "config_allUrlsPermissionGranted_label": { "message": "ページの内容からデータを取得することを許可する / データをリッチテキスト形式でコピーすることを許可する" },
 
   "config_showContextCommandOnTab_label": { "message": "タブのコンテキストメニューにメニュー項目を表示する" },
