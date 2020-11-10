@@ -44,6 +44,11 @@
       "count":  { "content": "$1", "example": "1" },
       "copied": { "content": "$2", "example": "https://...\nhttp://..." }
     }},
+  "notification_failedToCopy_title":   { "message": "タブをクリップボードにコピーできませんでした" },
+  "notification_failedToCopy_message": { "message": "予期しないエラーが発生しました：\n$ERROR$",
+    "placeholders": {
+      "error":  { "content": "$1", "example": "Unexpected Error" }
+    }},
 
   "error_discarded_author":      { "message": "(エラー:待機状態のタブから作成者の情報を取得できませんでした)" },
   "error_discarded_description": { "message": "(エラー:待機状態のタブから説明文の情報を取得できませんでした)" },

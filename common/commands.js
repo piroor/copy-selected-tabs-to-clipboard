@@ -95,8 +95,12 @@ export async function copyToClipboard(tabs, format) {
       notifyCopied(tabs.length, plainText);
       return;
     }
-    catch(e) {
-      log('failed to write data to clipboard: ', e);
+    catch(error) {
+      log('failed to write data to clipboard: ', error);
+      notify({
+        title:   browser.i18n.getMessage('notification_failedToCopy_title'),
+        message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
+      });
     }
     return;
   }
@@ -190,8 +194,12 @@ export async function copyToClipboard(tabs, format) {
     notifyCopied(tabs.length, plainText);
     return;
   }
-  catch(e) {
-    log('failed to write text to clipboard: ', e);
+  catch(error) {
+    log('failed to write text to clipboard: ', error);
+    notify({
+      title:   browser.i18n.getMessage('notification_failedToCopy_title'),
+      message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
+    });
   }
 }
 

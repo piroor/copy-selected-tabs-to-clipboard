@@ -44,6 +44,11 @@
       "count":  { "content": "$1", "example": "1" },
       "copied": { "content": "$2", "example": "https://...\nhttp://..." }
     }},
+  "notification_failedToCopy_title":   { "message": "Failed to copy tabs to the clipboard." },
+  "notification_failedToCopy_message": { "message": "Unexpected error happened:\n$ERROR$",
+    "placeholders": {
+      "error":  { "content": "$1", "example": "Unexpected Error" }
+    }},
 
   "error_discarded_author":      { "message": "(Error: couldn't get author information from discarded tab)" },
   "error_discarded_description": { "message": "(Error: couldn't get description information from discarded tab)" },
