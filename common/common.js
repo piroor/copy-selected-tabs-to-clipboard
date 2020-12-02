@@ -43,6 +43,7 @@ export const configs = new Configs({
   fallbackForSingleTabModified: Constants.kCOPY_TREE,
   showContextCommandForSingleTab: null, // obsolete: migrated to fallbackForSingleTab=kCOPY_SINGLE_TAB
   clearSelectionAfterCommandInvoked: false,
+  shouldNotifyResult: true,
   copyToClipboardFormats: defaultClipboardFormats,
   reportErrors: false,
   useCRLF: false,

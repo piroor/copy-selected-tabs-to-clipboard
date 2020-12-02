@@ -97,6 +97,7 @@ export async function copyToClipboard(tabs, format) {
     }
     catch(error) {
       log('failed to write data to clipboard: ', error);
+      if (configs.shouldNotifyResult)
       notify({
         title:   browser.i18n.getMessage('notification_failedToCopy_title'),
         message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
@@ -330,6 +331,8 @@ export function sanitizeHtmlText(text) {
 }
 
 async function notifyCopied(count, copied) {
+  if (!configs.shouldNotifyResult)
+    return;
   return notify({
     title:   browser.i18n.getMessage(count > 1 ? 'notification_copied_multiple_title' : 'notification_copied_title', [count]),
     message: browser.i18n.getMessage(count > 1 ? 'notification_copied_multiple_message' : 'notification_copied_message', [count, copied])

@@ -93,6 +93,7 @@
   "config_showContextCommandOnTab_label": { "message": "タブのコンテキストメニューにメニュー項目を表示する" },
   "config_showContextCommandOnPage_label": { "message": "コンテンツ領域のコンテキストメニューにメニュー項目を表示する" },
   "config_clearSelectionAfterCommandInvoked_label": { "message": "コマンドの実行後にタブの選択を解除する" },
+  "config_shouldNotifyResult_label": { "message": "正常にコピーできた（または失敗した）場合、デスクトップ通知で結果を知らせる" },
   "config_reportErrors_label": { "message": "処理中に発生したエラーをクリップボードへの出力に含める" },
 
   "config_singleTab_caption":                          { "message": "タブが複数選択されていない場合の動作" },
