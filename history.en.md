@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.4.1 (2020.12.2)
+   * Add an option to deactivate the desktop notification.
  - 1.4.0 (2020.11.10)
    * Add ability to copy the tree (or descendants) instead of a tab. (require [Tree Style Tab](https://addons.mozilla.org/firefox/addon/tree-style-tab/))
    * Show notification message after successfully copied.
