@@ -98,10 +98,10 @@ export async function copyToClipboard(tabs, format) {
     catch(error) {
       log('failed to write data to clipboard: ', error);
       if (configs.shouldNotifyResult)
-      notify({
-        title:   browser.i18n.getMessage('notification_failedToCopy_title'),
-        message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
-      });
+        notify({
+          title:   browser.i18n.getMessage('notification_failedToCopy_title'),
+          message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
+        });
     }
     return;
   }
