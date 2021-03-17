@@ -17,4 +17,5 @@ https://github.com/piroor/copy-selected-tabs-to-clipboard/actions?query=workflow
 |Markdown Link List|`%TST_INDENT(  )%* [%TITLE%](%URL% "%TITLE%")`|
 |URL without query|`%REPLACE("%URL%", "\?.*$", "")%`|
 |URL without query except Google|`%REPLACE("%URL%", "^(?!\w+://[^/]*\.google\.[^/]*/.*)\?.*$", "$1")`|
+|Org Mode Link List|`*%TST_INDENT(*)% [[%URL%][%TITLE%]]`|
 
