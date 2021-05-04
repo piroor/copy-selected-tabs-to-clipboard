@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.4.2 (2021.5.5)
+   * Add ability to copy all tabs when there is no multiselected tab.
  - 1.4.1 (2020.12.2)
    * Add an option to deactivate the desktop notification.
  - 1.4.0 (2020.11.10)
