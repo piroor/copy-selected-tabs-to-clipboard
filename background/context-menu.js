@@ -172,8 +172,8 @@ async function onShown(info, tab) {
   const titleKey = onlyDescendants ? 'context_copyTreeDescendants_label' :
     isTree ? 'context_copyTree_label' :
       isAll ? 'context_copyAllTabs_label' :
-      hasMultipleTabs ? 'context_copyTabs_label' :
-        'context_copyTab_label';
+        hasMultipleTabs ? 'context_copyTabs_label' :
+          'context_copyTab_label';
   let updated = false;
   let useTopLevelItem = false;
   for (const item of mMenuItems) {
