@@ -10,6 +10,7 @@ import {
   configs,
   handleMissingReceiverError,
   notify,
+  collectTabsFromTree,
 } from './common.js';
 import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
@@ -25,6 +26,44 @@ export async function getMultiselectedTabs(tab) {
     });
   else
     return [tab];
+}
+
+export async function getContextState({ baseTab, selectedTabs, callbackOption } = {}) {
+  if (callbackOption === undefined)
+    callbackOption = configs.fallbackForSingleTab;
+
+  if (!selectedTabs)
+    selectedTabs = await getMultiselectedTabs(baseTab);
+
+  const isAll = callbackOption == Constants.kCOPY_ALL;
+  const shouldCollectTree = callbackOption == Constants.kCOPY_TREE || callbackOption == Constants.kCOPY_TREE_DESCENDANTS;
+  const treeItem = selectedTabs.length == 1 && shouldCollectTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
+    type: Constants.kTSTAPI_GET_TREE,
+    tab:  baseTab.id
+  }).catch(_error => null);
+  const isTree = (
+    treeItem &&
+    treeItem.children.length > 0
+  );
+  const onlyDescendants = (
+    isTree &&
+    callbackOption == Constants.kCOPY_TREE_DESCENDANTS
+  );
+  log('isTree: ', { isTree, onlyDescendants });
+
+  const hasMultipleTabs = (
+    (isTree &&
+     [...(onlyDescendants ? [] : [treeItem]), ...treeItem.children]) ||
+    selectedTabs
+  ).length > 1;
+
+  const tabs = isAll ?
+    (await browser.tabs.query({
+      windowId: baseTab.windowId,
+      hidden:   false,
+    }).catch(_error => [])) :
+    (isTree && await collectTabsFromTree(treeItem, { onlyDescendants })) || selectedTabs;
+  return { isAll, isTree, onlyDescendants, hasMultipleTabs, tabs };
 }
 
 const kFORMAT_PARAMETER_MATCHER  = /\([^\)]+\)|\[[^\]]+\]|\{[^\}]+\}|<[^>]+>/g;

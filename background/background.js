@@ -9,7 +9,6 @@ import {
   log,
   configs,
   handleMissingReceiverError,
-  collectTabsFromTree,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import * as Commands from '/common/commands.js';
@@ -110,22 +109,7 @@ async function onShortcutCommand(command) {
     currentWindow: true
   }))[0];
   log('activeTab: ', activeTab);
-  const selectedTabs = await Commands.getMultiselectedTabs(activeTab);
-  const shouldCollectTree = configs.fallbackForSingleTab == Constants.kCOPY_TREE || configs.fallbackForSingleTab == Constants.kCOPY_TREE_DESCENDANTS;
-  const treeItem = selectedTabs.length == 1 && shouldCollectTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
-    type: Constants.kTSTAPI_GET_TREE,
-    tab:  activeTab.id
-  }).catch(_error => null);
-  const isTree = (
-    treeItem &&
-    treeItem.children.length > 0
-  );
-  const onlyDescendants = (
-    isTree &&
-    configs.fallbackForSingleTab == Constants.kCOPY_TREE_DESCENDANTS
-  );
-  log('isTree: ', { isTree, onlyDescendants });
-  const tabs = (isTree && await collectTabsFromTree(treeItem, { onlyDescendants })) || selectedTabs;
+  const { isTree, onlyDescendants, tabs } = await Commands.getContextState({ baseTab: activeTab });
   log('tabs: ', tabs);
 
   if (tabs.length <= 0)

@@ -9,7 +9,6 @@ import {
   log,
   configs,
   handleMissingReceiverError,
-  collectTabsFromTree,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import * as Commands from '/common/commands.js';
@@ -169,26 +168,12 @@ async function refreshFormatItems() {
 }
 
 async function onShown(info, tab) {
-  const selectedTabs = await Commands.getMultiselectedTabs(tab);
-  const shouldCollectTree = configs.fallbackForSingleTab == Constants.kCOPY_TREE || configs.fallbackForSingleTab == Constants.kCOPY_TREE_DESCENDANTS;
-  const treeItem = selectedTabs.length == 1 && shouldCollectTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
-    type: Constants.kTSTAPI_GET_TREE,
-    tab:  tab.id
-  }).catch(_error => null);
-  const isTree = (
-    treeItem &&
-    treeItem.children.length > 0
-  );
-  const onlyDescendants = (
-    isTree &&
-    configs.fallbackForSingleTab == Constants.kCOPY_TREE_DESCENDANTS
-  );
-  // we don't collect real tabs here.
-  const hasMultipleTabs = (
-    (isTree &&
-     [...(onlyDescendants ? [] : [treeItem]), ...treeItem.children]) ||
-    selectedTabs
-  ).length > 1;
+  const { isAll, isTree, onlyDescendants, hasMultipleTabs } = await Commands.getContextState({ baseTab: tab });
+  const titleKey = onlyDescendants ? 'context_copyTreeDescendants_label' :
+    isTree ? 'context_copyTree_label' :
+      isAll ? 'context_copyAllTabs_label' :
+      hasMultipleTabs ? 'context_copyTabs_label' :
+        'context_copyTab_label';
   let updated = false;
   let useTopLevelItem = false;
   for (const item of mMenuItems) {
@@ -202,10 +187,6 @@ async function onShown(info, tab) {
       mFormatItems.size > 0 &&
       (hasMultipleTabs || (configs.fallbackForSingleTab != Constants.kCOPY_NOTHING))
     );
-    const titleKey = onlyDescendants ? 'context_copyTreeDescendants_label' :
-      isTree ? 'context_copyTree_label' :
-        hasMultipleTabs ? 'context_copyTabs_label' :
-          'context_copyTab_label';
     item.title = browser.i18n.getMessage(titleKey);
     if (lastVisible == item.visible &&
         lastTitle == item.title)
@@ -229,11 +210,7 @@ async function onShown(info, tab) {
     }
   }
   if (useTopLevelItem) {
-    const prefixKey = onlyDescendants ? 'context_copyTreeDescendants_label' :
-      isTree ? 'context_copyTree_label' :
-        hasMultipleTabs ? 'context_copyTabs_label' :
-          'context_copyTab_label';
-    const prefix = browser.i18n.getMessage(prefixKey);
+    const prefix = browser.i18n.getMessage(titleKey);
     for (const id of mFormatItems.keys()) {
       const params = {
         title: `${prefix}: ${mFormatItems.get(id).title}`
@@ -260,27 +237,9 @@ browser.menus.onShown.addListener(onShown);
 async function onClick(info, tab, selectedTabs = null) {
   log('context menu item clicked: ', info, tab);
 
-  if (!selectedTabs)
-    selectedTabs = await Commands.getMultiselectedTabs(tab);
-
   const isModifiedAction = info.button == 1;
   const fallbackOption = isModifiedAction ? configs.fallbackForSingleTabModified : configs.fallbackForSingleTab;
-  const shouldCollectTree = fallbackOption == Constants.kCOPY_TREE || fallbackOption == Constants.kCOPY_TREE_DESCENDANTS;
-  const treeItem = selectedTabs.length == 1 && shouldCollectTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
-    type: Constants.kTSTAPI_GET_TREE,
-    tab:  tab.id
-  }).catch(_error => null);
-  const isTree = (
-    treeItem &&
-    treeItem.children.length > 0
-  );
-  const onlyDescendants = (
-    isTree &&
-    fallbackOption == Constants.kCOPY_TREE_DESCENDANTS
-  );
-  log('isTree: ', { isTree, onlyDescendants });
-
-  const tabs = (isTree && await collectTabsFromTree(treeItem, { onlyDescendants })) || selectedTabs;
+  const { tabs } = await Commands.getContextState({ baseTab: tab, selectedTabs, fallbackOption });
   log('tabs: ', tabs);
 
   if (info.menuItemId.indexOf('clipboard:') != 0)
