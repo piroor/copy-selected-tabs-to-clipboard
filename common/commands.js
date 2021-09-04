@@ -57,12 +57,19 @@ export async function getContextState({ baseTab, selectedTabs, callbackOption } 
     selectedTabs
   ).length > 1;
 
-  const tabs = isAll ?
+  let tabs = isAll ?
     (await browser.tabs.query({
       windowId: baseTab.windowId,
       hidden:   false,
     }).catch(_error => [])) :
     (isTree && await collectTabsFromTree(treeItem, { onlyDescendants })) || selectedTabs;
+  tabs = await Promise.all(tabs.map(async (tab) => {
+    tab.container = await browser.contextualIdentities.get(tab.cookieStoreId).then(function(container){
+      return container.name;
+    }, function(_){
+      return  null;
+    });
+    return tab;}));
   return { isAll, isTree, onlyDescendants, hasMultipleTabs, tabs };
 }
 
@@ -328,6 +335,8 @@ function fillPlaceHoldersInternal(
     .replace(/%(?:RLINK|RLINK_HTML(?:IFIED)?|SEL|SEL_HTML(?:IFIED)?)%/gi, '')
     .replace(/%URL%/gi, tab.url)
     .replace(/%(?:TITLE|TEXT)%/gi, tab.title)
+    .replace(/%CONTAINER_TITLE%/gi, tab.container ? tab.container + ': ' : '')
+    .replace(/%CONTAINER_URL%/gi, tab.container ? 'ext+container:name=' + tab.container + '&url=' : '')
     .replace(/%URL_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url))
     .replace(/%TITLE_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.title))
     .replace(/%AUTHOR%/gi, author || '')
