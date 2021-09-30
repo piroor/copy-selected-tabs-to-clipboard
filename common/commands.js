@@ -341,12 +341,12 @@ function fillPlaceHoldersInternal(
     (input, ..._replacePairs) => fillPlaceHoldersInternal(input, { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel })
   );
   const filled = FunctionalPlaceHolder.processAll(replaced, {
-    container_title:           (prefix, suffix) => tab.container ? `${prefix}${tab.container}${suffix}` : '',
-    container_title_html:      (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
-    container_title_htmlified: (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
     container_name:            (prefix, suffix) => tab.container ? `${prefix}${tab.container}${suffix}` : '',
     container_name_html:       (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
     container_name_htmlified:  (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
+    container_title:           (prefix, suffix) => tab.container ? `${prefix}${tab.container}${suffix}` : '',
+    container_title_html:      (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
+    container_title_htmlified: (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
   });
   return filled
     .replace(/%(?:RLINK|RLINK_HTML(?:IFIED)?|SEL|SEL_HTML(?:IFIED)?)%/gi, '')
