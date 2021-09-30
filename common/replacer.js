@@ -32,8 +32,8 @@ export function processAll(input, filter) {
     let args = [];
     let rawArgs = '';
     parse:
-    for (const c of input) {
-      switch (c) {
+    for (const character of input) {
+      switch (character) {
         case '%':
           if (!inSingleQuoteString &&
               !inDoubleQuoteString &&
@@ -47,39 +47,39 @@ export function processAll(input, filter) {
             rawArgs      = '';
             break parse;
           }
-          lastToken += pendingChar + c;
-          rawArgs += pendingChar + c;
+          lastToken += pendingChar + character;
+          rawArgs += pendingChar + character;
           pendingChar = '';
           break;
 
         case ')':
           if (inSingleQuoteString || inDoubleQuoteString) {
-            lastToken += pendingChar + c;
-            rawArgs += pendingChar + c;
+            lastToken += pendingChar + character;
+            rawArgs += pendingChar + character;
             pendingChar = '';
           }
           else {
             lastToken += pendingChar;
             rawArgs += pendingChar;
-            pendingChar = c;
+            pendingChar = character;
           }
           break;
 
         case '\\':
           lastToken += pendingChar;
           rawArgs += pendingChar;
-          pendingChar = c;
+          pendingChar = character;
           break;
 
         case ',':
           if (inSingleQuoteString || inDoubleQuoteString) {
-            lastToken += pendingChar + c;
-            rawArgs += pendingChar + c;
+            lastToken += pendingChar + character;
+            rawArgs += pendingChar + character;
             pendingChar = '';
           }
           else {
             args.push(lastToken + pendingChar);
-            rawArgs += pendingChar + c;
+            rawArgs += pendingChar + character;
             pendingChar = '';
             lastToken = '';
           }
@@ -89,7 +89,7 @@ export function processAll(input, filter) {
           if (inDoubleQuoteString) {
             if (pendingChar == '\\') {
               pendingChar = '';
-              lastToken += c;
+              lastToken += character;
             }
             else {
               inDoubleQuoteString = false;
@@ -100,9 +100,9 @@ export function processAll(input, filter) {
             inDoubleQuoteString = true;
           }
           else {
-            lastToken += pendingChar + c;
+            lastToken += pendingChar + character;
           }
-          rawArgs += pendingChar + c;
+          rawArgs += pendingChar + character;
           pendingChar = '';
           break;
 
@@ -110,7 +110,7 @@ export function processAll(input, filter) {
           if (inSingleQuoteString) {
             if (pendingChar == '\\') {
               pendingChar = '';
-              lastToken += c;
+              lastToken += character;
             }
             else {
               inSingleQuoteString = false;
@@ -121,24 +121,24 @@ export function processAll(input, filter) {
             inSingleQuoteString = true;
           }
           else {
-            lastToken += pendingChar + c;
+            lastToken += pendingChar + character;
           }
-          rawArgs += pendingChar + c;
+          rawArgs += pendingChar + character;
           pendingChar = '';
           break;
 
         default:
           if (inSingleQuoteString || inDoubleQuoteString) {
-            lastToken += pendingChar + c;
-            rawArgs += pendingChar + c;
+            lastToken += pendingChar + character;
+            rawArgs += pendingChar + character;
             pendingChar = '';
           }
-          else if (!/\s/.test(c)) {
+          else if (!/\s/.test(character)) {
             rawArgs += pendingChar;
-            throw new ReplacerError(`Invalid character "${c}" after "${replacer}${rawArgs}", you may forgot to wrap any argument with quotations`);
+            throw new ReplacerError(`Invalid character "${character}" after "${replacer}${rawArgs}", you may forgot to wrap any argument with quotations`);
           }
           else {
-            rawArgs += pendingChar + c;
+            rawArgs += pendingChar + character;
             pendingChar = '';
           }
           break;
