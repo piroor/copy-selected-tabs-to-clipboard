@@ -102,6 +102,8 @@ function updateShortcutsForFormats() {
 
 /*  listen events */
 
+const WITH_CONTAINER_MATCHER = /%CONTAINER_(?:URL(?:\(.+?\))|TITLE)%/i;
+
 async function onShortcutCommand(command) {
   log('onShortcutCommand: ', command);
   const activeTab = (await browser.tabs.query({
@@ -109,7 +111,23 @@ async function onShortcutCommand(command) {
     currentWindow: true
   }))[0];
   log('activeTab: ', activeTab);
-  const { isTree, onlyDescendants, tabs } = await Commands.getContextState({ baseTab: activeTab });
+
+  let format = null;
+  let withContainer = false;
+  if (/^copySelectedTabsWithFormat(\d+)$/.test(command)) {
+    const index   = parseInt(RegExp.$1);
+    const formats = configs.copyToClipboardFormats;
+    format = formats.length >= index ? formats[index] : null;
+    withContainer = WITH_CONTAINER_MATCHER.test(format.format);
+  }
+  else if (command == 'copySelectedTabs') {
+    withContainer = configs.copyToClipboardFormats.some(format => WITH_CONTAINER_MATCHER.test(format.format));
+  }
+
+  const { isTree, onlyDescendants, tabs } = await Commands.getContextState({
+    baseTab: activeTab,
+    withContainer,
+  });
   log('tabs: ', tabs);
 
   if (tabs.length <= 0)
@@ -144,11 +162,7 @@ async function onShortcutCommand(command) {
     } break;
 
     default:
-      if (/^copySelectedTabsWithFormat(\d+)$/.test(command)) {
-        const index   = parseInt(RegExp.$1);
-        const formats = configs.copyToClipboardFormats;
-        const format  = formats.length >= index ? formats[index] : null;
-        if (format) {
+      if (format) {
           await Commands.copyToClipboard(tabs, format.format);
           if (configs.clearSelectionAfterCommandInvoked) {
             browser.tabs.highlight({
@@ -156,7 +170,6 @@ async function onShortcutCommand(command) {
               tabs:     [activeTab.index]
             });
           }
-        }
       }
       break;
   }
