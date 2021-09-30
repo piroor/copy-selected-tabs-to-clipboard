@@ -163,13 +163,13 @@ async function onShortcutCommand(command) {
 
     default:
       if (format) {
-          await Commands.copyToClipboard(tabs, format.format);
-          if (configs.clearSelectionAfterCommandInvoked) {
-            browser.tabs.highlight({
-              windowId: activeTab.windowId,
-              tabs:     [activeTab.index]
-            });
-          }
+        await Commands.copyToClipboard(tabs, format.format);
+        if (configs.clearSelectionAfterCommandInvoked) {
+          browser.tabs.highlight({
+            windowId: activeTab.windowId,
+            tabs:     [activeTab.index]
+          });
+        }
       }
       break;
   }
