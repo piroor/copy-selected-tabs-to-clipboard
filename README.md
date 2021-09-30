@@ -18,4 +18,4 @@ https://github.com/piroor/copy-selected-tabs-to-clipboard/actions?query=workflow
 |URL without query|`%REPLACE("%URL%", "\?.*$", "")%`|
 |URL without query except Google|`%REPLACE("%URL%", "^(?!\w+://[^/]*\.google\.[^/]*/.*)\?.*$", "$1")`|
 |Org Mode Link List|`*%TST_INDENT(*)% [[%URL%][%TITLE%]]`|
-|Firefox container Org Mode| `[[%CONTAINER_URL%%URL%][%CONTAINER_TITLE%%TITLE%]]`|
+|Firefox container Org Mode| `[[%CONTAINER_URL%][%CONTAINER_NAME("", ": ")%%TITLE%]]`|
