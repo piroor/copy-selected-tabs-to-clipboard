@@ -102,8 +102,6 @@ function updateShortcutsForFormats() {
 
 /*  listen events */
 
-const WITH_CONTAINER_MATCHER = /%CONTAINER_(?:URL(?:\(.+?\))|TITLE)%/i;
-
 async function onShortcutCommand(command) {
   log('onShortcutCommand: ', command);
   const activeTab = (await browser.tabs.query({
@@ -118,16 +116,17 @@ async function onShortcutCommand(command) {
     const index   = parseInt(RegExp.$1);
     const formats = configs.copyToClipboardFormats;
     format = formats.length >= index ? formats[index] : null;
-    withContainer = WITH_CONTAINER_MATCHER.test(format.format);
+    withContainer = Constants.WITH_CONTAINER_MATCHER.test(format.format);
   }
   else if (command == 'copySelectedTabs') {
-    withContainer = configs.copyToClipboardFormats.some(format => WITH_CONTAINER_MATCHER.test(format.format));
+    withContainer = configs.copyToClipboardFormats.some(format => Constants.WITH_CONTAINER_MATCHER.test(format.format));
   }
 
   const { isTree, onlyDescendants, tabs } = await Commands.getContextState({
     baseTab: activeTab,
     withContainer,
   });
+  log('withContainer: ', withContainer);
   log('tabs: ', tabs);
 
   if (tabs.length <= 0)

@@ -11,6 +11,8 @@ export const kCOPY_TREE             = 2;
 export const kCOPY_TREE_DESCENDANTS = 3;
 export const kCOPY_ALL              = 4;
 
+export const WITH_CONTAINER_MATCHER = /%(?:CONTAINER_URL(?:_HTML(?:IFIED)?)?|CONTAINER_(?:TITLE|NAME)(?:_HTML(?:IFIED)?)?(?:\(.*?\))?)%/i;
+
 
 export const kTST_ID = 'treestyletab@piro.sakura.ne.jp';
 

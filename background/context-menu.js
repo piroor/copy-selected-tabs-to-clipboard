@@ -237,11 +237,6 @@ browser.menus.onShown.addListener(onShown);
 async function onClick(info, tab, selectedTabs = null) {
   log('context menu item clicked: ', info, tab);
 
-  const isModifiedAction = info.button == 1;
-  const fallbackOption = isModifiedAction ? configs.fallbackForSingleTabModified : configs.fallbackForSingleTab;
-  const { tabs } = await Commands.getContextState({ baseTab: tab, selectedTabs, fallbackOption });
-  log('tabs: ', tabs);
-
   if (info.menuItemId.indexOf('clipboard:') != 0)
     return;
 
@@ -256,6 +251,13 @@ async function onClick(info, tab, selectedTabs = null) {
   else {
     format = configs.copyToClipboardFormats[id.replace(/^[0-9]+:/, '')];
   }
+
+  const isModifiedAction = info.button == 1;
+  const fallbackOption = isModifiedAction ? configs.fallbackForSingleTabModified : configs.fallbackForSingleTab;
+  const withContainer = Constants.WITH_CONTAINER_MATCHER.test(format);
+  const { tabs } = await Commands.getContextState({ baseTab: tab, selectedTabs, fallbackOption, withContainer });
+  log('withContainer: ', withContainer);
+  log('tabs: ', tabs);
 
   await Commands.copyToClipboard(tabs, format);
 
