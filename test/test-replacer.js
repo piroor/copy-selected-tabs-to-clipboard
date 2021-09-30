@@ -23,6 +23,7 @@ https://developer.mozilla.org/docs/Web/JavaScript/Guide/Regular_Expressions/Chea
 */
 
 import * as Replacer from '../common/replacer.js';
+import * as FunctionalPlaceHolder from '../common/functional-placeholder.js';
 
 import { assert } from 'tiny-esm-test-runner';
 const { is, ok, ng } = assert;
@@ -198,7 +199,7 @@ function assertFailed(input, expectedError) {
     ng('must be failed');
   }
   catch(error) {
-    ok(error instanceof Replacer.ReplacerError);
+    ok(error instanceof Replacer.ReplacerError || error instanceof FunctionalPlaceHolder.FunctionalPlaceHolderError);
     is(expectedError, error.message);
   }
 }
@@ -218,7 +219,7 @@ export function testErrors() {
   );
   assertFailed(
     'prefix %REPlACE("base", "unterminated)%',
-    'Untermited replacer "%REPlACE("base", "unterminated)%", you may forgot to put close-quote for any argument'
+    'Untermited functional placeholder "%REPlACE("base", "unterminated)%", you may forgot to put close-quote for any argument'
   );
   assertFailed(
     'prefix %REPlACE("base", unquoted)%',
