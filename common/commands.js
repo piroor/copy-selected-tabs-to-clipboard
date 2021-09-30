@@ -340,19 +340,22 @@ function fillPlaceHoldersInternal(
     format,
     (input, ..._replacePairs) => fillPlaceHoldersInternal(input, { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel })
   );
-  const filled = FunctionalPlaceHolder.processAll({
-    name:   'container_title',
-    input:  replaced,
-    filter: (prefix, suffix) => tab.container ? `${prefix}${tab.container}${suffix}` : '',
+  const filled = FunctionalPlaceHolder.processAll(replaced, {
+    container_title:           (prefix, suffix) => tab.container ? `${prefix}${tab.container}${suffix}` : '',
+    container_title_html:      (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
+    container_title_htmlified: (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
+    container_name:            (prefix, suffix) => tab.container ? `${prefix}${tab.container}${suffix}` : '',
+    container_name_html:       (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
+    container_name_htmlified:  (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
   });
   return filled
     .replace(/%(?:RLINK|RLINK_HTML(?:IFIED)?|SEL|SEL_HTML(?:IFIED)?)%/gi, '')
     .replace(/%URL%/gi, tab.url)
     .replace(/%(?:TITLE|TEXT)%/gi, tab.title)
-    .replace(/%CONTAINER_TITLE%/gi, tab.container ? `${tab.container}: ` : '')
-    .replace(/%CONTAINER_URL%/gi, tab.container ? `ext+container:name=${tab.container}&url=` : '')
     .replace(/%URL_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url))
     .replace(/%TITLE_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.title))
+    .replace(/%CONTAINER_URL%/gi, tab.container ? `ext+container:name=${tab.container}&url=${tab.url}` : tab.url)
+    .replace(/%CONTAINER_URL_HTML(?:IFIED)%/gi, tab.container ? `ext+container:name=${tab.container}&url=${sanitizeHtmlText(tab.url)}` : sanitizeHtmlText(tab.url))
     .replace(/%AUTHOR%/gi, author || '')
     .replace(/%AUTHOR_HTML(?:IFIED)?%/gi, sanitizeHtmlText(author || ''))
     .replace(/%DESC(?:RIPTION)?%/gi, description || '')

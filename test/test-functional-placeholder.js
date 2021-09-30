@@ -10,10 +10,8 @@ const { is, ok, ng } = assert;
 
 function assertSuccess(input, ...expectedArgs) {
   const expectedFilled = expectedArgs.pop();
-  const filled = FunctionalPlaceHolder.processAll({
-    name: 'func',
-    input,
-    filter: (...args) => {
+  const filled = FunctionalPlaceHolder.processAll(input, {
+    func: (...args) => {
       is(expectedArgs.shift(), args);
       return 'REPLACED';
     },
@@ -152,10 +150,8 @@ export function testIgnoreCases() {
 
 function assertFailed(input, expectedError) {
   try {
-    FunctionalPlaceHolder.processAll({
-      name: 'func',
-      input,
-      filter: () => {},
+    FunctionalPlaceHolder.processAll(input, {
+      func: () => {},
     });
     ng('must be failed');
   }
@@ -174,4 +170,14 @@ export function testErrors() {
     'prefix %FUNC("1st", unquoted)%',
     'Invalid character "u" after "%FUNC("1st", ", you may forgot to wrap any argument with quotations'
   );
+}
+
+export function testMultiplePlaceholders() {
+  const input = 'prefix %A()% middle %B()% suffix';
+  const expected = 'prefix A middle B suffix';
+  const filled = FunctionalPlaceHolder.processAll(input, {
+    a: () => 'A',
+    b: () => 'B',
+  });
+  is(expected, filled);
 }

@@ -11,7 +11,14 @@ export class FunctionalPlaceHolderError extends Error {
   }
 }
 
-export function processAll({ name, filter, input }) {
+export function processAll(input, filters) {
+  for (const [name, filter] of Object.entries(filters)) {
+    input = processAllInternal({ input, name, filter });
+  }
+  return input;
+}
+
+function processAllInternal({ name, filter, input }) {
   let output = '';
   const startMatcher = new RegExp(`%${name}\\(`, 'i');
   const prefixSize = name.length + 2;

@@ -14,10 +14,8 @@ export class ReplacerError extends Error {
 }
 
 export function processAll(input, filter) {
-  return FunctionalPlaceHolder.processAll({
-    name: 'replace',
-    input,
-    filter: (...args) => processOne(args, filter),
+  return FunctionalPlaceHolder.processAll(input, {
+    replace: (...args) => processOne(args, filter),
   });
 }
 
