@@ -15,6 +15,7 @@ import {
 import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
 import * as Replacer from './replacer.js';
+import * as FunctionalPlaceHolder from './functional-placeholder.js';
 
 export async function getMultiselectedTabs(tab) {
   if (!tab)
@@ -317,7 +318,7 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
     };
   }
   catch(error) {
-    if (error instanceof Replacer.ReplacerError)
+    if (error instanceof Replacer.ReplacerError || error instanceof FunctionalPlaceHolder.FunctionalPlaceHolderError)
       return {
         richText:  '',
         plainText: error.message
@@ -335,7 +336,16 @@ function fillPlaceHoldersInternal(
   format,
   { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel } = {}
 ) {
-  return Replacer.processAll(format, (input, ..._replacePairs) => fillPlaceHoldersInternal(input, { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel }))
+  const replaced = Replacer.processAll(
+    format,
+    (input, ..._replacePairs) => fillPlaceHoldersInternal(input, { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel })
+  );
+  const filled = FunctionalPlaceHolder.processAll({
+    name:   'container_title',
+    input:  replaced,
+    filter: (prefix, suffix) => tab.container ? `${prefix}${tab.container}${suffix}` : '',
+  });
+  return filled
     .replace(/%(?:RLINK|RLINK_HTML(?:IFIED)?|SEL|SEL_HTML(?:IFIED)?)%/gi, '')
     .replace(/%URL%/gi, tab.url)
     .replace(/%(?:TITLE|TEXT)%/gi, tab.title)
