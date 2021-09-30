@@ -354,6 +354,8 @@ function fillPlaceHoldersInternal(
     .replace(/%(?:TITLE|TEXT)%/gi, tab.title)
     .replace(/%URL_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url))
     .replace(/%TITLE_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.title))
+    .replace(/%CONTAINER_(?:NAME|TITLE)%/gi, tab.container ? `${tab.container}: ` : '')
+    .replace(/%CONTAINER_(?:NAME|TITLE)_HTML(?:IFIED)%/gi, tab.container ? `${tab.container}: ` : '')
     .replace(/%CONTAINER_URL%/gi, tab.container ? `ext+container:name=${tab.container}&url=${tab.url}` : tab.url)
     .replace(/%CONTAINER_URL_HTML(?:IFIED)%/gi, tab.container ? `ext+container:name=${tab.container}&url=${sanitizeHtmlText(tab.url)}` : sanitizeHtmlText(tab.url))
     .replace(/%AUTHOR%/gi, author || '')
