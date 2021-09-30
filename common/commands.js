@@ -57,20 +57,22 @@ export async function getContextState({ baseTab, selectedTabs, callbackOption, w
     selectedTabs
   ).length > 1;
 
-  let tabs = isAll ?
+  const tabs = isAll ?
     (await browser.tabs.query({
       windowId: baseTab.windowId,
       hidden:   false,
     }).catch(_error => [])) :
     (isTree && await collectTabsFromTree(treeItem, { onlyDescendants })) || selectedTabs;
   if (withContainer) {
-    tabs = await Promise.all(tabs.map(async (tab) => {
-      tab.container = await browser.contextualIdentities.get(tab.cookieStoreId).then(function(container){
-        return container.name;
-      }, function(_){
-        return  null;
-      });
-      return tab;}));
+    await Promise.all(tabs.map(async tab => {
+      try {
+        const container = await browser.contextualIdentities.get(tab.cookieStoreId);
+        tab.container = container && container.name;
+      }
+      catch(_error) {
+        tab.container = null;
+      }
+    }));
   }
   return { isAll, isTree, onlyDescendants, hasMultipleTabs, tabs };
 }
