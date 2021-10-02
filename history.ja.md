@@ -1,6 +1,10 @@
 # 更新履歴
 
  - master/HEAD
+ - 1.4.3 (2021.10.1)
+   * 新しいプレースホルダーの `%CONTAINER_NAME%`、`%CONTAINER_NAME_HTMLIFIED%`（およびエイリアスの`%CONTAINER_TITLE%`、`%CONTAINER_TITLE_HTMLIFIED`) に対応：コンテナータブにおいて `<コンテナー名>: ` に置き換えられます（[natask](https://github.com/natask)により提案され初期実装が行われました。ありがとう！）
+   * 新しい関数型プレースホルダーの `%CONTAINER_NAME(prefix, suffix)%`、`%CONTAINER_NAME_HTMLIFIED(prefix, suffix)%` に対応：コンテナータブにおいて `<接頭辞><コンテナー名><接尾辞>` に置き換えられます。例えば `%CONTAINER_NAME("[", "]")%` であれば、「個人用」のタブでは `[個人用]` になります。
+   * 新しいプレースホルダーの `%CONTAINER_URL%`、`%CONTAINER_URL_HTMLIFIED%` （[Open external links in a container](https://addons.mozilla.org/firefox/addon/open-url-in-container/)用のURL）に対応（[natask](https://github.com/natask)により提案され初期実装が行われました。ありがとう！）
  - 1.4.2 (2021.5.5)
    * タブが複数選択されていないときの挙動として、すべてのタブをコピーする選択肢を追加
  - 1.4.1 (2020.12.2)

@@ -1,6 +1,10 @@
 # History
 
  - master/HEAD
+ - 1.4.3 (2021.10.1)
+   * Add new placeholders `%CONTAINER_NAME%`, `%CONTAINER_NAME_HTMLIFIED%` (and aliases `%CONTAINER_TITLE%` and `%CONTAINER_TITLE_HTMLIFIED`): they will be filled as `<container name>: ` if the tab is non-default container tab. (Suggested and implemented initially by [natask](https://github.com/natask), thanks!)
+   * Add new functional placeholders `%CONTAINER_NAME(prefix, suffix)%`, `%CONTAINER_NAME_HTMLIFIED(prefix, suffix)%`: they will be filled as `<prefix><container name><suffix>` if the tab is non-default container tab. For example, `%CONTAINER_NAME("[", "]")%` for a tab with the container "Personal" will become `[Personal]`.
+   * Add new placeholders `%CONTAINER_URL%` and `%CONTAINER_URL_HTMLIFIED%` (URL for [Open external links in a container](https://addons.mozilla.org/firefox/addon/open-url-in-container/)). (Suggested and implemented initially by [natask](https://github.com/natask), thanks!)
  - 1.4.2 (2021.5.5)
    * Add ability to copy all tabs when there is no multiselected tab.
  - 1.4.1 (2020.12.2)
