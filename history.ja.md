@@ -1,6 +1,7 @@
 # 更新履歴
 
  - master/HEAD
+   * 設定で通知を無効化している場合に、クリップボード操作後の通知をより確実に無効化するようにした（[いくつかの環境でハングアップが発生する問題](https://github.com/piroor/copy-selected-tabs-to-clipboard/pull/28)の暫定的な回避策）
  - 1.4.3 (2021.10.1)
    * 新しいプレースホルダーの `%CONTAINER_NAME%`、`%CONTAINER_NAME_HTMLIFIED%`（およびエイリアスの`%CONTAINER_TITLE%`、`%CONTAINER_TITLE_HTMLIFIED`) に対応：コンテナータブにおいて `<コンテナー名>: ` に置き換えられます（[natask](https://github.com/natask)により提案され初期実装が行われました。ありがとう！）
    * 新しい関数型プレースホルダーの `%CONTAINER_NAME(prefix, suffix)%`、`%CONTAINER_NAME_HTMLIFIED(prefix, suffix)%` に対応：コンテナータブにおいて `<接頭辞><コンテナー名><接尾辞>` に置き換えられます。例えば `%CONTAINER_NAME("[", "]")%` であれば、「個人用」のタブでは `[個人用]` になります。
