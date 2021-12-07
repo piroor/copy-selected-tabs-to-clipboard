@@ -126,7 +126,8 @@ export async function copyToClipboard(tabs, format) {
   if (!richText) {
     log('trying to write text to clipboard via Clipboard API');
     try {
-      await navigator.clipboard.writeText(plainText);
+      // Do not use await here because it could hang Firefox. See https://bugs.kde.org/show_bug.cgi?id=446581
+      navigator.clipboard.writeText(plainText);
       notifyCopied(tabs.length, plainText);
       return;
     }
@@ -242,7 +243,8 @@ export async function copyToClipboard(tabs, format) {
 
   log('failed to write rich text data to the clipboard, so fallback to plain text data copy via Clipboard API');
   try {
-    await navigator.clipboard.writeText(plainText);
+    // Do not use await here because it could hang Firefox. See https://bugs.kde.org/show_bug.cgi?id=446581
+    navigator.clipboard.writeText(plainText);
     notifyCopied(tabs.length, plainText);
     return;
   }
