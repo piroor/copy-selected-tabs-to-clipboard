@@ -81,7 +81,7 @@ export function testSingleQuote() {
   assertSuccess( // should accept escaped close quote
     "prefix %FUNC('1st\\'', '\\'2nd', '3rd\\'')% suffix",
     ["1st'", "'2nd", "3rd'"],
-    "prefix REPLACED suffix"
+    'prefix REPLACED suffix'
   );
 }
 
