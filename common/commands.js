@@ -131,12 +131,12 @@ export async function copyToClipboard(tabs, format) {
           notifyCopied(tabs.length, plainText);
         })
         .catch(error => {
-          log('failed to write text to clipboard: ', error);
+          notifyFailed(error);
         });
       return;
     }
     catch(error) {
-      log('failed to write text to clipboard: ', error);
+      notifyFailed(error);
     }
     return;
   }
@@ -152,22 +152,12 @@ export async function copyToClipboard(tabs, format) {
           notifyCopied(tabs.length, plainText);
         })
         .catch(error => {
-          log('failed to write data to clipboard: ', error);
-          if (configs.shouldNotifyResult)
-            notify({
-              title:   browser.i18n.getMessage('notification_failedToCopy_title'),
-              message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
-            });
+          notifyFailed(error);
         });
       return;
     }
     catch(error) {
-      log('failed to write data to clipboard: ', error);
-      if (configs.shouldNotifyResult)
-        notify({
-          title:   browser.i18n.getMessage('notification_failedToCopy_title'),
-          message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
-        });
+      notifyFailed(error);
     }
     return;
   }
@@ -262,20 +252,12 @@ export async function copyToClipboard(tabs, format) {
         notifyCopied(tabs.length, plainText);
       })
       .catch(error => {
-        log('failed to write text to clipboard: ', error);
-        notify({
-          title:   browser.i18n.getMessage('notification_failedToCopy_title'),
-          message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
-        });
+        notifyFailed(error);
       });
     return;
   }
   catch(error) {
-    log('failed to write text to clipboard: ', error);
-    notify({
-      title:   browser.i18n.getMessage('notification_failedToCopy_title'),
-      message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
-    });
+    notifyFailed(error);
   }
 }
 
@@ -427,5 +409,15 @@ async function notifyCopied(count, copied) {
   return notify({
     title:   browser.i18n.getMessage(count > 1 ? 'notification_copied_multiple_title' : 'notification_copied_title', [count]),
     message: browser.i18n.getMessage(count > 1 ? 'notification_copied_multiple_message' : 'notification_copied_message', [count, copied])
+  });
+}
+
+async function notifyFailed(error) {
+  log('failed to write text to clipboard: ', error);
+  if (!configs.shouldNotifyResult)
+    return;
+  notify({
+    title:   browser.i18n.getMessage('notification_failedToCopy_title'),
+    message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
   });
 }
