@@ -126,12 +126,17 @@ export async function copyToClipboard(tabs, format) {
   if (!richText) {
     log('trying to write text to clipboard via Clipboard API');
     try {
-      await navigator.clipboard.writeText(plainText);
-      notifyCopied(tabs.length, plainText);
+      navigator.clipboard.writeText(plainText)
+        .then(() => {
+          notifyCopied(tabs.length, plainText);
+        })
+        .catch(error => {
+          log('failed to write text to clipboard: ', error);
+        });
       return;
     }
-    catch(e) {
-      log('failed to write text to clipboard: ', e);
+    catch(error) {
+      log('failed to write text to clipboard: ', error);
     }
     return;
   }
@@ -142,8 +147,18 @@ export async function copyToClipboard(tabs, format) {
       const dt = new DataTransfer();
       dt.items.add(plainText, 'text/plain');
       dt.items.add(richText, 'text/html');
-      await navigator.clipboard.write(dt);
-      notifyCopied(tabs.length, plainText);
+      navigator.clipboard.write(dt)
+        .then(() => {
+          notifyCopied(tabs.length, plainText);
+        })
+        .catch(error => {
+          log('failed to write data to clipboard: ', error);
+          if (configs.shouldNotifyResult)
+            notify({
+              title:   browser.i18n.getMessage('notification_failedToCopy_title'),
+              message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
+            });
+        });
       return;
     }
     catch(error) {
@@ -242,8 +257,17 @@ export async function copyToClipboard(tabs, format) {
 
   log('failed to write rich text data to the clipboard, so fallback to plain text data copy via Clipboard API');
   try {
-    await navigator.clipboard.writeText(plainText);
-    notifyCopied(tabs.length, plainText);
+    navigator.clipboard.writeText(plainText)
+      .then(() => {
+        notifyCopied(tabs.length, plainText);
+      })
+      .catch(error => {
+        log('failed to write text to clipboard: ', error);
+        notify({
+          title:   browser.i18n.getMessage('notification_failedToCopy_title'),
+          message: browser.i18n.getMessage('notification_failedToCopy_message', [String(error)])
+        });
+      });
     return;
   }
   catch(error) {
