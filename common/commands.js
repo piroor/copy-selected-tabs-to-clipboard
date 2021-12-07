@@ -413,7 +413,7 @@ async function notifyCopied(count, copied) {
 }
 
 async function notifyFailed(error) {
-  log('failed to write text to clipboard: ', error);
+  log('failed to write text/data to clipboard: ', error);
   if (!configs.shouldNotifyResult)
     return;
   notify({
