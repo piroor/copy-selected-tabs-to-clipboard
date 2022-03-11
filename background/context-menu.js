@@ -255,7 +255,7 @@ async function onClick(info, tab, selectedTabs = null) {
   const isModifiedAction = info.button == 1;
   const fallbackOption = isModifiedAction ? configs.fallbackForSingleTabModified : configs.fallbackForSingleTab;
   const withContainer = Constants.WITH_CONTAINER_MATCHER.test(format);
-  const { tabs } = await Commands.getContextState({ baseTab: tab, selectedTabs, fallbackOption, withContainer });
+  const { tabs } = await Commands.getContextState({ baseTab: tab, selectedTabs, callbackOption: fallbackOption, withContainer });
   log('withContainer: ', withContainer);
   log('tabs: ', tabs);
 
