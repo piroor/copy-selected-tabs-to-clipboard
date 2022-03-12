@@ -153,7 +153,7 @@ function processAllInternal({ name, filter, input }) {
           }
           break;
       }
-      count++;
+      count += character.length;
     }
     if (rawArgs != '') {
       throw new FunctionalPlaceHolderError(`Untermited functional placeholder "${prefix}${rawArgs}", you may forgot to put close-quote for any argument`);
