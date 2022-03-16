@@ -12,13 +12,13 @@
   },
   "dependencies": {
     "babel-core": "^6.0.0",
-    "babel-eslint": "^10.1.0",
-    "babel-plugin-module-resolver": "^3.0.0",
-    "eslint": "^6.8.0",
+    "@babel/eslint-parser": "^7.16.3",
+    "babel-plugin-module-resolver": "^3.2.0",
+    "eslint": "^8.11.0",
     "eslint-import-resolver-babel-module": "^4.0.0",
-    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-import": "^2.25.4",
     "jsonlint-cli": "*",
-    "tiny-esm-test-runner": "^0.0.5",
+    "tiny-esm-test-runner": "^1.2.2",
     "tunnel-agent": ">=0.6.0"
   },
   "devDependencies": {
