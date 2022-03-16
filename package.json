@@ -11,8 +11,8 @@
     "test": "run-tiny-esm-test-runner test/test-*.js"
   },
   "dependencies": {
-    "babel-core": "^6.0.0",
     "@babel/eslint-parser": "^7.16.3",
+    "babel-core": "^6.0.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "eslint": "^8.11.0",
     "eslint-import-resolver-babel-module": "^4.0.0",
@@ -22,6 +22,7 @@
     "tunnel-agent": ">=0.6.0"
   },
   "devDependencies": {
-    "assert": "^2.0.0"
+    "assert": "^2.0.0",
+    "babel-eslint": "^10.1.0"
   }
 }
