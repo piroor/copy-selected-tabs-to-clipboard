@@ -2,7 +2,7 @@
   "name": "copy-selected-tabs-to-clipboard",
   "version": "0.0.0",
   "engines": {
-    "node": ">=13.2"
+    "node": ">=16.14"
   },
   "type": "module",
   "scripts": {
@@ -11,11 +11,11 @@
     "test": "run-tiny-esm-test-runner test/test-*.js"
   },
   "dependencies": {
+    "@babel/core": "^7.17.7",
     "@babel/eslint-parser": "^7.16.3",
-    "babel-core": "^6.0.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "eslint": "^8.11.0",
-    "eslint-import-resolver-babel-module": "^4.0.0",
+    "eslint-import-resolver-babel-module": "^5.3.1",
     "eslint-plugin-import": "^2.25.4",
     "jsonlint-cli": "*",
     "tiny-esm-test-runner": "^1.2.2",

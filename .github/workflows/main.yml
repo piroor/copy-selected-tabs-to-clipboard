@@ -11,7 +11,7 @@ jobs:
     - name: setup minimum version Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: '13.x'
+        node-version: '16.x'
     - uses: actions/checkout@v1
     - name: prepare manifest.json with a revision number
       run: |
