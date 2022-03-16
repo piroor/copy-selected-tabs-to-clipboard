@@ -10,9 +10,10 @@
     "format": "eslint . --ext=.js --report-unused-disable-directives --fix",
     "test": "run-tiny-esm-test-runner test/test-*.js"
   },
-  "dependencies": {
+  "devDependencies": {
     "@babel/core": "^7.17.7",
     "@babel/eslint-parser": "^7.16.3",
+    "assert": "^2.0.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "eslint": "^8.11.0",
     "eslint-import-resolver-babel-module": "^5.3.1",
@@ -20,9 +21,5 @@
     "jsonlint-cli": "*",
     "tiny-esm-test-runner": "^1.2.2",
     "tunnel-agent": ">=0.6.0"
-  },
-  "devDependencies": {
-    "assert": "^2.0.0",
-    "babel-eslint": "^10.1.0"
   }
 }
