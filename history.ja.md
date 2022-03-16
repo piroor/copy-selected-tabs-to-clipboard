@@ -1,6 +1,9 @@
 # 更新履歴
 
  - master/HEAD
+ - 1.4.5 (2022.3.16)
+   * コンテキストメニュー項目上でのミドルクリックが機能していなかったのを修正 (Fixed by [FSpark](https://github.com/FSpark), thanks!)
+   * 関数型プレースホルダーでマルチバイト文字を正しく扱えていなかったのを修正 (Fixed by [FSpark](https://github.com/FSpark), thanks!)
  - 1.4.4 (2021.12.7)
    * 設定で通知を無効化している場合に、クリップボード操作後の通知をより確実に無効化するようにした（[いくつかの環境でハングアップが発生する問題](https://github.com/piroor/copy-selected-tabs-to-clipboard/pull/28)の暫定的な回避策）
  - 1.4.3 (2021.10.1)

@@ -1,6 +1,9 @@
 # History
 
  - master/HEAD
+ - 1.4.5 (2022.3.16)
+   * Middle-click on context menu items now works as expected. (Fixed by [FSpark](https://github.com/FSpark), thanks!)
+   * Functional placeholders now work as expected for multibyte characters. (Fixed by [FSpark](https://github.com/FSpark), thanks!)
  - 1.4.4 (2021.12.7)
    * Deactivate all notifications after clipboard operations certainly, with the option. It can be a workaround for the [hanging up issue on some environment](https://github.com/piroor/copy-selected-tabs-to-clipboard/pull/28).
  - 1.4.3 (2021.10.1)
