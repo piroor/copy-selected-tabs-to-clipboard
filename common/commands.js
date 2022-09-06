@@ -82,8 +82,6 @@ const kFORMAT_PARAMETER_MATCHER  = /\([^\)]+\)|\[[^\]]+\]|\{[^\}]+\}|<[^>]+>/g;
 const kFORMAT_MATCHER_TST_INDENT = new RegExp(`%TST_INDENT(?:${kFORMAT_PARAMETER_MATCHER.source})*%`, 'gi');
 
 export async function copyToClipboard(tabs, format) {
-  const allTabs = await browser.tabs.query({ windowId: tabs[0].windowId });
-
   let indentLevels = [];
   if (kFORMAT_MATCHER_TST_INDENT.test(format)) {
     try {
@@ -190,55 +188,67 @@ export async function copyToClipboard(tabs, format) {
     });
   };
 
-  log('trying to write data to clipboard via execCommand from content page');
-  let permittedTabs = tabs.filter(Permissions.isPermittedTab);
-  if (permittedTabs.length == 0) {
-    permittedTabs = allTabs.filter(Permissions.isPermittedTab);
-    if (permittedTabs.length == 0)
-      throw new Error('no permitted tab to copy data to the clipboard');
-  }
+  log('trying to write data to clipboard via execCommand with a content page');
   /* Due to Firefox's limitation, we cannot copy text from background script.
      Moreover, when this command is called from context menu on a tab,
      there is no browser_action page.
-     Thus we need to embed text field into webpage and execute a command to copy,
-     but scripts in the webpage can steal the data - that's crazy and dangerous!
+     Thus we need to use a temporary blank tab or window and execute
+     the copy command inside its content area.
      See also:
       https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Interact_with_the_clipboard#Browser-specific_considerations
       https://bugzilla.mozilla.org/show_bug.cgi?id=1272869
       https://bugzilla.mozilla.org/show_bug.cgi?id=1344410
   */
-  const code = `
-    (() => {
-      let richText = ${JSON.stringify(richText)};
-      let plainText = ${JSON.stringify(plainText)};
-      return (${doCopy.toString()})();
-    })();
-  `;
+  let temporaryTab;
+  let temporaryWindow;
   try {
-    const results = await browser.tabs.executeScript(permittedTabs[0].id, {
-      matchAboutBlank: true,
-      code
+    temporaryTab = await browser.tabs.create({
+      windowId: tabs[0].windowId,
+      url:      'about:blank',
+      active:   false,
+      // hidden:   true, // not supported...
+      index:    (tabs.find(tab => tab.active) || tabs[0]).index + 1, // open next to the visible tab to prevent scrolling of the tab bar
     });
-    if (results[0]) {
-      notifyCopied(tabs.length, plainText);
-      return;
-    }
   }
   catch(error) {
-    log(`cannot copy rich text data with the tab ${permittedTabs[0].id} (${permittedTabs[0].url}), retry with a temporary tab: `, error);
-    const win = await browser.windows.create({
-      type:   'popup',
-      url:    'about:blank',
-      width:  100,
-      height: 100,
-      left:   0,
-      top:    0
-    });
-    const results = await browser.tabs.executeScript(win.tabs[0].id, {
+    try {
+      log(`cannot open temporary tab in the window ${tabs[0].windowId}, retrying with a temporary window. `, error);
+      temporaryWindow = await browser.windows.create({
+        url:    'about:blank',
+        width:  100,
+        height: 100,
+        left:   0,
+        top:    0
+      });
+      const [activeTab] = await browser.tabs.query({
+        active: true,
+        windowId: temporaryWindow.id,
+      });
+      temporaryTab = activeTab;
+    }
+    catch(error) {
+      log(`cannot open temporary window, fallback to an alert dialog. `, error);
+    }
+  }
+  if (temporaryTab) {
+    const code = `
+      (() => {
+        let richText = ${JSON.stringify(richText)};
+        let plainText = ${JSON.stringify(plainText)};
+        return (${doCopy.toString()})();
+      })();
+    `;
+    const results = await browser.tabs.executeScript(temporaryTab.id, {
       matchAboutBlank: true,
       code
+    }).catch(error => {
+      log(`failed to execute code in the tab ${temporaryTab.id}`, error);
+      return [];
     });
-    browser.windows.remove(win.id);
+    if (temporaryWindow)
+      browser.windows.remove(temporaryWindow.id);
+    else
+      browser.tabs.remove(temporaryTab.id);
     if (results[0]) {
       notifyCopied(tabs.length, plainText);
       return;
