@@ -246,9 +246,9 @@ export async function copyToClipboard(tabs, format) {
       return [];
     });
     if (temporaryWindow)
-      browser.windows.remove(temporaryWindow.id);
+      await browser.windows.remove(temporaryWindow.id);
     else
-      browser.tabs.remove(temporaryTab.id);
+      await browser.tabs.remove(temporaryTab.id);
     if (results[0]) {
       notifyCopied(tabs.length, plainText);
       return;
