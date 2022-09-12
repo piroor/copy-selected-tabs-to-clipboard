@@ -1,6 +1,8 @@
 # 更新履歴
 
  - master/HEAD
+ - 1.4.6 (2022.9.12)
+   * リッチテキスト形式でのコピーをより確実に行うようにした
  - 1.4.5 (2022.3.16)
    * コンテキストメニュー項目上でのミドルクリックが機能していなかったのを修正 (Fixed by [FSpark](https://github.com/FSpark), thanks!)
    * 関数型プレースホルダーでマルチバイト文字を正しく扱えていなかったのを修正 (Fixed by [FSpark](https://github.com/FSpark), thanks!)

@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.4.6 (2022.9.12)
+   * Copy data in rich text format more certainly.
  - 1.4.5 (2022.3.16)
    * Middle-click on context menu items now works as expected. (Fixed by [FSpark](https://github.com/FSpark), thanks!)
    * Functional placeholders now work as expected for multibyte characters. (Fixed by [FSpark](https://github.com/FSpark), thanks!)
