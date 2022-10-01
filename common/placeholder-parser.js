@@ -80,7 +80,7 @@ export function process(input, processor, processedInput = '') {
           output += processor(name, rawArgs, ...args);
         }
         catch(error) {
-          throw new PlaceHolderParserError(`Unhandled error: ${error.mssage}\n${error.stack}`);
+          throw new PlaceHolderParserError(`Unhandled error: ${error.message}\n${error.stack}`);
         }
         lastToken = '';
         name = '';
