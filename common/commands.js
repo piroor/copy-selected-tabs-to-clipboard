@@ -382,11 +382,7 @@ function processPlaceHolder(
       return Replacer.replace(args);
 
     case 'rlink':
-    case 'rlink_html':
-    case 'rlink_htmlified':
     case 'sel':
-    case 'sel_html':
-    case 'sel_htmlified':
       return '';
 
     case 'url':
