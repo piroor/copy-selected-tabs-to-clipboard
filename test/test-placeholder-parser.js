@@ -13,35 +13,51 @@ export function testProcessorCalls() {
     %unquoted(1st, 2nd, 3rd)%
     %single-quoted('1st', '2nd', '3rd')%
     %double-quoted("1st", "2nd", "3rd")%
+    %multiple-parens(1st)(2nd)(3rd)%
     %mixed-quoted(1"s"'t', '2'n"d", "3"'r'd)%
+    %whitespace(   )%
     %escaped-terminator\\%%
     %escaped-open-paren\\(%
     %escaped-close-paren(\\))%
     %"quoted-name()%"%
     %parent(%1st-child%, "%2nd-child%", '%3rd-child(a, b, c)%')%
-    %grand-parent("%parent(%1st-child%, "%2nd-child%", '%3rd-child(a, b, c)%')%")%
+    %grand-parent("%parent2(%1st-child2%, "%2nd-child2%", '%3rd-child2(a, b, c)%')%")%
   `;
   const expectedCalls = [
-    ['unquoted', '1st', '2nd', '3rd'],
-    ['single-quoted', '1st', '2nd', '3rd'],
-    ['double-quoted', '1st', '2nd', '3rd'],
-    ['mixed-quoted', '1st', '2nd', '3rd'],
-    ['escaped-terminator%'],
-    ['escaped-open-paren('],
-    ['escaped-close-paren', ')'],
-    ['quoted-name()%'],
-    ['1st-child'],
-    ['2nd-child'],
-    ['3rd-child', 'a', 'b', 'c'],
-    ['parent', '%1st-child()%', '%2nd-child()%', '%3rd-child("a", "b", "c")%'],
-    ['1st-child'],
-    ['2nd-child'],
-    ['3rd-child', 'a', 'b', 'c'],
-    ['parent', '%1st-child()%', '%2nd-child()%', '%3rd-child("a", "b", "c")%'],
-    ['grand-parent', '%parent("%1st-child()%", "%2nd-child()%", "%3rd-child(\\"a\\", \\"b\\", \\"c\\")%")%'],
+    ['unquoted', '1st, 2nd, 3rd', '1st', '2nd', '3rd'],
+    ['single-quoted', "'1st', '2nd', '3rd'", '1st', '2nd', '3rd'],
+    ['double-quoted', '"1st", "2nd", "3rd"', '1st', '2nd', '3rd'],
+    ['multiple-parens', '1st, 2nd, 3rd', '1st', '2nd', '3rd'],
+    ['mixed-quoted', `1"s"'t', '2'n"d", "3"'r'd`, '1st', '2nd', '3rd'],
+    ['whitespace', '   '],
+    ['escaped-terminator%', ''],
+    ['escaped-open-paren(', ''],
+    ['escaped-close-paren', ')', ')'],
+    ['quoted-name()%', ''],
+
+    ['1st-child', ''],
+    ['2nd-child', ''],
+    ['3rd-child', 'a, b, c', 'a', 'b', 'c'],
+    [
+      'parent', `%1st-child%, "%2nd-child%", '%3rd-child(a, b, c)%'`,
+      '%1st-child%', '%2nd-child%', '%3rd-child("a", "b", "c")%',
+    ],
+
+    ['1st-child2', ''],
+    ['2nd-child2', ''],
+    ['3rd-child2', 'a, b, c', 'a', 'b', 'c'],
+    [
+      'parent2', `%1st-child2%, %2nd-child2%, '%3rd-child2(a, b, c)%'`,
+      '%1st-child2%', '%2nd-child2%', '%3rd-child2("a", "b", "c")%',
+    ],
+    [
+      'grand-parent', `"%parent2(%1st-child2%, "%2nd-child2%", '%3rd-child2(a, b, c)%')%"`,
+      '%parent2("%1st-child2%", "%2nd-child2%", "%3rd-child2(\\"a\\", \\"b\\", \\"c\\")%")%',
+    ],
   ];
-  Parser.process(input, (name, ...args) => {
-    is(expectedCalls.shift(), [name, ...args]);
-    return `%${name}(${args.map(arg => JSON.stringify(arg)).join(', ')})%`;
+  Parser.process(input, (name, rawArgs, ...args) => {
+    is(expectedCalls.shift(), [name, rawArgs, ...args]);
+    const argsPart = args.length == 0 ? '' : `(${args.map(arg => JSON.stringify(arg)).join(', ')})`;
+    return `%${name}${argsPart}%`;
   });
 }

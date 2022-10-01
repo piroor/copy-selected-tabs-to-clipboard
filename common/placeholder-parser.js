@@ -5,7 +5,7 @@
 */
 'use strict';
 
-export class PlaceHolderError extends Error {
+export class PlaceHolderParserError extends Error {
   constructor(...args) {
     super(...args);
   }
@@ -23,6 +23,7 @@ export function process(input, processor, processedInput = '') {
 
   let name = '';
   let args = [];
+  let rawArgs = '';
 
   for (const character of input) {
     processedInput += character;
@@ -30,6 +31,8 @@ export function process(input, processor, processedInput = '') {
 
     if (escaped) {
       lastToken += character;
+      if (inArgsPart)
+        rawArgs += character;
       escaped = false;
       continue;
     }
@@ -40,6 +43,9 @@ export function process(input, processor, processedInput = '') {
           escaped = true;
           continue;
         }
+
+        if (inArgsPart)
+          rawArgs += character;
 
         lastToken += character;
         continue;
@@ -52,6 +58,9 @@ export function process(input, processor, processedInput = '') {
           continue;
         }
 
+        if (inArgsPart)
+          rawArgs += character;
+
         if (inSingleQuoteString ||
             inDoubleQuoteString ||
             inArgsPart) {
@@ -63,14 +72,20 @@ export function process(input, processor, processedInput = '') {
           if (lastToken != '')
             name = lastToken;
           else
-            throw new PlaceHolderError(`Missing placeholder name: ${processedInput}`);
+            throw new PlaceHolderParserError(`Missing placeholder name: ${processedInput}`);
         }
 
         inPlaceHolder = false;
-        output += processor(name, ...args);
+        try {
+          output += processor(name, rawArgs, ...args);
+        }
+        catch(error) {
+          throw new PlaceHolderParserError(`Unhandled error: ${error.mssage}\n${error.stack}`);
+        }
         lastToken = '';
         name = '';
         args = [];
+        rawArgs = '';
         continue;
 
       case '(':
@@ -80,6 +95,11 @@ export function process(input, processor, processedInput = '') {
           continue;
         }
 
+        if (inArgsPart)
+          rawArgs += character;
+        else if (rawArgs != '')
+          rawArgs += ', ';
+
         if (inSingleQuoteString ||
             inDoubleQuoteString ||
             inArgsPart) {
@@ -88,7 +108,8 @@ export function process(input, processor, processedInput = '') {
         }
 
         inArgsPart = true;
-        name = lastToken;
+        if (name == '' && lastToken != '')
+          name = lastToken;
         lastToken = '';
         continue;
 
@@ -102,12 +123,15 @@ export function process(input, processor, processedInput = '') {
         if (inSingleQuoteString ||
             inDoubleQuoteString ||
             !inArgsPart) {
+          if (inArgsPart)
+            rawArgs += character;
           lastToken += character;
           continue;
         }
 
         inArgsPart = false;
-        args.push(process(lastToken, processor, processedInput));
+        if (rawArgs.trim() != '')
+          args.push(process(lastToken, processor, processedInput));
         lastToken = '';
         continue;
 
@@ -117,6 +141,9 @@ export function process(input, processor, processedInput = '') {
           lastToken = '';
           continue;
         }
+
+        if (inArgsPart)
+          rawArgs += character;
 
         if (inSingleQuoteString ||
             inDoubleQuoteString ||
@@ -135,6 +162,9 @@ export function process(input, processor, processedInput = '') {
           lastToken = '';
           continue;
         }
+
+        if (inArgsPart)
+          rawArgs += character;
 
         if (inSingleQuoteString) {
           lastToken += character;
@@ -156,6 +186,9 @@ export function process(input, processor, processedInput = '') {
           continue;
         }
 
+        if (inArgsPart)
+          rawArgs += character;
+
         if (inDoubleQuoteString) {
           lastToken += character;
           continue;
@@ -176,6 +209,9 @@ export function process(input, processor, processedInput = '') {
           continue;
         }
 
+        if (inArgsPart)
+          rawArgs += character;
+
         if (character.trim() == '') { // whitespace
           if (inSingleQuoteString ||
               inDoubleQuoteString ||
@@ -191,14 +227,14 @@ export function process(input, processor, processedInput = '') {
   }
 
   if (inPlaceHolder)
-    throw new PlaceHolderError(`Unterminated placeholder: ${processedInput}`);
+    throw new PlaceHolderParserError(`Unterminated placeholder: ${processedInput}`);
 
   if (inArgsPart)
-    throw new PlaceHolderError(`Unterminated arguments for the placeholder "${name}": ${processedInput}`);
+    throw new PlaceHolderParserError(`Unterminated arguments for the placeholder "${name}": ${processedInput}`);
 
   if (inSingleQuoteString ||
       inDoubleQuoteString)
-    throw new PlaceHolderError(`Unterminated string: ${processedInput}`);
+    throw new PlaceHolderParserError(`Unterminated string: ${processedInput}`);
 
   if (escaped)
     output += '\\';

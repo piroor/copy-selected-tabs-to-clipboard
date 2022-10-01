@@ -14,8 +14,8 @@ import {
 } from './common.js';
 import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
+import * as PlaceHolderParser from './placeholder-parser.js';
 import * as Replacer from './replacer.js';
-import * as FunctionalPlaceHolder from './functional-placeholder.js';
 
 export async function getMultiselectedTabs(tab) {
   if (!tab)
@@ -334,7 +334,7 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
     };
   }
   catch(error) {
-    if (error instanceof Replacer.ReplacerError || error instanceof FunctionalPlaceHolder.FunctionalPlaceHolderError)
+    if (error instanceof Replacer.ReplacerError || error instanceof PlaceHolderParser.PlaceHolderParserError)
       return {
         richText:  '',
         plainText: error.message
@@ -352,57 +352,108 @@ function fillPlaceHoldersInternal(
   format,
   { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel } = {}
 ) {
-  const replaced = Replacer.processAll(
-    format,
-    (input, ..._replacePairs) => fillPlaceHoldersInternal(input, { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel })
-  );
-  const filled = FunctionalPlaceHolder.processAll(replaced, {
-    container_name:            (prefix, suffix) => tab.container ? `${prefix}${tab.container}${suffix}` : '',
-    container_name_html:       (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
-    container_name_htmlified:  (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
-    container_title:           (prefix, suffix) => tab.container ? `${prefix}${tab.container}${suffix}` : '',
-    container_title_html:      (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
-    container_title_htmlified: (prefix, suffix) => sanitizeHtmlText(tab.container ? `${prefix}${tab.container}${suffix}` : ''),
+  return PlaceHolderParser.process(format, (name, rawArgs, ...args) => {
+    return processPlaceHolder(
+      name,
+      rawArgs,
+      args,
+      { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel }
+    );
   });
-  return filled
-    .replace(/%(?:RLINK|RLINK_HTML(?:IFIED)?|SEL|SEL_HTML(?:IFIED)?)%/gi, '')
-    .replace(/%URL%/gi, tab.url)
-    .replace(/%(?:TITLE|TEXT)%/gi, tab.title)
-    .replace(/%URL_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url))
-    .replace(/%TITLE_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.title))
-    .replace(/%CONTAINER_(?:NAME|TITLE)%/gi, tab.container ? `${tab.container}: ` : '')
-    .replace(/%CONTAINER_(?:NAME|TITLE)_HTML(?:IFIED)%/gi, tab.container ? `${tab.container}: ` : '')
-    .replace(/%CONTAINER_URL%/gi, tab.container ? `ext+container:name=${tab.container}&url=${tab.url}` : tab.url)
-    .replace(/%CONTAINER_URL_HTML(?:IFIED)%/gi, tab.container ? `ext+container:name=${tab.container}&url=${sanitizeHtmlText(tab.url)}` : sanitizeHtmlText(tab.url))
-    .replace(/%AUTHOR%/gi, author || '')
-    .replace(/%AUTHOR_HTML(?:IFIED)?%/gi, sanitizeHtmlText(author || ''))
-    .replace(/%DESC(?:RIPTION)?%/gi, description || '')
-    .replace(/%DESC(?:RIPTION)?_HTML(?:IFIED)?%/gi, sanitizeHtmlText(description || ''))
-    .replace(/%KEYWORDS%/gi, keywords || '')
-    .replace(/%KEYWORDS_HTML(?:IFIED)?%/gi, sanitizeHtmlText(keywords || ''))
-    .replace(/%UTC_TIME%/gi, timeUTC)
-    .replace(/%LOCAL_TIME%/gi, timeLocal)
-    .replace(/%TAB%/gi, '\t')
-    .replace(/%EOL%/gi, lineFeed)
-    .replace(/%RT%/gi, '')
-    .replace(kFORMAT_MATCHER_TST_INDENT, matched => {
-      let indenters = matched.replace(/^%TST_INDENT|%$/g, '');
-      if (indenters == '') {
-        indenters = ['  '];
-      }
-      else {
-        indenters = indenters
-          .match(kFORMAT_PARAMETER_MATCHER)
-          .map(indenter => indenter.substring(1, indenter.length - 1))
-          .reverse();
-      }
+}
+
+const HTML_SAFE_PATTERN = /^(.+)_HTML(?:IFIED)?$/i;
+
+function processPlaceHolder(
+  name,
+  rawArgs,
+  args,
+  { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel } = {}
+) {
+  switch (name.trim().toLowerCase()) {
+    case 'rt':
+      return '';
+
+    case 'html':
+    case 'html_safe':
+      return sanitizeHtmlText(args);
+
+    case 'replace':
+      return Replacer.replace(args);
+
+    case 'rlink':
+    case 'rlink_html':
+    case 'rlink_htmlified':
+    case 'sel':
+    case 'sel_html':
+    case 'sel_htmlified':
+      return '';
+
+    case 'url':
+      return tab.url;
+
+    case 'title':
+    case 'text':
+      return tab.title;
+
+    case 'container_name':
+    case 'container_title': {
+      const [prefix, suffix] = args.length == 0 ? ['', ''] : args;
+      return tab.container ? `${prefix}${tab.container}${suffix}` : '';
+    }
+
+    case 'container_url':
+      return tab.container ? `ext+container:name=${tab.container}&url=${tab.url}` : tab.url;
+
+    case 'author':
+      return author || '';
+
+    case 'desc':
+    case 'description':
+      return description || '';
+
+    case 'keywords':
+      return keywords || '';
+
+    case 'utc_time':
+      return timeUTC;
+
+    case 'local_time':
+      return timeLocal;
+
+    case 'tab':
+      return '\t';
+
+    case 'eol':
+      return lineFeed;
+
+    case 'tst_indent': {
+      const indenters = args.length == 0 ?
+        (rawArgs != '' ?  // for backward compatibility
+          [rawArgs] : ['  ']) :
+        args;
       let indent = '';
       for (let i = 0; i < indentLevel; i++) {
         const indenter = indenters[Math.min(i, indenters.length - 1)];
         indent = `${indenter}${indent}`;
       }
       return indent;
-    });
+    }
+
+    default: {
+      // for backward compatibility
+      const matchedToHTMLSafe = name.match(HTML_SAFE_PATTERN);
+      if (matchedToHTMLSafe)
+        return sanitizeHtmlText(processPlaceHolder(
+          matchedToHTMLSafe[1],
+          rawArgs,
+          args,
+          { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel } = {}
+        ));
+    }
+  }
+
+  throw new Error(`Unknown placeholder: ${name}`);
 }
 
 export function sanitizeHtmlText(text) {
