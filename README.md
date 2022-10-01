@@ -13,8 +13,8 @@ https://github.com/piroor/copy-selected-tabs-to-clipboard/actions?query=workflow
 |Title and URL|`%TITLE%%EOL%%URL%`|
 |HTML Link|`<a title="%TITLE_HTML%" href="%URL_HTML%">%TITLE_HTML%</a>`|
 |HTML Link (Rich Text)|`%RT%<a title="%TITLE_HTML%" href="%URL_HTML%">%TITLE_HTML%</a>`|
-|Markdown Link|`[%TITLE%](%URL% "%TITLE%")`|
-|Markdown Link List|`%TST_INDENT(  )%* [%TITLE%](%URL% "%TITLE%")`|
+|Markdown Link|`[%TITLE_MD%](%URL% "%TITLE_MD_LINK_TITLE%")`|
+|Markdown Link List|`%TST_INDENT(  )%* [%TITLE_MD%](%URL% "%TITLE_MD_LINK_TITLE%")`|
 |URL without query|`%REPLACE("%URL%", "\?.*$", "")%`|
 |URL without query except Google|`%REPLACE("%URL%", "^(?!\w+://[^/]*\.google\.[^/]*/.*)\?.*$", "$1")`|
 |Org Mode Link List|`*%TST_INDENT(*)% [[%URL%][%TITLE%]]`|

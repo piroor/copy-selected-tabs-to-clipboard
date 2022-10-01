@@ -29,11 +29,11 @@ defaultClipboardFormats.push({
 });
 defaultClipboardFormats.push({
   label:  browser.i18n.getMessage('context_clipboard_markdown_label'),
-  format: '[%TITLE%](%URL% "%TITLE%")'
+  format: '[%TITLE_MD%](%URL% "%TITLE_MD_LINK_TITLE%")'
 });
 defaultClipboardFormats.push({
   label:  browser.i18n.getMessage('context_clipboard_markdown_list_label'),
-  format: '%TST_INDENT(  )%* [%TITLE%](%URL% "%TITLE%")'
+  format: '%TST_INDENT(  )%* [%TITLE_MD%](%URL% "%TITLE_MD_LINK_TITLE%")'
 });
 
 export const configs = new Configs({

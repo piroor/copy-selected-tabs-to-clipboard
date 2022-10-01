@@ -370,18 +370,34 @@ function fillPlaceHoldersInternal(
     .replace(/%(?:TITLE|TEXT)%/gi, tab.title)
     .replace(/%URL_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.url))
     .replace(/%TITLE_HTML(?:IFIED)?%/gi, sanitizeHtmlText(tab.title))
+    .replace(/%URL_MD?%/gi, sanitizeMdText(tab.url))
+    .replace(/%URL_MD_LINK_TITLE?%/gi, sanitizeMdLinkTitleText(tab.url))
+    .replace(/%(?:TITLE|TEXT)_MD%/gi, sanitizeMdText(tab.title))
+    .replace(/%(?:TITLE|TEXT)_MD_LINK_TITLE%/gi, sanitizeMdLinkTitleText(tab.title))
     .replace(/%CONTAINER_(?:NAME|TITLE)%/gi, tab.container ? `${tab.container}: ` : '')
     .replace(/%CONTAINER_(?:NAME|TITLE)_HTML(?:IFIED)%/gi, tab.container ? `${tab.container}: ` : '')
+    .replace(/%CONTAINER_(?:NAME|TITLE)_MD%/gi, tab.container ? `${sanitizeMdText(tab.container)}: ` : '')
+    .replace(/%CONTAINER_(?:NAME|TITLE)_MD_LINK_TITLE%/gi, tab.container ? `${sanitizeMdLinkTitleText(tab.container)}: ` : '')
     .replace(/%CONTAINER_URL%/gi, tab.container ? `ext+container:name=${tab.container}&url=${tab.url}` : tab.url)
     .replace(/%CONTAINER_URL_HTML(?:IFIED)%/gi, tab.container ? `ext+container:name=${tab.container}&url=${sanitizeHtmlText(tab.url)}` : sanitizeHtmlText(tab.url))
     .replace(/%AUTHOR%/gi, author || '')
     .replace(/%AUTHOR_HTML(?:IFIED)?%/gi, sanitizeHtmlText(author || ''))
+    .replace(/%AUTHOR_MD%/gi, sanitizeMdText(author || ''))
+    .replace(/%AUTHOR_MD_LINK_TITLE%/gi, sanitizeMdLinkTitleText(author || ''))
     .replace(/%DESC(?:RIPTION)?%/gi, description || '')
     .replace(/%DESC(?:RIPTION)?_HTML(?:IFIED)?%/gi, sanitizeHtmlText(description || ''))
+    .replace(/%DESC(?:RIPTION)?_MD%/gi, sanitizeMdText(description || ''))
+    .replace(/%DESC(?:RIPTION)?_MD_LINK_TITLE%/gi, sanitizeMdLinkTitleText(description || ''))
     .replace(/%KEYWORDS%/gi, keywords || '')
     .replace(/%KEYWORDS_HTML(?:IFIED)?%/gi, sanitizeHtmlText(keywords || ''))
+    .replace(/%KEYWORDS_MD%/gi, sanitizeMdText(keywords || ''))
+    .replace(/%KEYWORDS_MD_LINK_TITLE%/gi, sanitizeMdLinkTitleText(keywords || ''))
     .replace(/%UTC_TIME%/gi, timeUTC)
+    .replace(/%UTC_TIME_MD%/gi, sanitizeMdText(timeUTC))
+    .replace(/%UTC_TIME_MD_LINK_TITLE%/gi, sanitizeMdLinkTitleText(timeUTC))
     .replace(/%LOCAL_TIME%/gi, timeLocal)
+    .replace(/%LOCAL_TIME_MD%/gi, sanitizeMdText(timeLocal))
+    .replace(/%LOCAL_TIME_MD_LINK_TITLE%/gi, sanitizeMdLinkTitleText(timeLocal))
     .replace(/%TAB%/gi, '\t')
     .replace(/%EOL%/gi, lineFeed)
     .replace(/%RT%/gi, '')
@@ -411,6 +427,14 @@ export function sanitizeHtmlText(text) {
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+export function sanitizeMdText(text) {
+  return text.replace(/[-!"#$%&'()*+,./:;<=>?@^_`{|}~\[\\\]]/g, '\\$&');
+}
+
+export function sanitizeMdLinkTitleText(text) {
+  return text.replace(/["'()&\\]/g, '\\$&');
 }
 
 async function notifyCopied(count, copied) {
