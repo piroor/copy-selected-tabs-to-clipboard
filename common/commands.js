@@ -448,7 +448,7 @@ function processPlaceHolder(
           matchedToHTMLSafe[1],
           rawArgs,
           args,
-          { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel } = {}
+          { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel }
         ));
     }
   }
