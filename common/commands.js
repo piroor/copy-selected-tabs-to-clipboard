@@ -376,7 +376,7 @@ function processPlaceHolder(
 
     case 'html':
     case 'html_safe':
-      return sanitizeHtmlText(args);
+      return sanitizeHtmlText(args[0]);
 
     case 'replace':
       return Replacer.replace(args);
