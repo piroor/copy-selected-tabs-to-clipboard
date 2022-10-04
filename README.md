@@ -7,8 +7,8 @@ https://github.com/piroor/copy-selected-tabs-to-clipboard/actions?query=workflow
 
 ## Syntax
 
-* Arguments for functional placeholders can be wrapped with quotations: double quote, single quote or back quote. For convenience, put a backslash preceding to a quotation character, if you want to put the quotation character same to the open/close quotations, in a string literal. For example: `'c\'mon'` (apostrophe in a string wrapped with single quotes)
-* Quotations to wrap string arguments are optional. Quotations are required only when the string contains special characters like `,` (separator of arguments), `)` (the end of the arguments) and so on. For example, all of them are same: `%TST_INDENT(--)%`, `%TST_INDENT("--")%`, `%TST_INDENT('--')%` and <code>%TST_INDENT(`--`)%</code>
+* Arguments for functional placeholders can be wrapped with quotations: double quote (`"`), single quote (`'`) or back quote (`` ` ``). For convenience, put a backslash preceding to a quotation character, if you want to put the quotation character same to the open/close quotations, in a string literal. For example: `'c\'mon'` (apostrophe in a string wrapped with single quotes)
+* Quotations to wrap string arguments are optional. Quotations are required only when the string contains special characters like `,` (separator of arguments), `)` (the end of the arguments) and so on. For example, all of them are same: `%TST_INDENT(--)%`, `%TST_INDENT("--")%`, `%TST_INDENT('--')%` and ``%TST_INDENT(`--`)%``
 
 ## Example copy formats
 
