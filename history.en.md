@@ -1,6 +1,11 @@
 # History
 
  - master/HEAD
+ - 1.5.0 (2022.10.4)
+   * Support `%HTML_SAFE(...)%` (instead of placeholder variations suffixed with `_HTML%`), `%MD_SAFE(...)%` and `%MD_LINK_TITLE_SAFE(...)%` as functional placeholders. You can wrap arbitrary text with them and use as HTML/Markdown-safe text.
+   * Support `%ANY(...)%` functional placeholder. It allows you to define formats with auto-fallback for multiple texts.
+   * Nested placeholders are completely supported. You can combine `%TST_INDENT(...)%`, `%REPLACE(...)%`, and other functional placeholders in complex from.
+   * Text literals wrapped with backquotes are now supported. It will useful for texts including both double quote and single quote.
  - 1.4.6 (2022.9.12)
    * Copy data in rich text format more certainly.
  - 1.4.5 (2022.3.16)
