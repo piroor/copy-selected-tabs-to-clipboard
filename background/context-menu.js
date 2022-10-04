@@ -35,10 +35,12 @@ const mMenuItems = [
 ];
 const mFormatItems = new Map();
 
+const SEPARATOR_MATCHER = /^([!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~])\1+$/;
+
 function createItem(item) {
   const params = {
     id:       item.id,
-    type:     item.type || 'normal',
+    type:     item.type || (!item.format && SEPARATOR_MATCHER.test(item.title) ? 'separator' : 'normal'),
     visible:  item.visible,
     title:    item.title
   };
