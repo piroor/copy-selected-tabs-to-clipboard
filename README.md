@@ -19,5 +19,6 @@ https://github.com/piroor/copy-selected-tabs-to-clipboard/actions?query=workflow
 |URL without query except Google|`%REPLACE("%URL%", "^(?!\w+://[^/]*\.google\.[^/]*/.*)\?.*$", "$1")`|
 |Org Mode Link List|`*%TST_INDENT(*)% [[%URL%][%TITLE%]]`|
 |Firefox container Org Mode| `[[%CONTAINER_URL%][%CONTAINER_NAME("", ": ")%%TITLE%]]`|
+|Redmine Issue #|#%REPLACE("%URL%", "^\\w+://.+/([\\d+]+)\\?[^#]*(#[^#]*)?$", "$1")%|
 
 `%CONTAINER_URL%` will be filled with a URL for [Open external links in a container](https://addons.mozilla.org/firefox/addon/open-url-in-container/), if it is non-default container tab.
