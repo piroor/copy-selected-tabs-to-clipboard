@@ -11,7 +11,7 @@ export class PlaceHolderParserError extends Error {
   }
 }
 
-export function process(input, processor, processedInput = '') {
+export function process(input, processor, processedInput = '', logger = (() => {})) {
   let output = '';
 
   let lastToken = '';
@@ -77,6 +77,7 @@ export function process(input, processor, processedInput = '') {
 
         inPlaceHolder = false;
         try {
+          logger('parser: placeholder ', { name, rawArgs, args });
           output += processor(name, rawArgs, ...args);
         }
         catch(error) {

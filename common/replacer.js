@@ -5,17 +5,13 @@
 */
 'use strict';
 
-import {
-  log,
-} from './common.js';
-
 export class ReplacerError extends Error {
   constructor(...args) {
     super(...args);
   }
 }
 
-export function replace(args) {
+export function replace(args, logger = (() => {})) {
   if (args.length == 0)
     throw new ReplacerError(`Missing argument: Replacer must take one base text and one or more matcher/replace-text pairs`);
   if (args.length % 2 == 0)
@@ -27,9 +23,9 @@ export function replace(args) {
   for (let i = 0, maxi = args.length; i < maxi; i += 2) {
     const pattern = args[i];
     const to = args[i + 1];
-    log('replace: ', { source: filled, pattern, to });
+    logger('replace: ', { source: filled, pattern, to });
     filled = filled.replace(new RegExp(pattern, 'i'), to);
-    log(' => ', filled);
+    logger(' => ', filled);
   }
   return filled;
 }

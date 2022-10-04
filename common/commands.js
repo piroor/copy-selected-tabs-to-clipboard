@@ -359,7 +359,7 @@ function fillPlaceHoldersInternal(
       args,
       { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel }
     );
-  });
+  }, '', log);
 }
 
 const HTML_SAFE_PATTERN = /^(.+)_HTML(?:IFIED)?$/i;
@@ -380,7 +380,7 @@ function processPlaceHolder(
       return sanitizeHtmlText(args[0]);
 
     case 'replace':
-      return Replacer.replace(args);
+      return Replacer.replace(args, log);
 
     case 'rlink':
     case 'sel':
