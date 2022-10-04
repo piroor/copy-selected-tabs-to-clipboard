@@ -272,7 +272,7 @@ export async function copyToClipboard(tabs, format) {
 }
 
 export async function fillPlaceHolders(format, tab, indentLevel) {
-  log('fillPlaceHolders ', tab.id, format, indentLevel);
+  log(`fillPlaceHolders for tab #{tab.id}`, { format, indentLevel });
   const now = new Date();
   let params = {
     tab,
@@ -370,6 +370,7 @@ function processPlaceHolder(
   args,
   { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel } = {}
 ) {
+  log('processPlaceHolder ', name, rawArgs, args);
   switch (name.trim().toLowerCase()) {
     case 'rt':
       return '';

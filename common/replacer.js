@@ -5,6 +5,10 @@
 */
 'use strict';
 
+import {
+  log,
+} from './common.js';
+
 export class ReplacerError extends Error {
   constructor(...args) {
     super(...args);
@@ -21,7 +25,11 @@ export function replace(args) {
 
   let filled = args.shift();
   for (let i = 0, maxi = args.length; i < maxi; i += 2) {
-    filled = filled.replace(new RegExp(args[i], 'i'), args[i + 1]);
+    const pattern = args[i];
+    const to = args[i + 1];
+    log('replace: ', { source: filled, pattern, to });
+    filled = filled.replace(new RegExp(pattern, 'i'), to);
+    log(' => ', filled);
   }
   return filled;
 }
