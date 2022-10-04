@@ -19,6 +19,8 @@ export function testProcessorCalls() {
     %escaped-terminator\\%%
     %escaped-open-paren\\(%
     %escaped-close-paren(\\))%
+    %escaped-close-quotations("\\"", '\\'')%
+    %no-need-to-escape-character(\\a, "\\a\\'", '\\a\\"')%
     %escaped-arg("^\\w+//[^#]+/([\\d]+)+$")%
     %"quoted-name()%"%
     %parent(%1st-child%, "%2nd-child%", '%3rd-child(a, b, c)%')%
@@ -34,6 +36,8 @@ export function testProcessorCalls() {
     ['escaped-terminator%', ''],
     ['escaped-open-paren(', ''],
     ['escaped-close-paren', ')', ')'],
+    ['escaped-close-quotations', `"\\"", '\\''`, '"', "'"],
+    ['no-need-to-escape-character', `\\a, "\\a\\'", '\\a\\"'`, '\\a', '\\a\\\'', '\\a\\"'],
     ['escaped-arg', '"^\\w+//[^#]+/([\\d]+)+$"', '^\\w+//[^#]+/([\\d]+)+$'],
     ['quoted-name()%', ''],
 
@@ -58,7 +62,8 @@ export function testProcessorCalls() {
     ],
   ];
   Parser.process(input, (name, rawArgs, ...args) => {
-    is(expectedCalls.shift(), [name, rawArgs, ...args]);
+    //console.log(name, { rawArgs, args });
+    is(expectedCalls.shift(), [name, rawArgs, ...args], JSON.stringify({ name, rawArgs, args }));
     const argsPart = args.length == 0 ? '' : `(${args.map(arg => JSON.stringify(arg)).join(', ')})`;
     return `%${name}${argsPart}%`;
   });

@@ -27,14 +27,23 @@ export function process(input, processor, processedInput = '', logger = (() => {
 
   for (const character of input) {
     processedInput += character;
-    //console.log({input, character, lastToken, inPlaceHolder, inSingleQuoteString, inDoubleQuoteString, inArgsPart, escaped, output, name, args});
+    //console.log({input, character, lastToken, inPlaceHolder, inSingleQuoteString, inDoubleQuoteString, inArgsPart, escaped, output, name, rawArgs, args});
 
     if (escaped) {
-      if ((inDoubleQuoteString && character != '"') ||
-          (inSingleQuoteString && character != "'")) {
-        lastToken += '\\';
+      if ((inDoubleQuoteString && character == '"') ||
+          (inSingleQuoteString && character == "'")) {
         if (inArgsPart)
           rawArgs += '\\';
+      }
+      else if ((inDoubleQuoteString && character != '"') ||
+               (inSingleQuoteString && character != "'") ||
+               (!inDoubleQuoteString &&
+                !inSingleQuoteString &&
+                inArgsPart &&
+                character != ')')) {
+        if (inArgsPart)
+          rawArgs += '\\';
+        lastToken += '\\';
       }
       lastToken += character;
       if (inArgsPart)
