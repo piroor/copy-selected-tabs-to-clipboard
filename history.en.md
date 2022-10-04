@@ -6,6 +6,7 @@
    * Support `%ANY(...)%` functional placeholder. It allows you to define formats with auto-fallback for multiple texts.
    * Nested placeholders are completely supported. You can combine `%TST_INDENT(...)%`, `%REPLACE(...)%`, and other functional placeholders in complex from.
    * Text literals wrapped with backquotes are now supported. It will useful for texts including both double quote and single quote.
+   * Support separator type items. Items with title like `----` (two or more continuing same symbol characters) are treated as separators in the menu.
  - 1.4.6 (2022.9.12)
    * Copy data in rich text format more certainly.
  - 1.4.5 (2022.3.16)
