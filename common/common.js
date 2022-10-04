@@ -25,15 +25,15 @@ defaultClipboardFormats.push({
 */
 defaultClipboardFormats.push({
   label:  browser.i18n.getMessage('context_clipboard_html_link_label'),
-  format: '<a title="%TITLE_HTML%" href="%URL_HTML%">%TITLE_HTML%</a>'
+  format: '<a title="%HTML_SAFE(%TITLE%)%" href="%HTML_SAFE(%URL)%%">%HTML_SAFE(%TITLE%)%</a>'
 });
 defaultClipboardFormats.push({
   label:  browser.i18n.getMessage('context_clipboard_markdown_label'),
-  format: '[%TITLE%](%URL% "%TITLE%")'
+  format: '[%MD_SAFE(%TITLE%)%](%URL% "%MD_LINK_TITLE_SAFE(%TITLE%)%")'
 });
 defaultClipboardFormats.push({
   label:  browser.i18n.getMessage('context_clipboard_markdown_list_label'),
-  format: '%TST_INDENT(  )%* [%TITLE%](%URL% "%TITLE%")'
+  format: '%TST_INDENT("  ")%* [%MD_SAFE(%TITLE%)%](%URL% "%MD_LINK_TITLE_SAFE(%TITLE%)%")'
 });
 
 export const configs = new Configs({
