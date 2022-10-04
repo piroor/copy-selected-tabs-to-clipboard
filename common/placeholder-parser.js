@@ -39,6 +39,12 @@ export function process(input, processor, processedInput = '', logger = (() => {
 
     switch (character) {
       case '\\':
+        if (!inPlaceHolder) {
+          output += character;
+          lastToken = '';
+          continue;
+        }
+
         if (!escaped) {
           escaped = true;
           continue;
