@@ -13,6 +13,7 @@ export function testProcessorCalls() {
     %unquoted(1st, 2nd, 3rd)%
     %single-quoted('1st', '2nd', '3rd')%
     %double-quoted("1st", "2nd", "3rd")%
+    %back-quoted(\`1st\`, \`2nd\`, \`3rd\`)%
     %multiple-parens(1st)(2nd)(3rd)%
     %mixed-quoted(1"s"'t', '2'n"d", "3"'r'd)%
     %whitespace(   )%
@@ -30,6 +31,7 @@ export function testProcessorCalls() {
     ['unquoted', '1st, 2nd, 3rd', '1st', '2nd', '3rd'],
     ['single-quoted', "'1st', '2nd', '3rd'", '1st', '2nd', '3rd'],
     ['double-quoted', '"1st", "2nd", "3rd"', '1st', '2nd', '3rd'],
+    ['back-quoted', '`1st`, `2nd`, `3rd`', '1st', '2nd', '3rd'],
     ['multiple-parens', '1st, 2nd, 3rd', '1st', '2nd', '3rd'],
     ['mixed-quoted', `1"s"'t', '2'n"d", "3"'r'd`, '1st', '2nd', '3rd'],
     ['whitespace', '   '],

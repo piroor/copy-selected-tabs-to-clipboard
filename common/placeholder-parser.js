@@ -19,6 +19,7 @@ export function process(input, processor, processedInput = '', logger = (() => {
   let inArgsPart = false;
   let inSingleQuoteString = false;
   let inDoubleQuoteString = false;
+  let inBackQuoteString = false;
   let escaped = false;
 
   let name = '';
@@ -31,14 +32,17 @@ export function process(input, processor, processedInput = '', logger = (() => {
 
     if (escaped) {
       if ((inDoubleQuoteString && character == '"') ||
-          (inSingleQuoteString && character == "'")) {
+          (inSingleQuoteString && character == "'") ||
+          (inBackQuoteString && character == '`')) {
         if (inArgsPart)
           rawArgs += '\\';
       }
       else if ((inDoubleQuoteString && character != '"') ||
                (inSingleQuoteString && character != "'") ||
+               (inBackQuoteString && character != '`') ||
                (!inDoubleQuoteString &&
                 !inSingleQuoteString &&
+                !inBackQuoteString &&
                 inArgsPart &&
                 character != ')')) {
         if (inArgsPart)
@@ -84,6 +88,7 @@ export function process(input, processor, processedInput = '', logger = (() => {
 
         if (inSingleQuoteString ||
             inDoubleQuoteString ||
+            inBackQuoteString ||
             inArgsPart) {
           lastToken += character;
           continue;
@@ -124,6 +129,7 @@ export function process(input, processor, processedInput = '', logger = (() => {
 
         if (inSingleQuoteString ||
             inDoubleQuoteString ||
+            inBackQuoteString ||
             inArgsPart) {
           lastToken += character;
           continue;
@@ -144,6 +150,7 @@ export function process(input, processor, processedInput = '', logger = (() => {
 
         if (inSingleQuoteString ||
             inDoubleQuoteString ||
+            inBackQuoteString ||
             !inArgsPart) {
           if (inArgsPart)
             rawArgs += character;
@@ -169,6 +176,7 @@ export function process(input, processor, processedInput = '', logger = (() => {
 
         if (inSingleQuoteString ||
             inDoubleQuoteString ||
+            inBackQuoteString ||
             !inArgsPart) {
           lastToken += character;
           continue;
@@ -188,7 +196,8 @@ export function process(input, processor, processedInput = '', logger = (() => {
         if (inArgsPart)
           rawArgs += character;
 
-        if (inSingleQuoteString) {
+        if (inSingleQuoteString ||
+            inBackQuoteString) {
           lastToken += character;
           continue;
         }
@@ -211,7 +220,8 @@ export function process(input, processor, processedInput = '', logger = (() => {
         if (inArgsPart)
           rawArgs += character;
 
-        if (inDoubleQuoteString) {
+        if (inDoubleQuoteString ||
+            inBackQuoteString) {
           lastToken += character;
           continue;
         }
@@ -222,6 +232,30 @@ export function process(input, processor, processedInput = '', logger = (() => {
         }
 
         inSingleQuoteString = true;
+        continue;
+
+      case '`':
+        if (!inPlaceHolder) {
+          output += character;
+          lastToken = '';
+          continue;
+        }
+
+        if (inArgsPart)
+          rawArgs += character;
+
+        if (inDoubleQuoteString ||
+            inSingleQuoteString) {
+          lastToken += character;
+          continue;
+        }
+
+        if (inBackQuoteString) {
+          inBackQuoteString = false;
+          continue;
+        }
+
+        inBackQuoteString = true;
         continue;
 
       default:
@@ -237,6 +271,7 @@ export function process(input, processor, processedInput = '', logger = (() => {
         if (character.trim() == '') { // whitespace
           if (inSingleQuoteString ||
               inDoubleQuoteString ||
+              inBackQuoteString ||
               !inArgsPart) {
             lastToken += character;
           }
@@ -255,7 +290,8 @@ export function process(input, processor, processedInput = '', logger = (() => {
     throw new PlaceHolderParserError(`Unterminated arguments for the placeholder "${name}": ${processedInput}`);
 
   if (inSingleQuoteString ||
-      inDoubleQuoteString)
+      inDoubleQuoteString ||
+      inBackQuoteString)
     throw new PlaceHolderParserError(`Unterminated string: ${processedInput}`);
 
   if (escaped)
