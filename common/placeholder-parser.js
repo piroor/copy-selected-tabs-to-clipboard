@@ -30,6 +30,12 @@ export function process(input, processor, processedInput = '', logger = (() => {
     //console.log({input, character, lastToken, inPlaceHolder, inSingleQuoteString, inDoubleQuoteString, inArgsPart, escaped, output, name, args});
 
     if (escaped) {
+      if ((inDoubleQuoteString && character != '"') ||
+          (inSingleQuoteString && character != "'")) {
+        lastToken += '\\';
+        if (inArgsPart)
+          rawArgs += '\\';
+      }
       lastToken += character;
       if (inArgsPart)
         rawArgs += character;

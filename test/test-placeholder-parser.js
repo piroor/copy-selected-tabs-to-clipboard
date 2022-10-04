@@ -19,7 +19,7 @@ export function testProcessorCalls() {
     %escaped-terminator\\%%
     %escaped-open-paren\\(%
     %escaped-close-paren(\\))%
-    %escaped-arg("^\\\\w+//[^#]+/([\\\\d]+)+$")%
+    %escaped-arg("^\\w+//[^#]+/([\\d]+)+$")%
     %"quoted-name()%"%
     %parent(%1st-child%, "%2nd-child%", '%3rd-child(a, b, c)%')%
     %grand-parent("%parent2(%1st-child2%, "%2nd-child2%", '%3rd-child2(a, b, c)%')%")%
