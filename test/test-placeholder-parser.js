@@ -32,8 +32,9 @@ export function testProcessorCalls() {
     %escaped-arg("^\\w+//[^#]+/([\\d]+)+$")%
      => thus we just need to write "\w" as "\w" instead of too complex "\\w".
     %"quoted-name()%"%
-    %parent(%1st-child%, "%2nd-child%", '%3rd-child(a, b, c)%')%
-    %grand-parent("%parent2(%1st-child2%, "%2nd-child2%", '%3rd-child2(a, b, c)%')%")%
+    %parent(%1st-child%, "%2nd-child%", '%3rd-child(\\a, \\'b\\', "c")%')%
+     => we can nest placeholders in functional forms
+    %grand-parent("%parent2(%1st-child2%, \\"%2nd-child2%\\", '%3rd-child2(\\a, \\'b\\', \\"c\\")%')%")%
   `;
   const expectedCalls = [
     ['unquoted', '1st, 2nd, 3rd', '1st', '2nd', '3rd'],
@@ -53,28 +54,33 @@ export function testProcessorCalls() {
 
     ['1st-child', ''],
     ['2nd-child', ''],
-    ['3rd-child', 'a, b, c', 'a', 'b', 'c'],
+    ['3rd-child', `\\a, 'b', "c"`, '\\a', 'b', 'c'],
     [
-      'parent', `%1st-child%, "%2nd-child%", '%3rd-child(a, b, c)%'`,
-      '%1st-child%', '%2nd-child%', '%3rd-child("a", "b", "c")%',
+      'parent',
+      `%1st-child%, "%2nd-child%", '%3rd-child(\\a, \\'b\\', "c")%'`,
+      '%1st-child%', '%2nd-child%', `%3rd-child(\\a, 'b', "c")%`,
     ],
 
     ['1st-child2', ''],
     ['2nd-child2', ''],
-    ['3rd-child2', 'a, b, c', 'a', 'b', 'c'],
+    ['3rd-child2', `\\a, 'b', "c"`, '\\a', 'b', 'c'],
     [
-      'parent2', `%1st-child2%, %2nd-child2%, '%3rd-child2(a, b, c)%'`,
-      '%1st-child2%', '%2nd-child2%', '%3rd-child2("a", "b", "c")%',
+      'parent2',
+      `%1st-child2%, "%2nd-child2%", '%3rd-child2(\\a, \\'b\\', "c")%'`,
+      '%1st-child2%',
+      '%2nd-child2%',
+      `%3rd-child2(\\a, 'b', "c")%`,
     ],
     [
-      'grand-parent', `"%parent2(%1st-child2%, "%2nd-child2%", '%3rd-child2(a, b, c)%')%"`,
-      '%parent2("%1st-child2%", "%2nd-child2%", "%3rd-child2(\\"a\\", \\"b\\", \\"c\\")%")%',
+      'grand-parent',
+      `"%parent2(%1st-child2%, \\"%2nd-child2%\\", '%3rd-child2(\\a, \\'b\\', \\"c\\")%')%"`,
+      `%parent2(%1st-child2%, "%2nd-child2%", '%3rd-child2(\\a, \\'b\\', "c")%')%`,
     ],
   ];
   try {
     Parser.process(input, (name, rawArgs, ...args) => {
       //console.log(name, { rawArgs, args });
-      is(expectedCalls.shift(), [name, rawArgs, ...args], JSON.stringify({ name, rawArgs, args }));
+      is(expectedCalls.shift(), [name, rawArgs, ...args]);
       const argsPart = args.length == 0 ? '' : `(${rawArgs})`;
       return `%${name}${argsPart}%`;
     });
