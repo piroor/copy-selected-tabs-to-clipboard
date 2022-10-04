@@ -6,8 +6,9 @@
 'use strict';
 
 export class PlaceHolderParserError extends Error {
-  constructor(...args) {
-    super(...args);
+  constructor(message, originalError) {
+    super(message);
+    this.originalError = originalError;
   }
 }
 
@@ -107,7 +108,7 @@ export function process(input, processor, processedInput = '', logger = (() => {
           output += processor(name, rawArgs, ...args);
         }
         catch(error) {
-          throw new PlaceHolderParserError(`Unhandled error: ${error.message}\n${error.stack}`);
+          throw new PlaceHolderParserError(`Unhandled error: ${error.message}\n${error.stack}`, error);
         }
         lastToken = '';
         name = '';
@@ -159,8 +160,14 @@ export function process(input, processor, processedInput = '', logger = (() => {
         }
 
         inArgsPart = false;
-        if (rawArgs.trim() != '')
-          args.push(process(lastToken, processor, processedInput));
+        if (rawArgs.trim() != '') {
+          try {
+            args.push(process(lastToken, processor, processedInput));
+          }
+          catch(error) {
+            throw new PlaceHolderParserError(`Unhandled error: ${error.message}\n${error.stack}`, error);
+          }
+        }
         lastToken = '';
         continue;
 
@@ -182,7 +189,12 @@ export function process(input, processor, processedInput = '', logger = (() => {
           continue;
         }
 
-        args.push(process(lastToken, processor, processedInput));
+        try {
+          args.push(process(lastToken, processor, processedInput));
+        }
+        catch(error) {
+          throw new PlaceHolderParserError(`Unhandled error: ${error.message}\n${error.stack}`, error);
+        }
         lastToken = '';
         continue;
 
