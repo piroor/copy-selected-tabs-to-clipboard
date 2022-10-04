@@ -382,6 +382,13 @@ function processPlaceHolder(
     case 'replace':
       return Replacer.replace(args, log);
 
+    case 'any':
+      for (const arg of args) {
+        if (!!arg)
+          return arg;
+      }
+      return '';
+
     case 'rlink':
     case 'sel':
       return '';
