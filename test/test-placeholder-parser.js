@@ -71,10 +71,15 @@ export function testProcessorCalls() {
       '%parent2("%1st-child2%", "%2nd-child2%", "%3rd-child2(\\"a\\", \\"b\\", \\"c\\")%")%',
     ],
   ];
-  Parser.process(input, (name, rawArgs, ...args) => {
-    //console.log(name, { rawArgs, args });
-    is(expectedCalls.shift(), [name, rawArgs, ...args], JSON.stringify({ name, rawArgs, args }));
-    const argsPart = args.length == 0 ? '' : `(${args.map(arg => JSON.stringify(arg)).join(', ')})`;
-    return `%${name}${argsPart}%`;
-  });
+  try {
+    Parser.process(input, (name, rawArgs, ...args) => {
+      //console.log(name, { rawArgs, args });
+      is(expectedCalls.shift(), [name, rawArgs, ...args], JSON.stringify({ name, rawArgs, args }));
+      const argsPart = args.length == 0 ? '' : `(${rawArgs})`;
+      return `%${name}${argsPart}%`;
+    });
+  }
+  catch(error) {
+    throw error.originalError || error;
+  }
 }
