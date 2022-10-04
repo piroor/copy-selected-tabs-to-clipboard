@@ -379,6 +379,14 @@ function processPlaceHolder(
     case 'html_safe':
       return sanitizeHtmlText(args[0]);
 
+    case 'md':
+    case 'md_safe':
+      return sanitizeMdText(args[0]);
+
+    case 'md_link_title':
+    case 'md_link_title_safe':
+      return sanitizeMdLinkTitleText(args[0]);
+
     case 'replace':
       return Replacer.replace(args, log);
 
@@ -466,6 +474,16 @@ export function sanitizeHtmlText(text) {
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+// https://github.com/piroor/copy-selected-tabs-to-clipboard/pull/36
+export function sanitizeMdText(text) {
+  return text.replace(/[-!"#$%&'()*+,./:;<=>?@^_`{|}~\[\\\]]/g, '\\$&');
+}
+
+// https://github.com/piroor/copy-selected-tabs-to-clipboard/pull/36
+export function sanitizeMdLinkTitleText(text) {
+  return text.replace(/["'()&\\]/g, '\\$&');
 }
 
 async function notifyCopied(count, copied) {
