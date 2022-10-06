@@ -15,9 +15,6 @@ lint: install_dependency
 	"$(NPM_BIN_DIR)/eslint" . --ext=.js --report-unused-disable-directives
 	find . -type d -name node_modules -prune -o -type f -name '*.json' -print | xargs "$(NPM_BIN_DIR)/jsonlint-cli"
 
-test: lint
-	npm run test
-
 format: install_dependency
 	"$(NPM_BIN_DIR)/eslint" . --ext=.js --report-unused-disable-directives --fix
 
@@ -39,3 +36,5 @@ install_extlib:
 	cp submodules/webextensions-lib-l10n/l10n.js extlib/; echo 'export default l10n;' >> extlib/l10n.js
 	cp submodules/webextensions-lib-dom-updater/src/diff.js extlib/
 	cp submodules/webextensions-lib-dom-updater/src/dom-updater.js extlib/
+	cp submodules/webextensions-lib-placeholder-parser/src/placeholder-parser.js extlib/
+	cp submodules/webextensions-lib-placeholder-parser/src/replacer.js extlib/

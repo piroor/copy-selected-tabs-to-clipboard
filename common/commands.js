@@ -5,6 +5,9 @@
 */
 'use strict';
 
+import * as PlaceHolderParser from '/extlib/placeholder-parser.js';
+import * as Replacer from '/extlib/replacer.js';
+
 import {
   log,
   configs,
@@ -14,8 +17,6 @@ import {
 } from './common.js';
 import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
-import * as PlaceHolderParser from './placeholder-parser.js';
-import * as Replacer from './replacer.js';
 
 export async function getMultiselectedTabs(tab) {
   if (!tab)

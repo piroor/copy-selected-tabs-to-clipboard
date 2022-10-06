@@ -7,8 +7,7 @@
   "type": "module",
   "scripts": {
     "lint": "eslint . --ext=.js --report-unused-disable-directives",
-    "format": "eslint . --ext=.js --report-unused-disable-directives --fix",
-    "test": "run-tiny-esm-test-runner test/test-*.js"
+    "format": "eslint . --ext=.js --report-unused-disable-directives --fix"
   },
   "devDependencies": {
     "@babel/core": "^7.17.7",
@@ -19,7 +18,6 @@
     "eslint-import-resolver-babel-module": "^5.3.1",
     "eslint-plugin-import": "^2.25.4",
     "jsonlint-cli": "*",
-    "tiny-esm-test-runner": "^1.2.2",
     "tunnel-agent": ">=0.6.0"
   }
 }
