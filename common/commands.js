@@ -463,6 +463,8 @@ function processPlaceHolder(
           args,
           { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel }
         ));
+
+      return rawArgs ? `%${name}(${rawArgs})%` : `%${name}%`;
     }
   }
 
