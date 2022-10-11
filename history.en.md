@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.5.1 (2022.10.12)
+   * Accept a string which is not placeholders but wrapped with a pair of `%`, as-is instead of reporting "unknown placeholder" error. (regression on 1.5.0)
  - 1.5.0 (2022.10.4)
    * Support `%HTML_SAFE(...)%` (instead of placeholder variations suffixed with `_HTML%`), `%MD_SAFE(...)%` and `%MD_LINK_TITLE_SAFE(...)%` as functional placeholders. You can wrap arbitrary text with them and use as HTML/Markdown-safe text.
    * Support `%ANY(...)%` functional placeholder. It allows you to define formats with auto-fallback for multiple texts.
