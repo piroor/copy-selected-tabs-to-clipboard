@@ -25,7 +25,7 @@ defaultClipboardFormats.push({
 */
 defaultClipboardFormats.push({
   label:  browser.i18n.getMessage('context_clipboard_html_link_label'),
-  format: '<a title="%HTML_SAFE(%TITLE%)%" href="%HTML_SAFE(%URL)%%">%HTML_SAFE(%TITLE%)%</a>'
+  format: '<a title="%HTML_SAFE(%TITLE%)%" href="%HTML_SAFE(%URL%)%">%HTML_SAFE(%TITLE%)%</a>'
 });
 defaultClipboardFormats.push({
   label:  browser.i18n.getMessage('context_clipboard_markdown_label'),
