@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.5.2 (2023.9.9)
+   * Fix typo in the default format of HTML link
  - 1.5.1 (2022.10.12)
    * Accept a string which is not placeholders but wrapped with a pair of `%`, as-is instead of reporting "unknown placeholder" error. (regression on 1.5.0)
  - 1.5.0 (2022.10.4)
