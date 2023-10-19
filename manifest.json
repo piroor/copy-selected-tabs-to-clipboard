@@ -96,7 +96,7 @@
   "applications": {
     "gecko": {
       "id": "copy-selected-tabs-to-clipboard@piro.sakura.ne.jp",
-      "strict_min_version": "64.0"
+      "strict_min_version": "67.0"
     }
   }
 }
