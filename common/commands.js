@@ -91,19 +91,35 @@ export async function copyToClipboard(tabs, format) {
         tabs: tabs.map(tab => tab.id)
       }).catch(handleMissingReceiverError);
       const ancestorsOf = {};
-      const collectAncestors = (tab) => {
-        ancestorsOf[tab.id] = ancestorsOf[tab.id] || [];
-        for (const child of tab.children) {
-          collectAncestors(child);
-          ancestorsOf[child.id] = [tab.id].concat(ancestorsOf[tab.id]);
+      if (tabsWithChildren) {
+        // Data from Tree Style Tab:
+        const collectAncestors = (tab) => {
+          ancestorsOf[tab.id] = ancestorsOf[tab.id] || [];
+          for (const child of tab.children) {
+            collectAncestors(child);
+            ancestorsOf[child.id] = [tab.id].concat(ancestorsOf[tab.id]);
+          }
+        };
+        for (const tab of tabsWithChildren) {
+          collectAncestors(tab);
         }
-      };
-      for (const tab of tabsWithChildren) {
-        collectAncestors(tab);
+      } else {
+        // Fallback to data from native Firefox tabs using the openerTabId, this
+        // property is usually kept in sync with tree structure by addons like
+        // TST or Sidebery:
+        for (const tab of tabs) {
+          // Note: apparently Sidebery sets the openerTabId to the tab's own id
+          // when it is a "root" tab.
+          if (tab.openerTabId !== undefined && tab.openerTabId !== tab.id) {
+            ancestorsOf[tab.id] = [tab.openerTabId].concat(ancestorsOf[tab.openerTabId] || []);
+          } else {
+            ancestorsOf[tab.id] = [];
+          }
+        }
       }
       // ignore indent information for partial selection
       const ids = tabs.map(tab => tab.id);
-      indentLevels = tabsWithChildren.map(tab => {
+      indentLevels = tabs.map(tab => {
         return ancestorsOf[tab.id].filter(ancestorId => ids.indexOf(ancestorId) > -1).length
       });
     }
