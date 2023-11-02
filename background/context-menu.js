@@ -137,13 +137,14 @@ async function refreshFormatItems() {
       visible: format.enabled !== false
     };
     mFormatItems.set(id, item);
+    const topLevelVisible = topLevelShown && item.visible && configs.showContextCommandOnTab;
     await Promise.all([
       createItem({
         ...item,
         id:       `${id}:clipboardOnTabTopLevel`,
         icons:    browser.runtime.getManifest().icons,
         contexts: ['tab'],
-        visible:  topLevelShown && item.visible && configs.showContextCommandOnTab
+        visible:  topLevelVisible
       }),
       createItem({
         ...item,
@@ -155,12 +156,62 @@ async function refreshFormatItems() {
         id:       `${id}:clipboardOnPageTopLevel`,
         icons:    browser.runtime.getManifest().icons,
         contexts: ['page'],
-        visible:  topLevelShown && item.visible && configs.showContextCommandOnPage
+        visible:  topLevelVisible
       }),
       createItem({
         ...item,
         id:       `${id}:under_clipboardOnPage`,
         parentId: 'clipboardOnPage'
+      })
+    ]);
+    await Promise.all([
+      createItem({
+        id:       `${id}:clipboardOnTabTopLevel:tree`,
+        title:    'Tree',
+        contexts: ['tab'],
+        visible:  topLevelVisible,
+        parentId: `${id}:clipboardOnTabTopLevel`,
+      }),
+      createItem({
+        id:       `${id}:clipboardOnTabTopLevel:descendants`,
+        title:    'Descendants',
+        contexts: ['tab'],
+        visible:  topLevelVisible,
+        parentId: `${id}:clipboardOnTabTopLevel`,
+      }),
+      createItem({
+        id:       `${id}:under_clipboardOnTab:tree`,
+        title:    'Tree',
+        parentId: `${id}:under_clipboardOnTab`
+      }),
+      createItem({
+        id:       `${id}:under_clipboardOnTab:descendants`,
+        title:    'Descendants',
+        parentId: `${id}:under_clipboardOnTab`
+      }),
+      createItem({
+        id:       `${id}:clipboardOnPageTopLevel:tree`,
+        title:    'Tree',
+        contexts: ['page'],
+        visible:  topLevelVisible,
+        parentId: `${id}:clipboardOnPageTopLevel`,
+      }),
+      createItem({
+        id:       `${id}:clipboardOnPageTopLevel:descendants`,
+        title:    'Descendants',
+        contexts: ['page'],
+        visible:  topLevelVisible,
+        parentId: `${id}:clipboardOnPageTopLevel`,
+      }),
+      createItem({
+        id:       `${id}:under_clipboardOnPage:tree`,
+        title:    'Tree',
+        parentId: `${id}:under_clipboardOnPage`,
+      }),
+      createItem({
+        id:       `${id}:under_clipboardOnPage:descendants`,
+        title:    'Descendants',
+        parentId: `${id}:under_clipboardOnPage`,
       })
     ]);
   }
