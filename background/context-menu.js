@@ -128,6 +128,7 @@ async function refreshFormatItems() {
 
   const formats = configs.copyToClipboardFormats;
   const topLevelShown = (formats.length - formats.filter(format => format.enabled === false).length) == 1;
+  const promises = [];
   for (let i = 0, maxi = formats.length; i < maxi; i++) {
     const format = formats[i];
     const id     = `clipboard:${i}:${format.label}`;
@@ -138,7 +139,7 @@ async function refreshFormatItems() {
     };
     mFormatItems.set(id, item);
     const topLevelVisible = topLevelShown && item.visible && configs.showContextCommandOnTab;
-    await Promise.all([
+    promises.push(
       createItem({
         ...item,
         id:       `${id}:clipboardOnTabTopLevel`,
@@ -163,62 +164,115 @@ async function refreshFormatItems() {
         id:       `${id}:under_clipboardOnPage`,
         parentId: 'clipboardOnPage'
       })
-    ]);
-    await Promise.all([
-      createItem({
-        id:       `${id}:clipboardOnTabTopLevel:tree`,
-        title:    'Tree',
-        contexts: ['tab'],
-        visible:  topLevelVisible,
-        parentId: `${id}:clipboardOnTabTopLevel`,
-      }),
-      createItem({
-        id:       `${id}:clipboardOnTabTopLevel:descendants`,
-        title:    'Descendants',
-        contexts: ['tab'],
-        visible:  topLevelVisible,
-        parentId: `${id}:clipboardOnTabTopLevel`,
-      }),
-      createItem({
-        id:       `${id}:under_clipboardOnTab:tree`,
-        title:    'Tree',
-        parentId: `${id}:under_clipboardOnTab`
-      }),
-      createItem({
-        id:       `${id}:under_clipboardOnTab:descendants`,
-        title:    'Descendants',
-        parentId: `${id}:under_clipboardOnTab`
-      }),
-      createItem({
-        id:       `${id}:clipboardOnPageTopLevel:tree`,
-        title:    'Tree',
-        contexts: ['page'],
-        visible:  topLevelVisible,
-        parentId: `${id}:clipboardOnPageTopLevel`,
-      }),
-      createItem({
-        id:       `${id}:clipboardOnPageTopLevel:descendants`,
-        title:    'Descendants',
-        contexts: ['page'],
-        visible:  topLevelVisible,
-        parentId: `${id}:clipboardOnPageTopLevel`,
-      }),
-      createItem({
-        id:       `${id}:under_clipboardOnPage:tree`,
-        title:    'Tree',
-        parentId: `${id}:under_clipboardOnPage`,
-      }),
-      createItem({
-        id:       `${id}:under_clipboardOnPage:descendants`,
-        title:    'Descendants',
-        parentId: `${id}:under_clipboardOnPage`,
-      })
-    ]);
+    );
   }
   for (const item of mMenuItems) {
     item.hiddenForTopLevelItem = topLevelShown;
   }
+  await Promise.all(promises);
 }
+async function refreshFormatItemsSubcommands(hasChildren) {
+  const promises = [];
+  for (const [id, item] of mFormatItems.entries()) {
+    if (SEPARATOR_MATCHER.test(item.title))
+      continue;
+    if (hasChildren) {
+      promises.push(
+        createItem({
+          id:       `${id}:clipboardOnTabTopLevel:tab`,
+          title:    browser.i18n.getMessage('context_action_tab_label'),
+          contexts: ['tab'],
+          parentId: `${id}:clipboardOnTabTopLevel`,
+        }),
+        createItem({
+          id:       `${id}:clipboardOnTabTopLevel:tree`,
+          title:    browser.i18n.getMessage('context_action_tree_label'),
+          contexts: ['tab'],
+          parentId: `${id}:clipboardOnTabTopLevel`,
+        }),
+        createItem({
+          id:       `${id}:clipboardOnTabTopLevel:descendants`,
+          title:    browser.i18n.getMessage('context_action_descendants_label'),
+          contexts: ['tab'],
+          parentId: `${id}:clipboardOnTabTopLevel`,
+        }),
+        createItem({
+          id:       `${id}:under_clipboardOnTab:tab`,
+          title:    browser.i18n.getMessage('context_action_tab_label'),
+          contexts: ['tab'],
+          parentId: `${id}:under_clipboardOnTab`,
+        }),
+        createItem({
+          id:       `${id}:under_clipboardOnTab:tree`,
+          title:    browser.i18n.getMessage('context_action_tree_label'),
+          contexts: ['tab'],
+          parentId: `${id}:under_clipboardOnTab`,
+        }),
+        createItem({
+          id:       `${id}:under_clipboardOnTab:descendants`,
+          title:    browser.i18n.getMessage('context_action_descendants_label'),
+          contexts: ['tab'],
+          parentId: `${id}:under_clipboardOnTab`,
+        }),
+        createItem({
+          id:       `${id}:clipboardOnPageTopLevel:tab`,
+          title:    browser.i18n.getMessage('context_action_tab_label'),
+          contexts: ['page'],
+          parentId: `${id}:clipboardOnPageTopLevel`,
+        }),
+        createItem({
+          id:       `${id}:clipboardOnPageTopLevel:tree`,
+          title:    browser.i18n.getMessage('context_action_tree_label'),
+          contexts: ['page'],
+          parentId: `${id}:clipboardOnPageTopLevel`,
+        }),
+        createItem({
+          id:       `${id}:clipboardOnPageTopLevel:descendants`,
+          title:    browser.i18n.getMessage('context_action_descendants_label'),
+          contexts: ['page'],
+          parentId: `${id}:clipboardOnPageTopLevel`,
+        }),
+        createItem({
+          id:       `${id}:under_clipboardOnPage:tab`,
+          title:    browser.i18n.getMessage('context_action_tab_label'),
+          contexts: ['page'],
+          parentId: `${id}:under_clipboardOnPage`,
+        }),
+        createItem({
+          id:       `${id}:under_clipboardOnPage:tree`,
+          title:    browser.i18n.getMessage('context_action_tree_label'),
+          contexts: ['page'],
+          parentId: `${id}:under_clipboardOnPage`,
+        }),
+        createItem({
+          id:       `${id}:under_clipboardOnPage:descendants`,
+          title:    browser.i18n.getMessage('context_action_descendants_label'),
+          contexts: ['page'],
+          parentId: `${id}:under_clipboardOnPage`,
+        })
+      );
+    }
+    else {
+      promises.push(
+        removeItem(`${id}:clipboardOnTabTopLevel:tab`),
+        removeItem(`${id}:clipboardOnTabTopLevel:tree`),
+        removeItem(`${id}:clipboardOnTabTopLevel:descendants`),
+        removeItem(`${id}:under_clipboardOnTab:tab`),
+        removeItem(`${id}:under_clipboardOnTab:tree`),
+        removeItem(`${id}:under_clipboardOnTab:descendants`),
+        removeItem(`${id}:clipboardOnPageTopLevel:tab`),
+        removeItem(`${id}:clipboardOnPageTopLevel:tree`),
+        removeItem(`${id}:clipboardOnPageTopLevel:descendants`),
+        removeItem(`${id}:under_clipboardOnPage:tab`),
+        removeItem(`${id}:under_clipboardOnPage:tree`),
+        removeItem(`${id}:under_clipboardOnPage:descendants`)
+      );
+    }
+  }
+  await Promise.all(promises);
+}
+
+let mLastIsTree = false;
 
 async function onShown(info, tab) {
   const { isAll, isTree, onlyDescendants, hasMultipleTabs } = await Commands.getContextState({ baseTab: tab });
@@ -281,6 +335,10 @@ async function onShown(info, tab) {
       }
       updated = true;
     }
+  }
+  if (mLastIsTree != isTree) {
+    refreshFormatItemsSubcommands(isTree);
+    mLastIsTree = isTree;
   }
   if (updated)
     browser.menus.refresh();

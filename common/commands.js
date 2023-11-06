@@ -43,10 +43,10 @@ export async function getContextState({ baseTab, selectedTabs, callbackOption, w
     type: Constants.kTSTAPI_GET_TREE,
     tab:  baseTab.id
   }).catch(_error => null);
-  const isTree = (
-    treeItem &&
-    treeItem.children.length > 0
-  );
+
+  const ancestorsOf = await collectAncestors([baseTab], treeItem && [treeItem]);
+  const descendantIds = new Set(Object.entries(ancestorsOf).filter(([_id, ancestors]) => ancestors.length > 0).map(([id, _ancestors]) => parseInt(id)));
+  const isTree = descendantIds.size > 0;
   const onlyDescendants = (
     isTree &&
     callbackOption == Constants.kCOPY_TREE_DESCENDANTS
@@ -55,7 +55,7 @@ export async function getContextState({ baseTab, selectedTabs, callbackOption, w
 
   const hasMultipleTabs = (
     (isTree &&
-     [...(onlyDescendants ? [] : [treeItem]), ...treeItem.children]) ||
+     [...(onlyDescendants ? [] : [baseTab]), ...descendantIds]) ||
     selectedTabs
   ).length > 1;
 
@@ -64,7 +64,14 @@ export async function getContextState({ baseTab, selectedTabs, callbackOption, w
       windowId: baseTab.windowId,
       hidden:   false,
     }).catch(_error => [])) :
-    (isTree && await collectTabsFromTree(treeItem, { onlyDescendants })) || selectedTabs;
+    (isTree && (
+      treeItem ?
+        await collectTabsFromTree(treeItem, { onlyDescendants }) :
+        (await browser.tabs.query({
+          windowId: baseTab.windowId,
+          hidden:   false,
+        }).catch(_error => [])).filter(tab => descendantIds.has(tab.id) || (!onlyDescendants && tab.id == baseTab.id))
+    )) || selectedTabs;
   if (withContainer) {
     await Promise.all(tabs.map(async tab => {
       try {
@@ -79,6 +86,43 @@ export async function getContextState({ baseTab, selectedTabs, callbackOption, w
   return { isAll, isTree, onlyDescendants, hasMultipleTabs, tabs };
 }
 
+async function collectAncestors(tabs, tabsWithChildren = null) {
+  if (!tabsWithChildren)
+    tabsWithChildren = await browser.runtime.sendMessage(Constants.kTST_ID, {
+      type: 'get-tree',
+      tabs: tabs.map(tab => tab.id)
+    }).catch(handleMissingReceiverError);
+
+  const ancestorsOf = {};
+  if (tabsWithChildren) {
+    // Data from Tree Style Tab:
+    const collectAncestorsFromTreeItem = (tab) => {
+      ancestorsOf[tab.id] = ancestorsOf[tab.id] || [];
+      for (const child of tab.children) {
+        collectAncestorsFromTreeItem(child);
+        ancestorsOf[child.id] = [tab.id].concat(ancestorsOf[tab.id]);
+      }
+    };
+    for (const tab of tabsWithChildren) {
+      collectAncestorsFromTreeItem(tab);
+    }
+  } else {
+    // Fallback to data from native Firefox tabs using the openerTabId, this
+    // property is usually kept in sync with tree structure by addons like
+    // TST or Sidebery:
+    for (const tab of tabs) {
+      // Note: apparently Sidebery sets the openerTabId to the tab's own id
+      // when it is a "root" tab.
+      if (tab.openerTabId !== undefined && tab.openerTabId !== tab.id) {
+        ancestorsOf[tab.id] = [tab.openerTabId].concat(ancestorsOf[tab.openerTabId] || []);
+      } else {
+        ancestorsOf[tab.id] = [];
+      }
+    }
+  }
+  return ancestorsOf;
+}
+
 const kFORMAT_PARAMETER_MATCHER  = /\([^\)]+\)|\[[^\]]+\]|\{[^\}]+\}|<[^>]+>/g;
 const kFORMAT_MATCHER_TST_INDENT = new RegExp(`%TST_INDENT(?:${kFORMAT_PARAMETER_MATCHER.source})*%`, 'gi');
 
@@ -86,37 +130,7 @@ export async function copyToClipboard(tabs, format) {
   let indentLevels = [];
   if (kFORMAT_MATCHER_TST_INDENT.test(format)) {
     try {
-      const tabsWithChildren = await browser.runtime.sendMessage(Constants.kTST_ID, {
-        type: 'get-tree',
-        tabs: tabs.map(tab => tab.id)
-      }).catch(handleMissingReceiverError);
-      const ancestorsOf = {};
-      if (tabsWithChildren) {
-        // Data from Tree Style Tab:
-        const collectAncestors = (tab) => {
-          ancestorsOf[tab.id] = ancestorsOf[tab.id] || [];
-          for (const child of tab.children) {
-            collectAncestors(child);
-            ancestorsOf[child.id] = [tab.id].concat(ancestorsOf[tab.id]);
-          }
-        };
-        for (const tab of tabsWithChildren) {
-          collectAncestors(tab);
-        }
-      } else {
-        // Fallback to data from native Firefox tabs using the openerTabId, this
-        // property is usually kept in sync with tree structure by addons like
-        // TST or Sidebery:
-        for (const tab of tabs) {
-          // Note: apparently Sidebery sets the openerTabId to the tab's own id
-          // when it is a "root" tab.
-          if (tab.openerTabId !== undefined && tab.openerTabId !== tab.id) {
-            ancestorsOf[tab.id] = [tab.openerTabId].concat(ancestorsOf[tab.openerTabId] || []);
-          } else {
-            ancestorsOf[tab.id] = [];
-          }
-        }
-      }
+      const ancestorsOf = await collectAncestors(tabs);
       // ignore indent information for partial selection
       const ids = tabs.map(tab => tab.id);
       indentLevels = tabs.map(tab => {
