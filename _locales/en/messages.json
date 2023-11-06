@@ -103,7 +103,7 @@
   "config_singleTab_caption":                          { "message": "When there is no multiselection" },
   "config_fallbackForSingleTab_label":                 { "message": "Regular Operation" },
   "config_fallbackForSingleTab_nothing_label":         { "message": "(do nothing)" },
-  "config_fallbackForSingleTab_singleTab_label":       { "message": "Copy just Single Tab" },
+  "config_fallbackForSingleTab_singleTab_label":       { "message": "Copy Individual Tab" },
   "config_fallbackForSingleTab_all_label":             { "message": "Copy All Tabs" },
   "config_fallbackForSingleTab_tree_label":            { "message": "Copy Tree (require Tree Style Tab)" },
   "config_fallbackForSingleTab_treeDescendants_label": { "message": "Copy Tree Descendants (require Tree Style Tab)" },
