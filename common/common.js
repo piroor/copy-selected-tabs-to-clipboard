@@ -39,6 +39,7 @@ defaultClipboardFormats.push({
 export const configs = new Configs({
   showContextCommandOnTab: true,
   showContextCommandOnPage: false,
+  chooseContextCommandActions: true,
   fallbackForSingleTab:         Constants.kCOPY_SINGLE_TAB,
   fallbackForSingleTabModified: Constants.kCOPY_TREE,
   showContextCommandForSingleTab: null, // obsolete: migrated to fallbackForSingleTab=kCOPY_SINGLE_TAB
