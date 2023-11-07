@@ -292,7 +292,7 @@ async function onShown(info, tab) {
       !item.hiddenForTopLevelItem &&
       configs[item.config] &&
       mFormatItems.size > 0 &&
-      (hasMultipleTabs || (configs.fallbackForSingleTab != Constants.kCOPY_NOTHING))
+      (hasMultipleTabs || (configs.modeForNoSelection != Constants.kCOPY_NOTHING))
     );
     item.title = browser.i18n.getMessage(titleKey);
     if (lastVisible == item.visible &&
@@ -374,8 +374,8 @@ async function onClick(info, tab, selectedTabs = null) {
         Constants.kCOPY_INDIVIDUAL_TAB
     ) :
     isModifiedAction ?
-      configs.fallbackForSingleTabModified :
-      configs.fallbackForSingleTab;
+      configs.modeForNoSelectionModified :
+      configs.modeForNoSelection;
   const withContainer = Constants.WITH_CONTAINER_MATCHER.test(format);
   log('params: ', { withContainer, mode });
   const { tabs } = await Commands.getContextState({ baseTab: tab, selectedTabs, mode, withContainer });

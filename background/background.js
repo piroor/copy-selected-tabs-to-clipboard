@@ -47,8 +47,16 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 
   if (configs.showContextCommandForSingleTab !== null) {
-    configs.fallbackForSingleTab = configs.showContextCommandForSingleTab ? Constants.kCOPY_INDIVIDUAL_TAB : Constants.kCOPY_NOTHING;
+    configs.modeForNoSelection = configs.showContextCommandForSingleTab ? Constants.kCOPY_INDIVIDUAL_TAB : Constants.kCOPY_NOTHING;
     configs.showContextCommandForSingleTab = null;
+  }
+  if (configs.fallbackForSingleTab !== null) {
+    configs.modeForNoSelection = configs.fallbackForSingleTab;
+    configs.fallbackForSingleTab = null;
+  }
+  if (configs.fallbackForSingleTabModified !== null) {
+    configs.modeForNoSelection = configs.fallbackForSingleTabModified;
+    configs.fallbackForSingleTabModified = null;
   }
 
   browser.commands.onCommand.addListener(onShortcutCommand);

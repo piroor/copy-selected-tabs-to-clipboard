@@ -40,8 +40,8 @@ export const configs = new Configs({
   showContextCommandOnTab: true,
   showContextCommandOnPage: false,
   chooseContextCommandActions: false,
-  fallbackForSingleTab:         Constants.kCOPY_INDIVIDUAL_TAB,
-  fallbackForSingleTabModified: Constants.kCOPY_TREE,
+  modeForNoSelection:         Constants.kCOPY_INDIVIDUAL_TAB,
+  modeForNoSelectionModified: Constants.kCOPY_TREE,
   clearSelectionAfterCommandInvoked: false,
   shouldNotifyResult: true,
   copyToClipboardFormats: defaultClipboardFormats,
@@ -51,7 +51,9 @@ export const configs = new Configs({
   debug: false,
 
   // obsolete options
-  showContextCommandForSingleTab: null, // migrated to fallbackForSingleTab=kCOPY_INDIVIDUAL_TAB
+  showContextCommandForSingleTab: null, // migrated to modeForNoSelection=kCOPY_INDIVIDUAL_TAB
+  fallbackForSingleTab: null, // migrated to modeForNoSelection
+  fallbackForSingleTabModified: null, // migrated to modeForNoSelectionModified
 }, {
   localKeys: `
     useCRLF

@@ -95,31 +95,31 @@ p.syntax-description {
 }
 
 
-table#fallbackForSingleTabOptions {
+table#modeForNoSelectionOptions {
   border-collapse: collapse;
 }
-table#fallbackForSingleTabOptions th + *,
-table#fallbackForSingleTabOptions td + * {
+table#modeForNoSelectionOptions th + *,
+table#modeForNoSelectionOptions td + * {
   border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
-table#fallbackForSingleTabOptions tbody tr {
+table#modeForNoSelectionOptions tbody tr {
   border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-table#fallbackForSingleTabOptions tbody th {
+table#modeForNoSelectionOptions tbody th {
   font-weight: normal;
 }
 
-table#fallbackForSingleTabOptions thead th:nth-child(3),
-table#fallbackForSingleTabOptions tbody th {
+table#modeForNoSelectionOptions thead th:nth-child(3),
+table#modeForNoSelectionOptions tbody th {
   text-align: left;
 }
 
-table#fallbackForSingleTabOptions td {
+table#modeForNoSelectionOptions td {
   text-align: center;
 }
 
-table#fallbackForSingleTabOptions input[type="radio"] {
+table#modeForNoSelectionOptions input[type="radio"] {
   margin-left: 1.5em;
   margin-right: 1.5em;
 }

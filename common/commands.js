@@ -32,7 +32,7 @@ export async function getMultiselectedTabs(tab) {
 
 export async function getContextState({ baseTab, selectedTabs, mode, withContainer } = {}) {
   if (mode === undefined)
-    mode = configs.fallbackForSingleTab;
+    mode = configs.modeForNoSelection;
 
   if (!selectedTabs)
     selectedTabs = await getMultiselectedTabs(baseTab);
