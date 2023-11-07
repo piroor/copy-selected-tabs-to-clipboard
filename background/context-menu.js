@@ -37,6 +37,8 @@ const mFormatItems = new Map();
 
 const SEPARATOR_MATCHER = /^([!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~])\1+$/;
 
+let mLastIsTree = false;
+
 function createItem(item) {
   const params = {
     id:       item.id,
@@ -105,6 +107,7 @@ configs.$addObserver(key => {
     case 'copyToClipboardFormats':
     case 'showContextCommandOnTab':
     case 'showContextCommandOnPage':
+    case 'chooseContextCommandActions':
       reserveRefreshFormatItems();
       break;
   }
@@ -125,6 +128,7 @@ async function refreshFormatItems() {
     removeItem(`${id}:under_clipboardOnPage`);
   }
   mFormatItems.clear();
+  mLastIsTree = false;
 
   const formats = configs.copyToClipboardFormats;
   const topLevelShown = (formats.length - formats.filter(format => format.enabled === false).length) == 1;
@@ -176,7 +180,7 @@ async function refreshFormatItemsSubcommands(hasChildren) {
   for (const [id, item] of mFormatItems.entries()) {
     if (SEPARATOR_MATCHER.test(item.title))
       continue;
-    if (hasChildren) {
+    if (configs.chooseContextCommandActions && hasChildren) {
       createItem({
         id:       `${id}:clipboardOnTabTopLevel:tab`,
         title:    browser.i18n.getMessage('context_action_tab_label'),
@@ -268,8 +272,6 @@ async function refreshFormatItemsSubcommands(hasChildren) {
   await Promise.all(promises);
 }
 
-let mLastIsTree = false;
-
 async function onShown(info, tab) {
   const { isAll, isTree, onlyDescendants, hasMultipleTabs } = await Commands.getContextState({ baseTab: tab });
   const titleKey = (configs.chooseContextCommandActions && (onlyDescendants || isTree)) ?
@@ -350,7 +352,8 @@ async function onClick(info, tab, selectedTabs = null) {
   if (info.menuItemId.indexOf('clipboard:') != 0)
     return;
 
-  const id = info.menuItemId.replace(/^clipboard:|:under_clipboardOn(Tab|Page)$/g, '');
+  const [_, id, action] = info.menuItemId.match(/^(?:clipboard:)?(.+?)(?::under_clipboardOn(?:Tab|Page))?(?::(tab|tree|descendants))?$/);
+  log('command: ', { id, action });
   let format;
   if (Array.isArray(configs.copyToClipboardFormats)) {
     let index = id.match(/^([0-9]+):/);
@@ -363,10 +366,19 @@ async function onClick(info, tab, selectedTabs = null) {
   }
 
   const isModifiedAction = info.button == 1;
-  const fallbackOption = isModifiedAction ? configs.fallbackForSingleTabModified : configs.fallbackForSingleTab;
+  const mode = action ? (
+      action == 'tree' ?
+        Constants.kCOPY_TREE :
+        action == 'descendants' ?
+          Constants.kCOPY_TREE_DESCENDANTS :
+          Constants.kCOPY_INDIVIDUAL_TAB
+    ) :
+    isModifiedAction ?
+      configs.fallbackForSingleTabModified :
+      configs.fallbackForSingleTab;
   const withContainer = Constants.WITH_CONTAINER_MATCHER.test(format);
-  const { tabs } = await Commands.getContextState({ baseTab: tab, selectedTabs, callbackOption: fallbackOption, withContainer });
-  log('withContainer: ', withContainer);
+  log('params: ', { withContainer, mode });
+  const { tabs } = await Commands.getContextState({ baseTab: tab, selectedTabs, mode, withContainer });
   log('tabs: ', tabs);
 
   await Commands.copyToClipboard(tabs, format);

@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 
   if (configs.showContextCommandForSingleTab !== null) {
-    configs.fallbackForSingleTab = configs.showContextCommandForSingleTab ? Constants.kCOPY_SINGLE_TAB : Constants.kCOPY_NOTHING;
+    configs.fallbackForSingleTab = configs.showContextCommandForSingleTab ? Constants.kCOPY_INDIVIDUAL_TAB : Constants.kCOPY_NOTHING;
     configs.showContextCommandForSingleTab = null;
   }
 

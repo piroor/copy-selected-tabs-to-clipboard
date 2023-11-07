@@ -30,15 +30,15 @@ export async function getMultiselectedTabs(tab) {
     return [tab];
 }
 
-export async function getContextState({ baseTab, selectedTabs, callbackOption, withContainer } = {}) {
-  if (callbackOption === undefined)
-    callbackOption = configs.fallbackForSingleTab;
+export async function getContextState({ baseTab, selectedTabs, mode, withContainer } = {}) {
+  if (mode === undefined)
+    mode = configs.fallbackForSingleTab;
 
   if (!selectedTabs)
     selectedTabs = await getMultiselectedTabs(baseTab);
 
-  const isAll = callbackOption == Constants.kCOPY_ALL;
-  const shouldCollectTree = callbackOption == Constants.kCOPY_TREE || callbackOption == Constants.kCOPY_TREE_DESCENDANTS;
+  const isAll = mode == Constants.kCOPY_ALL;
+  const shouldCollectTree = mode == Constants.kCOPY_TREE || mode == Constants.kCOPY_TREE_DESCENDANTS;
   const treeItem = selectedTabs.length == 1 && shouldCollectTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
     type: Constants.kTSTAPI_GET_TREE,
     tab:  baseTab.id
@@ -49,7 +49,7 @@ export async function getContextState({ baseTab, selectedTabs, callbackOption, w
   const isTree = descendantIds.size > 0;
   const onlyDescendants = (
     isTree &&
-    callbackOption == Constants.kCOPY_TREE_DESCENDANTS
+    mode == Constants.kCOPY_TREE_DESCENDANTS
   );
   log('isTree: ', { isTree, onlyDescendants });
 
@@ -59,19 +59,21 @@ export async function getContextState({ baseTab, selectedTabs, callbackOption, w
     selectedTabs
   ).length > 1;
 
-  const tabs = isAll ?
-    (await browser.tabs.query({
-      windowId: baseTab.windowId,
-      hidden:   false,
-    }).catch(_error => [])) :
-    (isTree && (
-      treeItem ?
-        await collectTabsFromTree(treeItem, { onlyDescendants }) :
-        (await browser.tabs.query({
-          windowId: baseTab.windowId,
-          hidden:   false,
-        }).catch(_error => [])).filter(tab => descendantIds.has(tab.id) || (!onlyDescendants && tab.id == baseTab.id))
-    )) || selectedTabs;
+  const tabs = mode == Constants.kCOPY_INDIVIDUAL_TAB ?
+    [baseTab] :
+      isAll ?
+      (await browser.tabs.query({
+        windowId: baseTab.windowId,
+        hidden:   false,
+      }).catch(_error => [])) :
+      (isTree && (
+        treeItem ?
+          await collectTabsFromTree(treeItem, { onlyDescendants }) :
+          (await browser.tabs.query({
+            windowId: baseTab.windowId,
+            hidden:   false,
+          }).catch(_error => [])).filter(tab => descendantIds.has(tab.id) || (!onlyDescendants && tab.id == baseTab.id))
+      )) || selectedTabs;
   if (withContainer) {
     await Promise.all(tabs.map(async tab => {
       try {
