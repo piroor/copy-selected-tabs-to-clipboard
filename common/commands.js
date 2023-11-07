@@ -13,22 +13,11 @@ import {
   configs,
   handleMissingReceiverError,
   notify,
+  getMultiselectedTabs,
   collectTabsFromTree,
 } from './common.js';
 import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
-
-export async function getMultiselectedTabs(tab) {
-  if (!tab)
-    return [];
-  if (tab.highlighted)
-    return browser.tabs.query({
-      windowId:    tab.windowId,
-      highlighted: true
-    });
-  else
-    return [tab];
-}
 
 export async function getContextState({ baseTab, selectedTabs, mode, withContainer, modified } = {}) {
   if (!selectedTabs)

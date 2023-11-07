@@ -9,6 +9,7 @@ import {
   log,
   configs,
   handleMissingReceiverError,
+  getMultiselectedTabs,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import * as Commands from '/common/commands.js';
@@ -515,7 +516,7 @@ function onTSTAPIMessage(message) {
 function onMTHAPIMessage(message) {
   switch (message.type) {
     case Constants.kMTHAPI_INVOKE_SELECTED_TAB_COMMAND:
-      return Commands.getMultiselectedTabs({ windowId: message.windowId, highlighted: true }).then(tabs => onClick({ menuItemId: message.id }, null, tabs));
+      return getMultiselectedTabs({ windowId: message.windowId, highlighted: true }).then(tabs => onClick({ menuItemId: message.id }, null, tabs));
   }
 }
 
