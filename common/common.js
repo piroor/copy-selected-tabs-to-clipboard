@@ -39,7 +39,6 @@ defaultClipboardFormats.push({
 export const configs = new Configs({
   showContextCommandOnTab: true,
   showContextCommandOnPage: false,
-  chooseContextCommandActions: false,
   modeForNoSelection:         Constants.kCOPY_INDIVIDUAL_TAB,
   modeForNoSelectionModified: Constants.kCOPY_TREE,
   modeForNoSelectionTree:         Constants.kCOPY_TREE,

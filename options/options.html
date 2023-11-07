@@ -27,7 +27,7 @@
 
     <fieldset>
       <legend>__MSG_config_modeForNoSelection_caption__</legend>
-      <table id="modeForNoSelectionOptions">
+      <table class="modeForNoSelectionOptions">
         <thead>
           <tr>
             <th>__MSG_config_modeForNoSelection_label__</th>
@@ -36,6 +36,13 @@
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td><label><input id="modeForNoSelection_choose"
+                              name="modeForNoSelection"
+                              value="5"
+                              type="radio"></label></td>
+            <th colspan="2"><label for="modeForNoSelection_choose">__MSG_config_modeForNoSelection_choose_label__</label></th>
+          </tr>
           <tr>
             <td><label><input id="modeForNoSelection_nothing"
                               name="modeForNoSelection"
@@ -85,6 +92,78 @@
                               value="3"
                               type="radio"></label></td>
             <th><label for="modeForNoSelection_treeDescendants">__MSG_config_modeForNoSelection_treeDescendants_label__</label></th>
+          </tr>
+        </tbody>
+      </table>
+    </fieldset>
+
+    <fieldset>
+      <legend>__MSG_config_modeForNoSelectionTree_caption__</legend>
+      <table class="modeForNoSelectionOptions">
+        <thead>
+          <tr>
+            <th>__MSG_config_modeForNoSelection_label__</th>
+            <th>__MSG_config_modeForNoSelectionModified_label__</th>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><label><input id="modeForNoSelectionTree_choose"
+                              name="modeForNoSelectionTree"
+                              value="5"
+                              type="radio"></label></td>
+            <th colspan="2"><label for="modeForNoSelectionTree_choose">__MSG_config_modeForNoSelection_choose_label__</label></th>
+          </tr>
+          <tr>
+            <td><label><input id="modeForNoSelectionTree_nothing"
+                              name="modeForNoSelectionTree"
+                              value="0"
+                              type="radio"></label></td>
+            <td><label><input name="modeForNoSelectionTreeModified"
+                              value="0"
+                              type="radio"></label></td>
+            <th><label for="modeForNoSelectionTree_nothing">__MSG_config_modeForNoSelection_nothing_label__</label></th>
+          </tr>
+          <tr>
+            <td><label><input id="modeForNoSelectionTree_individualTab"
+                              name="modeForNoSelectionTree"
+                              value="1"
+                              type="radio"></label></td>
+            <td><label><input name="modeForNoSelectionTreeModified"
+                              value="1"
+                              type="radio"></label></td>
+            <th><label for="modeForNoSelectionTree_individualTab">__MSG_config_modeForNoSelection_individualTab_label__</label></th>
+          </tr>
+          <tr>
+            <td><label><input id="modeForNoSelectionTree_all"
+                              name="modeForNoSelectionTree"
+                              value="4"
+                              type="radio"></label></td>
+            <td><label><input name="modeForNoSelectionTreeModified"
+                              value="4"
+                              type="radio"></label></td>
+            <th><label for="modeForNoSelectionTree_all">__MSG_config_modeForNoSelection_all_label__</label></th>
+          </tr>
+          <tr>
+            <td><label><input id="modeForNoSelectionTree_tree"
+                              name="modeForNoSelectionTree"
+                              value="2"
+                              type="radio"></label></td>
+            <td><label><input name="modeForNoSelectionTreeModified"
+                              value="2"
+                              type="radio"></label></td>
+            <th><label for="modeForNoSelectionTree_tree">__MSG_config_modeForNoSelection_tree_label__</label></th>
+          </tr>
+          <tr>
+            <td><label><input id="modeForNoSelectionTree_treeDescendants"
+                              name="modeForNoSelectionTree"
+                              value="3"
+                              type="radio"></label></td>
+            <td><label><input name="modeForNoSelectionTreeModified"
+                              value="3"
+                              type="radio"></label></td>
+            <th><label for="modeForNoSelectionTree_treeDescendants">__MSG_config_modeForNoSelection_treeDescendants_label__</label></th>
           </tr>
         </tbody>
       </table>

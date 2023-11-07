@@ -104,13 +104,15 @@
   "config_shouldNotifyResult_label": { "message": "正常にコピーできた（または失敗した）場合、デスクトップ通知で結果を知らせる" },
   "config_reportErrors_label": { "message": "処理中に発生したエラーをクリップボードへの出力に含める" },
 
-  "config_modeForNoSelection_caption":               { "message": "タブが複数選択されていない場合の動作" },
+  "config_modeForNoSelection_caption":               { "message": "タブが複数選択されていない状態で単独のタブに対して操作した場合の動作" },
+  "config_modeForNoSelectionTree_caption":           { "message": "タブが複数選択されていない状態でツリーの親タブに対して操作した場合の動作（Tree Style Tabなどのタブ管理アドオンが必要）" },
   "config_modeForNoSelection_label":                 { "message": "通常の操作" },
   "config_modeForNoSelection_nothing_label":         { "message": "(何もしない)" },
+  "config_modeForNoSelection_choose_label":          { "message": "その都度メニューから選択する" },
   "config_modeForNoSelection_individualTab_label":   { "message": "単独のタブをコピー" },
   "config_modeForNoSelection_all_label":             { "message": "すべてのタブをコピー" },
-  "config_modeForNoSelection_tree_label":            { "message": "ツリーをコピー（Tree Style Tabが必要）" },
-  "config_modeForNoSelection_treeDescendants_label": { "message": "ツリー全体ではなく子孫タブだけをコピー（Tree Style Tabが必要）" },
+  "config_modeForNoSelection_tree_label":            { "message": "ツリーをコピー（Tree Style Tabなどのタブ管理アドオンが必要）" },
+  "config_modeForNoSelection_treeDescendants_label": { "message": "ツリー全体ではなく子孫タブだけをコピー（Tree Style Tabなどのタブ管理アドオンが必要）" },
   "config_modeForNoSelectionModified_label":         { "message": "中ボタンクリック" },
 
   "config_debug_caption": { "message": "開発用" },
