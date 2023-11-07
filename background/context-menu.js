@@ -274,13 +274,12 @@ async function refreshFormatItemsSubcommands(hasChildren) {
 
 async function onShown(info, tab) {
   const { isAll, isTree, onlyDescendants, hasMultipleTabs } = await Commands.getContextState({ baseTab: tab });
-  const titleKey = (configs.chooseContextCommandActions && (onlyDescendants || isTree)) ?
+  const titleKey = (hasMultipleTabs || (configs.chooseContextCommandActions && (onlyDescendants || isTree))) ?
     'context_copyTabs_label' :
-    onlyDescendants ? 'context_copyTreeDescendants_label' :
-      isTree ? 'context_copyTree_label' :
-        isAll ? 'context_copyAllTabs_label' :
-          hasMultipleTabs ? 'context_copyTabs_label' :
-            'context_copyTab_label';
+    isAll ? 'context_copyAllTabs_label' :
+      onlyDescendants ? 'context_copyTreeDescendants_label' :
+        isTree ? 'context_copyTree_label' :
+          'context_copyTab_label';
   let updated = false;
   let useTopLevelItem = false;
   for (const item of mMenuItems) {
@@ -365,20 +364,22 @@ async function onClick(info, tab, selectedTabs = null) {
     format = configs.copyToClipboardFormats[id.replace(/^[0-9]+:/, '')];
   }
 
-  const isModifiedAction = info.button == 1;
   const mode = action ?
     (action == 'tree' ?
       Constants.kCOPY_TREE :
       action == 'descendants' ?
         Constants.kCOPY_TREE_DESCENDANTS :
         Constants.kCOPY_INDIVIDUAL_TAB
-    ) :
-    isModifiedAction ?
-      configs.modeForNoSelectionModified :
-      configs.modeForNoSelection;
+    ) : undefined;
   const withContainer = Constants.WITH_CONTAINER_MATCHER.test(format);
   log('params: ', { withContainer, mode });
-  const { tabs } = await Commands.getContextState({ baseTab: tab, selectedTabs, mode, withContainer });
+  const { tabs } = await Commands.getContextState({
+    baseTab: tab,
+    selectedTabs,
+    mode,
+    withContainer,
+    modified: info.button == 1,
+  });
   log('tabs: ', tabs);
 
   await Commands.copyToClipboard(tabs, format);

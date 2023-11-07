@@ -30,16 +30,11 @@ export async function getMultiselectedTabs(tab) {
     return [tab];
 }
 
-export async function getContextState({ baseTab, selectedTabs, mode, withContainer } = {}) {
-  if (mode === undefined)
-    mode = configs.modeForNoSelection;
-
+export async function getContextState({ baseTab, selectedTabs, mode, withContainer, modified } = {}) {
   if (!selectedTabs)
     selectedTabs = await getMultiselectedTabs(baseTab);
 
-  const isAll = mode == Constants.kCOPY_ALL;
-  const shouldCollectTree = mode == Constants.kCOPY_TREE || mode == Constants.kCOPY_TREE_DESCENDANTS;
-  const treeItem = selectedTabs.length == 1 && shouldCollectTree && await browser.runtime.sendMessage(Constants.kTST_ID, {
+  const treeItem = selectedTabs.length == 1 && await browser.runtime.sendMessage(Constants.kTST_ID, {
     type: Constants.kTSTAPI_GET_TREE,
     tab:  baseTab.id
   }).catch(_error => null);
@@ -47,6 +42,17 @@ export async function getContextState({ baseTab, selectedTabs, mode, withContain
   const ancestorsOf = await collectAncestors([baseTab], treeItem && [treeItem]);
   const descendantIds = new Set(Object.entries(ancestorsOf).filter(([_id, ancestors]) => ancestors.length > 0).map(([id, _ancestors]) => parseInt(id)));
   const isTree = descendantIds.size > 0;
+
+  if (mode === undefined) {
+    mode = isTree ?
+      (modified ?
+        configs.modeForNoSelectionTreeModified :
+        configs.modeForNoSelectionTree) :
+      (modified ?
+        configs.modeForNoSelectionModified :
+        configs.modeForNoSelection);
+  }
+
   const onlyDescendants = (
     isTree &&
     mode == Constants.kCOPY_TREE_DESCENDANTS
@@ -59,6 +65,7 @@ export async function getContextState({ baseTab, selectedTabs, mode, withContain
     selectedTabs
   ).length > 1;
 
+  const isAll = mode == Constants.kCOPY_ALL;
   const tabs = mode == Constants.kCOPY_INDIVIDUAL_TAB ?
     [baseTab] :
     isAll ?

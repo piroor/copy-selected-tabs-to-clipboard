@@ -42,6 +42,8 @@ export const configs = new Configs({
   chooseContextCommandActions: false,
   modeForNoSelection:         Constants.kCOPY_INDIVIDUAL_TAB,
   modeForNoSelectionModified: Constants.kCOPY_TREE,
+  modeForNoSelectionTree:         Constants.kCOPY_TREE,
+  modeForNoSelectionTreeModified: Constants.kCOPY_TREE_DESCENDANTS,
   clearSelectionAfterCommandInvoked: false,
   shouldNotifyResult: true,
   copyToClipboardFormats: defaultClipboardFormats,
