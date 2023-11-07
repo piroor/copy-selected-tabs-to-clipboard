@@ -6,10 +6,11 @@
 'use strict';
 
 export const kCOPY_NOTHING          = 0;
-export const kCOPY_SINGLE_TAB       = 1;
+export const kCOPY_INDIVIDUAL_TAB   = 1;
 export const kCOPY_TREE             = 2;
 export const kCOPY_TREE_DESCENDANTS = 3;
 export const kCOPY_ALL              = 4;
+export const kCOPY_CHOOSE_FROM_MENU = 5;
 
 export const WITH_CONTAINER_MATCHER = /%(?:CONTAINER_URL(?:_HTML(?:IFIED)?)?|CONTAINER_(?:TITLE|NAME)(?:_HTML(?:IFIED)?)?(?:\(.*?\))?)%/i;
 

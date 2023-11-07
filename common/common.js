@@ -39,16 +39,22 @@ defaultClipboardFormats.push({
 export const configs = new Configs({
   showContextCommandOnTab: true,
   showContextCommandOnPage: false,
-  fallbackForSingleTab:         Constants.kCOPY_SINGLE_TAB,
-  fallbackForSingleTabModified: Constants.kCOPY_TREE,
-  showContextCommandForSingleTab: null, // obsolete: migrated to fallbackForSingleTab=kCOPY_SINGLE_TAB
+  modeForNoSelection:         Constants.kCOPY_INDIVIDUAL_TAB,
+  modeForNoSelectionModified: Constants.kCOPY_TREE,
+  modeForNoSelectionTree:         Constants.kCOPY_TREE,
+  modeForNoSelectionTreeModified: Constants.kCOPY_TREE_DESCENDANTS,
   clearSelectionAfterCommandInvoked: false,
   shouldNotifyResult: true,
   copyToClipboardFormats: defaultClipboardFormats,
   reportErrors: false,
   useCRLF: false,
   notificationTimeout: 10 * 1000,
-  debug: false
+  debug: false,
+
+  // obsolete options
+  showContextCommandForSingleTab: null, // migrated to modeForNoSelection=kCOPY_INDIVIDUAL_TAB
+  fallbackForSingleTab: null, // migrated to modeForNoSelection
+  fallbackForSingleTabModified: null, // migrated to modeForNoSelectionModified
 }, {
   localKeys: `
     useCRLF
