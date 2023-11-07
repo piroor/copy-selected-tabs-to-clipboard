@@ -61,7 +61,7 @@ export async function getContextState({ baseTab, selectedTabs, mode, withContain
 
   const tabs = mode == Constants.kCOPY_INDIVIDUAL_TAB ?
     [baseTab] :
-      isAll ?
+    isAll ?
       (await browser.tabs.query({
         windowId: baseTab.windowId,
         hidden:   false,

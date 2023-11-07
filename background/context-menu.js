@@ -366,12 +366,12 @@ async function onClick(info, tab, selectedTabs = null) {
   }
 
   const isModifiedAction = info.button == 1;
-  const mode = action ? (
-      action == 'tree' ?
-        Constants.kCOPY_TREE :
-        action == 'descendants' ?
-          Constants.kCOPY_TREE_DESCENDANTS :
-          Constants.kCOPY_INDIVIDUAL_TAB
+  const mode = action ?
+    (action == 'tree' ?
+      Constants.kCOPY_TREE :
+      action == 'descendants' ?
+        Constants.kCOPY_TREE_DESCENDANTS :
+        Constants.kCOPY_INDIVIDUAL_TAB
     ) :
     isModifiedAction ?
       configs.fallbackForSingleTabModified :
