@@ -12,9 +12,10 @@
   "context_clipboard_html_link_label":     { "message": "&HTMLのリンク" },
   "context_clipboard_markdown_label":      { "message": "&Markdown" },
   "context_clipboard_markdown_list_label": { "message": "M&arkdown（リスト）" },
-  "context_action_tab_label":              { "message": "単独のタブ" },
-  "context_action_tree_label":             { "message": "ツリー全体" },
-  "context_action_descendants_label":      { "message": "配下のタブ" },
+  "context_action_tab_label":              { "message": "単独のタブ(&I)" },
+  "context_action_tree_label":             { "message": "ツリー全体(&T)" },
+  "context_action_descendants_label":      { "message": "配下のタブ(&D)" },
+  "context_action_all_label":              { "message": "すべてのタブ(&A)" },
 
   "command_copySelectedTabs":              { "message": "選択中のタブをクリップボードにコピー" },
   "command_copySelectedTabs_title":        { "message": "どの形式でコピーしますか？" },

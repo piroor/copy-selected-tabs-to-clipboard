@@ -200,6 +200,19 @@ async function refreshFormatItemsSubcommands(hasChildren) {
         parentId: `${id}:clipboardOnTabTopLevel`,
       });
       createItem({
+        id:       `${id}:clipboardOnTabTopLevel:separator`,
+        type:     'separator',
+        contexts: ['tab'],
+        parentId: `${id}:clipboardOnTabTopLevel`,
+      });
+      createItem({
+        id:       `${id}:clipboardOnTabTopLevel:all`,
+        title:    browser.i18n.getMessage('context_action_all_label'),
+        contexts: ['tab'],
+        parentId: `${id}:clipboardOnTabTopLevel`,
+      });
+
+      createItem({
         id:       `${id}:under_clipboardOnTab:tab`,
         title:    browser.i18n.getMessage('context_action_tab_label'),
         contexts: ['tab'],
@@ -217,6 +230,19 @@ async function refreshFormatItemsSubcommands(hasChildren) {
         contexts: ['tab'],
         parentId: `${id}:under_clipboardOnTab`,
       });
+      createItem({
+        id:       `${id}:under_clipboardOnTab:separator`,
+        type:     'separator',
+        contexts: ['tab'],
+        parentId: `${id}:under_clipboardOnTab`,
+      });
+      createItem({
+        id:       `${id}:under_clipboardOnTab:all`,
+        title:    browser.i18n.getMessage('context_action_all_label'),
+        contexts: ['tab'],
+        parentId: `${id}:under_clipboardOnTab`,
+      });
+
       createItem({
         id:       `${id}:clipboardOnPageTopLevel:tab`,
         title:    browser.i18n.getMessage('context_action_tab_label'),
@@ -236,6 +262,19 @@ async function refreshFormatItemsSubcommands(hasChildren) {
         parentId: `${id}:clipboardOnPageTopLevel`,
       });
       createItem({
+        id:       `${id}:clipboardOnPageTopLevel:separator`,
+        type:     'separator',
+        contexts: ['tab'],
+        parentId: `${id}:clipboardOnPageTopLevel`,
+      });
+      createItem({
+        id:       `${id}:clipboardOnPageTopLevel:all`,
+        title:    browser.i18n.getMessage('context_action_all_label'),
+        contexts: ['page'],
+        parentId: `${id}:clipboardOnPageTopLevel`,
+      });
+
+      createItem({
         id:       `${id}:under_clipboardOnPage:tab`,
         title:    browser.i18n.getMessage('context_action_tab_label'),
         contexts: ['page'],
@@ -253,20 +292,40 @@ async function refreshFormatItemsSubcommands(hasChildren) {
         contexts: ['page'],
         parentId: `${id}:under_clipboardOnPage`,
       });
+      createItem({
+        id:       `${id}:under_clipboardOnPage:separator`,
+        type:     'separator',
+        contexts: ['tab'],
+        parentId: `${id}:under_clipboardOnPage`,
+      });
+      createItem({
+        id:       `${id}:under_clipboardOnPage:all`,
+        title:    browser.i18n.getMessage('context_action_all_label'),
+        contexts: ['page'],
+        parentId: `${id}:under_clipboardOnPage`,
+      });
     }
     else {
       removeItem(`${id}:clipboardOnTabTopLevel:tab`);
       removeItem(`${id}:clipboardOnTabTopLevel:tree`);
       removeItem(`${id}:clipboardOnTabTopLevel:descendants`);
+      removeItem(`${id}:clipboardOnTabTopLevel:separator`);
+      removeItem(`${id}:clipboardOnTabTopLevel:all`);
       removeItem(`${id}:under_clipboardOnTab:tab`);
       removeItem(`${id}:under_clipboardOnTab:tree`);
       removeItem(`${id}:under_clipboardOnTab:descendants`);
+      removeItem(`${id}:clipboardOnTabTopLevel:separator`);
+      removeItem(`${id}:clipboardOnPageTopLevel:all`);
       removeItem(`${id}:clipboardOnPageTopLevel:tab`);
       removeItem(`${id}:clipboardOnPageTopLevel:tree`);
       removeItem(`${id}:clipboardOnPageTopLevel:descendants`);
+      removeItem(`${id}:clipboardOnTabTopLevel:separator`);
+      removeItem(`${id}:clipboardOnPageTopLevel:all`);
       removeItem(`${id}:under_clipboardOnPage:tab`);
       removeItem(`${id}:under_clipboardOnPage:tree`);
       removeItem(`${id}:under_clipboardOnPage:descendants`);
+      removeItem(`${id}:under_clipboardOnPage:separator`);
+      removeItem(`${id}:under_clipboardOnPage:all`);
     }
   }
   await Promise.all(promises);
@@ -351,7 +410,7 @@ async function onClick(info, tab, selectedTabs = null) {
   if (info.menuItemId.indexOf('clipboard:') != 0)
     return;
 
-  const [, id, action] = info.menuItemId.match(/^(?:clipboard:)?(.+?)(?::under_clipboardOn(?:Tab|Page))?(?::(tab|tree|descendants))?$/);
+  const [, id, action] = info.menuItemId.match(/^(?:clipboard:)?(.+?)(?::under_clipboardOn(?:Tab|Page))?(?::(tab|tree|descendants|all))?$/);
   log('command: ', { id, action });
   let format;
   if (Array.isArray(configs.copyToClipboardFormats)) {
@@ -369,7 +428,9 @@ async function onClick(info, tab, selectedTabs = null) {
       Constants.kCOPY_TREE :
       action == 'descendants' ?
         Constants.kCOPY_TREE_DESCENDANTS :
-        Constants.kCOPY_INDIVIDUAL_TAB
+        action == 'all' ?
+          Constants.kCOPY_ALL :
+          Constants.kCOPY_INDIVIDUAL_TAB
     ) : undefined;
   const withContainer = Constants.WITH_CONTAINER_MATCHER.test(format);
   log('params: ', { withContainer, mode });

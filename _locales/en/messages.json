@@ -12,9 +12,10 @@
   "context_clipboard_html_link_label":     { "message": "&HTML Link" },
   "context_clipboard_markdown_label":      { "message": "&Markdown" },
   "context_clipboard_markdown_list_label": { "message": "M&arkdown (List)" },
-  "context_action_tab_label":              { "message": "Individual Tab" },
-  "context_action_tree_label":             { "message": "Whole Tree" },
-  "context_action_descendants_label":      { "message": "Descendants" },
+  "context_action_tab_label":              { "message": "&Individual Tab" },
+  "context_action_tree_label":             { "message": "Whole &Tree" },
+  "context_action_descendants_label":      { "message": "&Descendants" },
+  "context_action_all_label":              { "message": "&All Tabs" },
 
   "command_copySelectedTabs":              { "message": "Copy Selected Tabs to Clipboard" },
   "command_copySelectedTabs_title":        { "message": "Which format to copy?" },
