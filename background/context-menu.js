@@ -352,7 +352,7 @@ async function onClick(info, tab, selectedTabs = null) {
   if (info.menuItemId.indexOf('clipboard:') != 0)
     return;
 
-  const [_, id, action] = info.menuItemId.match(/^(?:clipboard:)?(.+?)(?::under_clipboardOn(?:Tab|Page))?(?::(tab|tree|descendants))?$/);
+  const [, id, action] = info.menuItemId.match(/^(?:clipboard:)?(.+?)(?::under_clipboardOn(?:Tab|Page))?(?::(tab|tree|descendants))?$/);
   log('command: ', { id, action });
   let format;
   if (Array.isArray(configs.copyToClipboardFormats)) {
