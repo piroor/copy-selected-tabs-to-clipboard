@@ -92,7 +92,7 @@ export async function getContextState({ baseTab, selectedTabs, mode, withContain
       }
     }));
   }
-  return { isAll, isTree, onlyDescendants, hasMultipleTabs, tabs };
+  return { isAll, isTree, onlyDescendants, hasMultipleTabs, tabs, selectedTabs };
 }
 
 async function collectAncestors(tabs, tabsWithChildren = null) {

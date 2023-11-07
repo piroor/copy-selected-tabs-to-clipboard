@@ -343,9 +343,9 @@ function clearFormatItemsSubcommands() {
 }
 
 async function onShown(info, tab) {
-  const { isAll, isTree, onlyDescendants, hasMultipleTabs } = await Commands.getContextState({ baseTab: tab });
+  const { isAll, isTree, onlyDescendants, hasMultipleTabs, selectedTabs } = await Commands.getContextState({ baseTab: tab });
   const chooseFromMenu = (isTree ? configs.modeForNoSelectionTree : configs.modeForNoSelection) == Constants.kCOPY_CHOOSE_FROM_MENU;
-  const titleKey = (hasMultipleTabs || chooseFromMenu) ?
+  const titleKey = (selectedTabs.length > 1 || chooseFromMenu) ?
     'context_copyTabs_label' :
     isAll ? 'context_copyAllTabs_label' :
       onlyDescendants ? 'context_copyTreeDescendants_label' :
