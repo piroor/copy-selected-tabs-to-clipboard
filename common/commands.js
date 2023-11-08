@@ -17,18 +17,18 @@ import * as Permissions from './permissions.js';
 
 async function collectAncestors(tabs) {
   const ancestorsOf = {};
-    // Detect tree structure from native Firefox tabs using the openerTabId, this
-    // property is usually kept in sync with tree structure by addons like
-    // TST or Sidebery:
-    for (const tab of tabs) {
-      // Note: apparently Sidebery sets the openerTabId to the tab's own id
-      // when it is a "root" tab.
-      if (tab.openerTabId !== undefined && tab.openerTabId !== tab.id) {
-        ancestorsOf[tab.id] = [tab.openerTabId].concat(ancestorsOf[tab.openerTabId] || []);
-      } else {
-        ancestorsOf[tab.id] = [];
-      }
+  // Detect tree structure from native Firefox tabs using the openerTabId, this
+  // property is usually kept in sync with tree structure by addons like
+  // TST or Sidebery:
+  for (const tab of tabs) {
+    // Note: apparently Sidebery sets the openerTabId to the tab's own id
+    // when it is a "root" tab.
+    if (tab.openerTabId !== undefined && tab.openerTabId !== tab.id) {
+      ancestorsOf[tab.id] = [tab.openerTabId].concat(ancestorsOf[tab.openerTabId] || []);
+    } else {
+      ancestorsOf[tab.id] = [];
     }
+  }
   return ancestorsOf;
 }
 
