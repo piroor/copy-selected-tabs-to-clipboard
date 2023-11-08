@@ -11,10 +11,8 @@ import * as Replacer from '/extlib/replacer.js';
 import {
   log,
   configs,
-  handleMissingReceiverError,
   notify,
 } from './common.js';
-import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
 
 async function collectAncestors(tabs) {
