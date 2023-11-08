@@ -23,7 +23,7 @@ export async function copyToClipboard(tabs, format) {
   let indentLevels = [];
   if (kFORMAT_MATCHER_TREE_INDENT.test(format)) {
     try {
-      const ancestorsOf = await collectAncestors(tabs);
+      const ancestorsOf = collectAncestors(tabs);
       // ignore indent information for partial selection
       const ids = tabs.map(tab => tab.id);
       indentLevels = tabs.map(tab => {

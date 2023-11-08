@@ -153,7 +153,7 @@ export async function notify({ icon, title, message, timeout, url } = {}) {
   });
 }
 
-export async function collectAncestors(tabs) {
+export function collectAncestors(tabs) {
   const ancestorsOf = {};
   // Detect tree structure from native Firefox tabs using the openerTabId, this
   // property is usually kept in sync with tree structure by addons like
