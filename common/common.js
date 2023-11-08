@@ -153,14 +153,20 @@ export async function notify({ icon, title, message, timeout, url } = {}) {
   });
 }
 
-export async function collectTabsFromTree(treeItem, { onlyDescendants } = {}) {
-  const treeItemIds = new Set(collectTreeItemIds(treeItem));
-  if (onlyDescendants)
-    treeItemIds.delete(treeItem.id);
-  const allTabs     = await browser.tabs.query({ windowId: treeItem.windowId });
-  return allTabs.filter(tab => treeItemIds.has(tab.id));
-}
-
-function collectTreeItemIds(treeItem) {
-  return [treeItem.id, ...treeItem.children.map(collectTreeItemIds)].flat();
+export async function collectAncestors(tabs) {
+  const ancestorsOf = {};
+  // Detect tree structure from native Firefox tabs using the openerTabId, this
+  // property is usually kept in sync with tree structure by addons like
+  // TST or Sidebery:
+  for (const tab of tabs) {
+    // Note: apparently Sidebery sets the openerTabId to the tab's own id
+    // when it is a "root" tab.
+    if (tab.openerTabId !== undefined && tab.openerTabId !== tab.id) {
+      ancestorsOf[tab.id] = [tab.openerTabId].concat(ancestorsOf[tab.openerTabId] || []);
+    }
+    else {
+      ancestorsOf[tab.id] = [];
+    }
+  }
+  return ancestorsOf;
 }

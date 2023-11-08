@@ -7,6 +7,7 @@
 
 import {
   configs,
+  collectAncestors,
 } from './common.js';
 import * as Constants from './constants.js';
 
@@ -96,17 +97,7 @@ export class Context {
     if (!this.allTabs)
       throw new Error('you must resolve tabs with resolve() at first.');
 
-    const ancestorsOf = {};
-    for (const tab of this.allTabs) {
-      // Note: apparently Sidebery sets the openerTabId to the tab's own id
-      // when it is a "root" tab.
-      if (tab.openerTabId !== undefined && tab.openerTabId !== tab.id) {
-        ancestorsOf[tab.id] = [tab.openerTabId].concat(ancestorsOf[tab.openerTabId] || []);
-      }
-      else {
-        ancestorsOf[tab.id] = [];
-      }
-    }
+    const ancestorsOf = collectAncestors(this.allTabs);
     const descendantIds = new Set(
       Object.entries(ancestorsOf)
         .filter(([_id, ancestors]) => ancestors.includes(this.tab.id))
