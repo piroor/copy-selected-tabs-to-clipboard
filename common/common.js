@@ -40,7 +40,7 @@ export const configs = new Configs({
   showContextCommandOnTab: true,
   showContextCommandOnPage: false,
   modeForNoSelection:         Constants.kCOPY_INDIVIDUAL_TAB,
-  modeForNoSelectionModified: Constants.kCOPY_TREE,
+  modeForNoSelectionModified: Constants.kCOPY_NOTHING,
   modeForNoSelectionTree:         Constants.kCOPY_TREE,
   modeForNoSelectionTreeModified: Constants.kCOPY_TREE_DESCENDANTS,
   clearSelectionAfterCommandInvoked: false,
