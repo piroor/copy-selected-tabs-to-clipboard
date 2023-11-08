@@ -9,9 +9,9 @@ import {
   log,
   configs,
   handleMissingReceiverError,
-  getMultiselectedTabs,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
+import { Context } from '/common/Context.js';
 import * as Commands from '/common/commands.js';
 
 const mMenuItems = [
@@ -344,13 +344,15 @@ function clearFormatItemsSubcommands() {
 }
 
 async function onShown(info, tab) {
-  const { isAll, isTree, onlyDescendants, hasMultipleTabs, selectedTabs } = await Commands.getContextState({ baseTab: tab });
-  const chooseFromMenu = (isTree ? configs.modeForNoSelectionTree : configs.modeForNoSelection) == Constants.kCOPY_CHOOSE_FROM_MENU;
-  const titleKey = (selectedTabs.length > 1 || chooseFromMenu) ?
+  const context = new Context({ tab });
+  await context.resolve();
+
+  const chooseFromMenu = (context.isTreeParent ? configs.modeForNoSelectionTree : configs.modeForNoSelection) == Constants.kCOPY_CHOOSE_FROM_MENU;
+  const titleKey = (context.multiselectedTabs.length > 1 || chooseFromMenu) ?
     'context_copyTabs_label' :
-    isAll ? 'context_copyAllTabs_label' :
-      onlyDescendants ? 'context_copyTreeDescendants_label' :
-        isTree ? 'context_copyTree_label' :
+    context.shouldCopyAll ? 'context_copyAllTabs_label' :
+      context.shouldCopyOnlyDescendants ? 'context_copyTreeDescendants_label' :
+        context.isTreeParent ? 'context_copyTree_label' :
           'context_copyTab_label';
   let updated = false;
   let useTopLevelItem = false;
@@ -363,7 +365,7 @@ async function onShown(info, tab) {
       !item.hiddenForTopLevelItem &&
       configs[item.config] &&
       mFormatItems.size > 0 &&
-      (hasMultipleTabs || (configs.modeForNoSelection != Constants.kCOPY_NOTHING))
+      (context.shouldCopyMultipleTabs || (configs.modeForNoSelection != Constants.kCOPY_NOTHING))
     );
     item.title = browser.i18n.getMessage(titleKey);
     if (lastVisible == item.visible &&
@@ -408,12 +410,12 @@ async function onShown(info, tab) {
     }
   }
   if (mLastSubcommandsAvailable != chooseFromMenu ||
-      mLastWasTree != isTree) {
+      mLastWasTree != context.isTreeParent) {
     clearFormatItemsSubcommands();
     if (chooseFromMenu)
-      refreshFormatItemsSubcommands(isTree);
+      refreshFormatItemsSubcommands(context.isTreeParent);
     mLastSubcommandsAvailable = chooseFromMenu;
-    mLastWasTree = isTree;
+    mLastWasTree = context.isTreeParent;
     updated = true;
   }
   if (updated)
@@ -451,13 +453,14 @@ async function onClick(info, tab, selectedTabs = null) {
     ) : undefined;
   const withContainer = Constants.WITH_CONTAINER_MATCHER.test(format);
   log('params: ', { withContainer, mode });
-  const { tabs } = await Commands.getContextState({
-    baseTab: tab,
-    selectedTabs,
+  const context = new Context({
     mode,
+    tab,
+    multiselectedTabs: selectedTabs,
     withContainer,
     modified: info.button == 1,
   });
+  const tabs = await context.getTabsToCopy();
   log('tabs: ', tabs);
 
   await Commands.copyToClipboard(tabs, format);
@@ -511,6 +514,18 @@ function onTSTAPIMessage(message) {
         return;
       return browser.tabs.get(message.tab.id).then(tab => onClick(message.info, tab));
   }
+}
+
+async function getMultiselectedTabs(tab) {
+  if (!tab)
+    return [];
+  if (tab.highlighted)
+    return browser.tabs.query({
+      windowId:    tab.windowId,
+      highlighted: true
+    });
+  else
+    return [tab];
 }
 
 function onMTHAPIMessage(message) {

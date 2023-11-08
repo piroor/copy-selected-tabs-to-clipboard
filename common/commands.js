@@ -13,76 +13,9 @@ import {
   configs,
   handleMissingReceiverError,
   notify,
-  getMultiselectedTabs,
-  collectTabsFromTree,
 } from './common.js';
 import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
-
-export async function getContextState({ baseTab, selectedTabs, mode, withContainer, modified } = {}) {
-  if (!selectedTabs)
-    selectedTabs = await getMultiselectedTabs(baseTab);
-
-  const treeItem = selectedTabs.length == 1 && await browser.runtime.sendMessage(Constants.kTST_ID, {
-    type: Constants.kTSTAPI_GET_TREE,
-    tab:  baseTab.id
-  }).catch(_error => null);
-
-  const ancestorsOf = await collectAncestors([baseTab], treeItem && [treeItem]);
-  const descendantIds = new Set(Object.entries(ancestorsOf).filter(([_id, ancestors]) => ancestors.length > 0).map(([id, _ancestors]) => parseInt(id)));
-  const isTree = descendantIds.size > 0;
-
-  if (mode === undefined) {
-    mode = isTree ?
-      (modified ?
-        configs.modeForNoSelectionTreeModified :
-        configs.modeForNoSelectionTree) :
-      (modified ?
-        configs.modeForNoSelectionModified :
-        configs.modeForNoSelection);
-  }
-
-  const onlyDescendants = (
-    isTree &&
-    mode == Constants.kCOPY_TREE_DESCENDANTS
-  );
-  log('isTree: ', { isTree, onlyDescendants });
-
-  const hasMultipleTabs = (
-    (isTree &&
-     [...(onlyDescendants ? [] : [baseTab]), ...descendantIds]) ||
-    selectedTabs
-  ).length > 1;
-
-  const isAll = mode == Constants.kCOPY_ALL;
-  const tabs = mode == Constants.kCOPY_INDIVIDUAL_TAB ?
-    [baseTab] :
-    isAll ?
-      (await browser.tabs.query({
-        windowId: baseTab.windowId,
-        hidden:   false,
-      }).catch(_error => [])) :
-      (isTree && (
-        treeItem ?
-          await collectTabsFromTree(treeItem, { onlyDescendants }) :
-          (await browser.tabs.query({
-            windowId: baseTab.windowId,
-            hidden:   false,
-          }).catch(_error => [])).filter(tab => descendantIds.has(tab.id) || (!onlyDescendants && tab.id == baseTab.id))
-      )) || selectedTabs;
-  if (withContainer) {
-    await Promise.all(tabs.map(async tab => {
-      try {
-        const container = await browser.contextualIdentities.get(tab.cookieStoreId);
-        tab.container = container && container.name;
-      }
-      catch(_error) {
-        tab.container = null;
-      }
-    }));
-  }
-  return { isAll, isTree, onlyDescendants, hasMultipleTabs, tabs, selectedTabs };
-}
 
 async function collectAncestors(tabs, tabsWithChildren = null) {
   if (!tabsWithChildren)

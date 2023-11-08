@@ -10,8 +10,9 @@ import {
   configs,
   handleMissingReceiverError,
 } from '/common/common.js';
-import * as Constants from '/common/constants.js';
 import * as Commands from '/common/commands.js';
+import * as Constants from '/common/constants.js';
+import { Context } from '/common/Context.js';
 import * as ContextMenu from './context-menu.js';
 import RichConfirm from '/extlib/RichConfirm.js';
 
@@ -130,10 +131,11 @@ async function onShortcutCommand(command) {
     withContainer = configs.copyToClipboardFormats.some(format => Constants.WITH_CONTAINER_MATCHER.test(format.format));
   }
 
-  const { isTree, onlyDescendants, tabs } = await Commands.getContextState({
-    baseTab: activeTab,
+  const context = new Context({
+    tab: activeTab,
     withContainer,
   });
+  const tabs = await context.getTabsToCopy();
   log('withContainer: ', withContainer);
   log('tabs: ', tabs);
 
@@ -143,11 +145,11 @@ async function onShortcutCommand(command) {
 
   switch (command) {
     case 'copySelectedTabs': {
-      const titleKey = onlyDescendants ? 'command_copyTreeDescendants_title' :
-        isTree ? 'command_copyTree_title' :
+      const titleKey = context.shouldCopyOnlyDescendants ? 'command_copyTreeDescendants_title' :
+        context.isTreeParent ? 'command_copyTree_title' :
           'command_copySelectedTabs_title';
-      const messageKey = onlyDescendants ? 'command_copyTreeDescendants_message' :
-        isTree ? 'command_copyTree_message' :
+      const messageKey = context.shouldCopyOnlyDescendants ? 'command_copyTreeDescendants_message' :
+        context.isTreeParent ? 'command_copyTree_message' :
           'command_copySelectedTabs_message';
       const formats = configs.copyToClipboardFormats;
       const result = await RichConfirm.showInPopup(activeTab.windowId, {

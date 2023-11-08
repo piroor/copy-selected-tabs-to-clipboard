@@ -153,18 +153,6 @@ export async function notify({ icon, title, message, timeout, url } = {}) {
   });
 }
 
-export async function getMultiselectedTabs(tab) {
-  if (!tab)
-    return [];
-  if (tab.highlighted)
-    return browser.tabs.query({
-      windowId:    tab.windowId,
-      highlighted: true
-    });
-  else
-    return [tab];
-}
-
 export async function collectTabsFromTree(treeItem, { onlyDescendants } = {}) {
   const treeItemIds = new Set(collectTreeItemIds(treeItem));
   if (onlyDescendants)
