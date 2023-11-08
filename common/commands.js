@@ -25,7 +25,8 @@ async function collectAncestors(tabs) {
     // when it is a "root" tab.
     if (tab.openerTabId !== undefined && tab.openerTabId !== tab.id) {
       ancestorsOf[tab.id] = [tab.openerTabId].concat(ancestorsOf[tab.openerTabId] || []);
-    } else {
+    }
+    else {
       ancestorsOf[tab.id] = [];
     }
   }
