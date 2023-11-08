@@ -116,6 +116,11 @@
   "config_modeForNoSelection_treeDescendants_label": { "message": "Copy Tree Descendants" },
   "config_modeForNoSelectionModified_label":         { "message": "Middle Click" },
 
+  "config_delimiter_caption":         { "message": "Separator of copied items" },
+  "config_delimiter_lineBreak_label": { "message": "Line Break" },
+  "config_delimiter_space_label":     { "message": "Space" },
+  "config_delimiter_tab_label":       { "message": "Tab" },
+
   "config_debug_caption": { "message": "Development" },
   "config_debug_label": { "message": "Debug mode" },
   "config_all_caption": { "message": "All Configs" }

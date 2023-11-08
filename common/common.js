@@ -47,6 +47,7 @@ export const configs = new Configs({
   shouldNotifyResult: true,
   copyToClipboardFormats: defaultClipboardFormats,
   reportErrors: false,
+  delimiter: Constants.kDELIMITER_LINE_BREAK,
   useCRLF: false,
   notificationTimeout: 10 * 1000,
   debug: false,

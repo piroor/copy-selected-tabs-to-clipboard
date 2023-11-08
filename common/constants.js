@@ -12,6 +12,10 @@ export const kCOPY_TREE_DESCENDANTS = 3;
 export const kCOPY_ALL              = 4;
 export const kCOPY_CHOOSE_FROM_MENU = 5;
 
+export const kDELIMITER_LINE_BREAK = 0;
+export const kDELIMITER_SPACE      = 1;
+export const kDELIMITER_TAB        = 2;
+
 export const WITH_CONTAINER_MATCHER = /%(?:CONTAINER_URL(?:_HTML(?:IFIED)?)?|CONTAINER_(?:TITLE|NAME)(?:_HTML(?:IFIED)?)?(?:\(.*?\))?)%/i;
 
 

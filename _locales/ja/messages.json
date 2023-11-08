@@ -116,6 +116,11 @@
   "config_modeForNoSelection_treeDescendants_label": { "message": "配下のタブのみをコピー" },
   "config_modeForNoSelectionModified_label":         { "message": "中ボタンクリック" },
 
+  "config_delimiter_caption":         { "message": "コピーした項目の区切り文字" },
+  "config_delimiter_lineBreak_label": { "message": "改行" },
+  "config_delimiter_space_label":     { "message": "スペース" },
+  "config_delimiter_tab_label":       { "message": "タブ" },
+
   "config_debug_caption": { "message": "開発用" },
   "config_debug_label": { "message": "デバッグモード" },
   "config_all_caption": { "message": "すべての設定" }

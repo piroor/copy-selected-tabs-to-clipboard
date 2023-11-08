@@ -14,10 +14,28 @@ import {
   notify,
   collectAncestors,
 } from './common.js';
+import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
 
 const kFORMAT_PARAMETER_MATCHER  = /\([^\)]+\)|\[[^\]]+\]|\{[^\}]+\}|<[^>]+>/g;
 const kFORMAT_MATCHER_TREE_INDENT = new RegExp(`%(TST|TREE)_INDENT(?:${kFORMAT_PARAMETER_MATCHER.source})*%`, 'gi');
+
+function getDelimiter() {
+  switch (configs.delimiter) {
+    case Constants.kDELIMITER_SPACE:
+      return ' ';
+
+    case Constants.kDELIMITER_TAB:
+      return '\t';
+
+    default:
+      return getLineFeed();
+  }
+}
+
+function getLineFeed() {
+  return configs.useCRLF ? '\r\n' : '\n';
+}
 
 export async function copyToClipboard(tabs, format) {
   let indentLevels = [];
@@ -34,13 +52,14 @@ export async function copyToClipboard(tabs, format) {
     }
   }
 
-  const lineFeed = configs.useCRLF ? '\r\n' : '\n' ;
+  const delimiter = getDelimiter();
   const itemsToCopy = await Promise.all(tabs.map((tab, index) => fillPlaceHolders(format, tab, indentLevels[index])));
 
   const richText = /%RT%/i.test(format) ? itemsToCopy.map(item => item.richText).join('<br />') : null ;
-  let plainText = itemsToCopy.map(item => item.plainText).join(lineFeed);
-  if (tabs.length > 1)
-    plainText += lineFeed;
+  let plainText = itemsToCopy.map(item => item.plainText).join(delimiter);
+  if (configs.delimiter == Constants.kDELIMITER_LINE_BREAK &&
+      tabs.length > 1)
+    plainText += delimiter;
 
   log('richText: ', richText);
   log('plainText: ', plainText);
@@ -201,7 +220,7 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
   let params = {
     tab,
     indentLevel,
-    lineFeed:  configs.useCRLF ? '\r\n' : '\n',
+    delimiter: getDelimiter(),
     timeUTC:   now.toUTCString(),
     timeLocal: now.toLocaleString()
   };
@@ -274,14 +293,14 @@ export async function fillPlaceHolders(format, tab, indentLevel) {
 
 function fillPlaceHoldersInternal(
   format,
-  { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel } = {}
+  { tab, author, description, keywords, timeUTC, timeLocal, delimiter, indentLevel } = {}
 ) {
   return PlaceHolderParser.process(format, (name, rawArgs, ...args) => {
     return processPlaceHolder(
       name,
       rawArgs,
       args,
-      { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel }
+      { tab, author, description, keywords, timeUTC, timeLocal, delimiter, indentLevel }
     );
   }, '', log);
 }
@@ -292,7 +311,7 @@ function processPlaceHolder(
   name,
   rawArgs,
   args,
-  { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel } = {}
+  { tab, author, description, keywords, timeUTC, timeLocal, delimiter, indentLevel } = {}
 ) {
   log('processPlaceHolder ', name, rawArgs, args);
   switch (name.trim().toLowerCase()) {
@@ -361,7 +380,7 @@ function processPlaceHolder(
       return '\t';
 
     case 'eol':
-      return lineFeed;
+      return getLineFeed();
 
     case 'tst_indent': {
       const indenters = args.length == 0 ?
@@ -384,7 +403,7 @@ function processPlaceHolder(
           matchedToHTMLSafe[1],
           rawArgs,
           args,
-          { tab, author, description, keywords, timeUTC, timeLocal, lineFeed, indentLevel }
+          { tab, author, description, keywords, timeUTC, timeLocal, delimiter, indentLevel }
         ));
 
       return rawArgs ? `%${name}(${rawArgs})%` : `%${name}%`;
