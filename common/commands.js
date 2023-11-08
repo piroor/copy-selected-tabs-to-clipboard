@@ -17,28 +17,9 @@ import {
 import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
 
-async function collectAncestors(tabs, tabsWithChildren = null) {
-  if (!tabsWithChildren)
-    tabsWithChildren = await browser.runtime.sendMessage(Constants.kTST_ID, {
-      type: 'get-tree',
-      tabs: tabs.map(tab => tab.id)
-    }).catch(handleMissingReceiverError);
-
+async function collectAncestors(tabs) {
   const ancestorsOf = {};
-  if (tabsWithChildren) {
-    // Data from Tree Style Tab:
-    const collectAncestorsFromTreeItem = (tab) => {
-      ancestorsOf[tab.id] = ancestorsOf[tab.id] || [];
-      for (const child of tab.children) {
-        collectAncestorsFromTreeItem(child);
-        ancestorsOf[child.id] = [tab.id].concat(ancestorsOf[tab.id]);
-      }
-    };
-    for (const tab of tabsWithChildren) {
-      collectAncestorsFromTreeItem(tab);
-    }
-  } else {
-    // Fallback to data from native Firefox tabs using the openerTabId, this
+    // Detect tree structure from native Firefox tabs using the openerTabId, this
     // property is usually kept in sync with tree structure by addons like
     // TST or Sidebery:
     for (const tab of tabs) {
@@ -50,7 +31,6 @@ async function collectAncestors(tabs, tabsWithChildren = null) {
         ancestorsOf[tab.id] = [];
       }
     }
-  }
   return ancestorsOf;
 }
 
