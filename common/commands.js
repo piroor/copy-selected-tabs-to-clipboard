@@ -35,11 +35,11 @@ async function collectAncestors(tabs) {
 }
 
 const kFORMAT_PARAMETER_MATCHER  = /\([^\)]+\)|\[[^\]]+\]|\{[^\}]+\}|<[^>]+>/g;
-const kFORMAT_MATCHER_TST_INDENT = new RegExp(`%TST_INDENT(?:${kFORMAT_PARAMETER_MATCHER.source})*%`, 'gi');
+const kFORMAT_MATCHER_TREE_INDENT = new RegExp(`%(TST|TREE)_INDENT(?:${kFORMAT_PARAMETER_MATCHER.source})*%`, 'gi');
 
 export async function copyToClipboard(tabs, format) {
   let indentLevels = [];
-  if (kFORMAT_MATCHER_TST_INDENT.test(format)) {
+  if (kFORMAT_MATCHER_TREE_INDENT.test(format)) {
     try {
       const ancestorsOf = await collectAncestors(tabs);
       // ignore indent information for partial selection

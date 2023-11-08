@@ -20,7 +20,7 @@ defaultClipboardFormats.push({
 /*
 defaultClipboardFormats.push({
   label:  browser.i18n.getMessage('context_clipboard_title_and_url_tree_label'),
-  format: '%TST_INDENT(|   )(|---)%%TITLE%%EOL%%TST_INDENT(|   )%%URL%'
+  format: '%TREE_INDENT(|   )(|---)%%TITLE%%EOL%%TREE_INDENT(|   )%%URL%'
 });
 */
 defaultClipboardFormats.push({
@@ -33,7 +33,7 @@ defaultClipboardFormats.push({
 });
 defaultClipboardFormats.push({
   label:  browser.i18n.getMessage('context_clipboard_markdown_list_label'),
-  format: '%TST_INDENT("  ")%* [%MD_SAFE(%TITLE%)%](%URL% "%MD_LINK_TITLE_SAFE(%TITLE%)%")'
+  format: '%TREE_INDENT("  ")%* [%MD_SAFE(%TITLE%)%](%URL% "%MD_LINK_TITLE_SAFE(%TITLE%)%")'
 });
 
 export const configs = new Configs({
