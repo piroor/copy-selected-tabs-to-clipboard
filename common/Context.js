@@ -84,7 +84,7 @@ export class Context {
       return this.$shouldCopyMultipleTabs;
 
     return this.$shouldCopyMultipleTabs = (
-      (this.isTreeParentisTree &&
+      (this.isTreeParent &&
        [...(this.shouldCopyOnlyDescendants ? [] : [this.tab]), ...this.descendantIds]) ||
       this.multiselectedTabs
     ).length > 1;
