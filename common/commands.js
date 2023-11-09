@@ -48,7 +48,8 @@ export async function copyToClipboard(tabs, format) {
         return ancestorsOf[tab.id].filter(ancestorId => ids.indexOf(ancestorId) > -1).length
       });
     }
-    catch(_e) {
+    catch(error) {
+      console.log('failed to collect tree ancestors of tabs: ', error);
     }
   }
 
