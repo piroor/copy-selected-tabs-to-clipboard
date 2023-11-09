@@ -52,15 +52,13 @@ export class Context {
   async resolveMultiselectedTabs() {
     if (this.multiselectedTabs)
       return;
-    this.multiselectedTabs = !this.multiselectedTabs && (
-      this.tab.highlighted ?
-        browser.tabs.query({
-          windowId:    this.tab.windowId,
-          highlighted: true,
-          hidden:      false,
-        }) :
-        [this.tab]
-    );
+    this.multiselectedTabs = this.tab.highlighted ?
+      (await browser.tabs.query({
+        windowId:    this.tab.windowId,
+        highlighted: true,
+        hidden:      false,
+      })) :
+      [this.tab];
   }
 
   async resolveDescendantTabs() {

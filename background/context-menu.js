@@ -348,6 +348,11 @@ async function onShown(info, tab) {
   await context.resolve();
 
   const chooseFromMenu = (context.isTreeParent ? configs.modeForNoSelectionTree : configs.modeForNoSelection) == Constants.kCOPY_CHOOSE_FROM_MENU;
+  log('onShown ', {
+    chooseFromMenu,
+    isTreeParent: context.isTreeParent,
+    multiselected: context.multiselectedTabs.length > 1,
+  });
   const titleKey = (context.multiselectedTabs.length > 1 || chooseFromMenu) ?
     'context_copyTabs_label' :
     context.shouldCopyAll ? 'context_copyAllTabs_label' :
