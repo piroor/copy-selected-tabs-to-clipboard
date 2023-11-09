@@ -347,13 +347,14 @@ async function onShown(info, tab) {
   const context = new Context({ tab });
   await context.resolve();
 
-  const chooseFromMenu = (context.isTreeParent ? configs.modeForNoSelectionTree : configs.modeForNoSelection) == Constants.kCOPY_CHOOSE_FROM_MENU;
+  const multiselected = context.multiselectedTabs.length > 1;
+  const chooseFromMenu = (!multiselected && context.isTreeParent ? configs.modeForNoSelectionTree : configs.modeForNoSelection) == Constants.kCOPY_CHOOSE_FROM_MENU;
   log('onShown ', {
     chooseFromMenu,
     isTreeParent: context.isTreeParent,
-    multiselected: context.multiselectedTabs.length > 1,
+    multiselected,
   });
-  const titleKey = (context.multiselectedTabs.length > 1 || chooseFromMenu) ?
+  const titleKey = (multiselected || chooseFromMenu) ?
     'context_copyTabs_label' :
     context.shouldCopyAll ? 'context_copyAllTabs_label' :
       context.shouldCopyOnlyDescendants ? 'context_copyTreeDescendants_label' :
