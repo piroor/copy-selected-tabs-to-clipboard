@@ -1,6 +1,14 @@
 # History
 
  - master/HEAD
+ - 1.6.0 (2023.11.9)
+   * Add ability to choose which tabs (individual tab, whole tree, tree descendants, or all tabs) are copied from sub menu.
+   * Add ability to choose the delimiter of copied items from not only line breaks but spaces or tabs also.
+   * Resolve indent of `%TREE_INDENT()%` for copied items consistently.
+   * Copy whole tree by default when there is no multiselection and the context tab is a tree parent.
+   * Support more tab management addons like Sideberry not only Tree Style Tab ([by Lej77. Thanks!](https://github.com/piroor/copy-selected-tabs-to-clipboard/pull/46))
+   * Rename the placeholder `%TST_INDENT()%` to `%TREE_INDENT()%` because other tab management addons are now supported. The old placeholder name is still available for backward compatibility.
+   * Determine color of SVG icons for the platform color mode (dark or bright), based on the CSS prefers-color-scheme feature.
  - 1.5.2 (2023.9.9)
    * Fix typo in the default format of HTML link
  - 1.5.1 (2022.10.12)
