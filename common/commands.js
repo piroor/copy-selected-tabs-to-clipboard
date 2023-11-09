@@ -17,8 +17,8 @@ import {
 import * as Constants from './constants.js';
 import * as Permissions from './permissions.js';
 
-const kFORMAT_PARAMETER_MATCHER  = /\([^\)]+\)|\[[^\]]+\]|\{[^\}]+\}|<[^>]+>/g;
-const kFORMAT_MATCHER_TREE_INDENT = new RegExp(`%(TST|TREE)_INDENT(?:${kFORMAT_PARAMETER_MATCHER.source})*%`, 'gi');
+const kFORMAT_PARAMETER_MATCHER  = /\([^\)]+\)|\[[^\]]+\]|\{[^\}]+\}|<[^>]+>/;
+const kFORMAT_MATCHER_TREE_INDENT = new RegExp(`%(TST|TREE)_INDENT(?:${kFORMAT_PARAMETER_MATCHER.source})*%`, 'i');
 
 function getDelimiter() {
   switch (configs.delimiter) {
