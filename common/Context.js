@@ -31,6 +31,46 @@ export class Context {
       return;
 
     try {
+      const [childTabs] = await Promise.all([
+        browser.tabs.query({
+          windowId:    this.tab.windowId,
+          openerTabId: this.tab.id,
+          hidden:      false,
+        }),
+        this.resolveMultiselectedTabs(),
+      ]);
+      this.childTabs = childTabs.filter(tab => tab.openerTabId && tab.openerTabId != tab.id);
+    }
+    catch(error) {
+      console.log('failed to get child tabs: fallback to all tabs ', error);
+      await this.resolveAllTabs();
+    }
+
+    this.resolved = true;
+  }
+
+  async resolveMultiselectedTabs() {
+    if (this.multiselectedTabs)
+      return;
+    this.multiselectedTabs = !this.multiselectedTabs && (
+      this.tab.highlighted ?
+        browser.tabs.query({
+          windowId:    this.tab.windowId,
+          highlighted: true,
+          hidden:      false,
+        }) :
+        [this.tab]
+    );
+  }
+
+  async resolveDescendantTabs() {
+    if (this.$descendantTabs)
+      return;
+
+    if (!this.resolved)
+      await this.resolve();
+
+    try {
       const collectDescendants = async tab => {
         const childTabs = await browser.tabs.query({
           windowId:    tab.windowId,
@@ -41,29 +81,16 @@ export class Context {
           childTabs.map(async childTab => [childTab, ...(await collectDescendants(childTab))])
         )).flat().filter(tab => tab.openerTabId && tab.openerTabId != tab.id);
       };
-      const [descendantTabs, multiselectedTabs] = await Promise.all([
+      const [descendantTabs] = await Promise.all([
         collectDescendants(this.tab),
-        !this.multiselectedTabs && (
-          this.tab.highlighted ?
-            browser.tabs.query({
-              windowId:    this.tab.windowId,
-              highlighted: true,
-              hidden:      false,
-            }) :
-            [this.tab]
-        ),
+        this.resolveMultiselectedTabs(),
       ]);
       this.descendantTabs = descendantTabs;
       this.descendantIds = new Set(descendantTabs.map(tab => tab.id));
-      if (!this.multiselectedTabs)
-        this.multiselectedTabs = multiselectedTabs;
     }
     catch(error) {
-      console.log('failed to get child tabs: fallback to all tabs ', error);
-      await this.resolveAllTabs();
+      console.log('failed to get descendant tabs: ', error);
     }
-
-    this.resolved = true;
   }
 
   async resolveAllTabs() {
@@ -103,7 +130,7 @@ export class Context {
     if ('$isTreeParent' in this)
       return this.$isTreeParent;
 
-    return this.$isTreeParent = this.descendantIds.size > 0;
+    return this.$isTreeParent = (this.childTabs ? this.childTabs.length : this.descendantIds.size) > 0;
   }
 
   get shouldCopyOnlyDescendants() {
@@ -126,7 +153,7 @@ export class Context {
 
     return this.$shouldCopyMultipleTabs = (
       (this.isTreeParent &&
-       [...(this.shouldCopyOnlyDescendants ? [] : [this.tab]), ...this.descendantIds]) ||
+       [...(this.shouldCopyOnlyDescendants ? [] : [this.tab]), ...(this.childTabs || this.descendantIds)]) ||
       this.multiselectedTabs
     ).length > 1;
   }
@@ -165,8 +192,8 @@ export class Context {
     if (this.$tabsToCopy)
       return this.$tabsToCopy;
 
-    if (!this.resolved)
-      await this.resolve();
+    await this.resolveDescendantTabs();
+
     if (this.shouldCopyAll)
       await this.resolveAllTabs();
 
