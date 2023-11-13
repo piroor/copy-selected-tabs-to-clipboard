@@ -18,7 +18,10 @@
     "<all_urls>"
   ],
   "icons": {
-    "16": "resources/Copy.svg"
+    "16": "/resources/Copy.svg",
+    "20": "/resources/Copy.svg",
+    "24": "/resources/Copy.svg",
+    "32": "/resources/Copy.svg"
   },
   "background": {
     "page": "background/background.html"
