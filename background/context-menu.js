@@ -144,31 +144,30 @@ async function refreshFormatItems() {
       visible: format.enabled !== false
     };
     mFormatItems.set(id, item);
-    const topLevelVisible = topLevelShown && item.visible && configs.showContextCommandOnTab;
     promises.push(
-      createItem({
+      item.visible && createItem({
         ...item,
         id:       `${id}:clipboardOnTabTopLevel`,
         icons:    browser.runtime.getManifest().icons,
         contexts: ['tab'],
-        visible:  topLevelVisible
+        visible:  topLevelShown && item.visible && configs.showContextCommandOnTab,
       }),
-      createItem({
+      item.visible && createItem({
         ...item,
         id:       `${id}:under_clipboardOnTab`,
-        parentId: 'clipboardOnTab'
+        parentId: 'clipboardOnTab',
       }),
-      createItem({
+      item.visible && createItem({
         ...item,
         id:       `${id}:clipboardOnPageTopLevel`,
         icons:    browser.runtime.getManifest().icons,
         contexts: ['page'],
-        visible:  topLevelVisible
+        visible:  topLevelShown && item.visible && configs.showContextCommandOnPage,
       }),
-      createItem({
+      item.visible && createItem({
         ...item,
         id:       `${id}:under_clipboardOnPage`,
-        parentId: 'clipboardOnPage'
+        parentId: 'clipboardOnPage',
       })
     );
   }
