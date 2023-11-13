@@ -361,6 +361,7 @@ async function onShown(info, tab) {
           'context_copyTab_label';
   let updated = false;
   let useTopLevelItem = false;
+  const hasMultipleVisibleItems = [...mFormatItems.values()].filter(item => item.visible).length > 1;
   for (const item of mMenuItems) {
     if (item.hiddenForTopLevelItem)
       useTopLevelItem = true;
@@ -369,7 +370,7 @@ async function onShown(info, tab) {
     item.visible = (
       !item.hiddenForTopLevelItem &&
       configs[item.config] &&
-      mFormatItems.size > 0 &&
+      hasMultipleVisibleItems &&
       (context.shouldCopyMultipleTabs || (configs.modeForNoSelection != Constants.kCOPY_NOTHING))
     );
     item.title = browser.i18n.getMessage(titleKey);
