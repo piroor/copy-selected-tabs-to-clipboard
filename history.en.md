@@ -1,6 +1,10 @@
 # History
 
  - master/HEAD
+ - 1.6.1 (2023.11.13)
+   * Apply option to activate/deactivate context menu item on the content area even if only one format item is enabled. (regression on 1.6.0)
+   * Don't show empty context menu item when all format items are disabled.
+   * Use SVG icons in addons manager and other places
  - 1.6.0 (2023.11.9)
    * Add ability to choose which tabs (individual tab, whole tree, tree descendants, or all tabs) are copied from sub menu.
    * Add ability to choose the delimiter of copied items from not only line breaks but spaces or tabs also.
