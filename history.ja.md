@@ -1,6 +1,9 @@
 # 更新履歴
 
  - master/HEAD
+   * Prefer behavior and menu label for a tree parent consistently, for a context menu on a tree parent tab.
+   * Add a context menu behavior choice for a tree parent which behave samely to the one for an individual tab.
+   * Use icon colors same to Firefox's one.
  - 1.6.1 (2023.11.13)
    * コピー形式の項目が1つだけ有効な時に、コンテンツ領域上のコンテキストメニューを表示するかどうかの制御が機能しなくなっていたのを修正（1.6.0での後退バグ）
    * すべてのコピー形式が無効化されているときに、空のコンテキストメニュー項目が表示されないようにした

@@ -1,6 +1,9 @@
 # History
 
  - master/HEAD
+   * Prefer behavior and menu label for a tree parent consistently, for a context menu on a tree parent tab.
+   * Add a context menu behavior choice for a tree parent which behave samely to the one for an individual tab.
+   * Use icon colors same to Firefox's one.
  - 1.6.1 (2023.11.13)
    * Apply option to activate/deactivate context menu item on the content area even if only one format item is enabled. (regression on 1.6.0)
    * Don't show empty context menu item when all format items are disabled.
