@@ -1,6 +1,7 @@
 # 更新履歴
 
  - master/HEAD
+ - 1.6.2 (2023.11.14)
    * Prefer behavior and menu label for a tree parent consistently, for a context menu on a tree parent tab.
    * Add a context menu behavior choice for a tree parent which behave samely to the one for an individual tab.
    * Use icon colors same to Firefox's one.
