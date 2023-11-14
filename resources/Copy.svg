@@ -7,11 +7,11 @@
       color-scheme: light dark;
     }
     path {
-      fill: #0C0C0D;
+      fill: #0C0C0D; /* --grey-90 at https://searchfox.org/mozilla-central/rev/d6576544301cacc0e393fbc919c53e4e6b0d46ec/devtools/client/themes/variables.css#128 */
     }
     @media (prefers-color-scheme: dark) {
       path {
-        fill: #F9F9FA;
+        fill: #B1B1B3; /* --grey-40 at https://searchfox.org/mozilla-central/rev/d6576544301cacc0e393fbc919c53e4e6b0d46ec/devtools/client/themes/variables.css#254 */
       }
     }
   </style>
