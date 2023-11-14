@@ -15,7 +15,7 @@ import { Context } from '/common/Context.js';
 import * as Commands from '/common/commands.js';
 
 const icons = {
-  "16": "/resources/Copy.svg#toolbar",
+  '16': '/resources/Copy.svg#toolbar',
 };
 
 const mMenuItems = [
