@@ -8,6 +8,7 @@
 import {
   configs,
   collectAncestors,
+  log,
 } from './common.js';
 import * as Constants from './constants.js';
 
@@ -17,8 +18,10 @@ export class Context {
     this.modified      = !!modified;
     this.withContainer = !!withContainer;
 
-    if (mode)
+    if (mode) {
+      log('new context, mode=', mode);
       this.mode = mode;
+    }
 
     if (multiselectedTabs)
       this.multiselectedTabs = multiselectedTabs;
@@ -115,6 +118,8 @@ export class Context {
     if ('$mode' in this)
       return this.$mode;
 
+    log('resolving mode, isTreeParent=', this.isTreeParent, ', modified=', this.modified);
+
     return this.$mode = this.isTreeParent ?
       (this.modified ?
         configs.modeForNoSelectionTreeModified :
@@ -194,6 +199,8 @@ export class Context {
 
     if (this.shouldCopyAll)
       await this.resolveAllTabs();
+
+    log('getTabsToCopy mode=', this.mode, ', shouldCopyAll=', this.shouldCopyAll);
 
     this.$tabsToCopy = this.multiselectedTabs.length > 1 ?
       this.multiselectedTabs :
