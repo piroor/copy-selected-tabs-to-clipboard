@@ -14,13 +14,17 @@ import * as Constants from '/common/constants.js';
 import { Context } from '/common/Context.js';
 import * as Commands from '/common/commands.js';
 
+const icons = {
+  "16": "/resources/Copy.svg#toolbar",
+};
+
 const mMenuItems = [
   {
     id:       'clipboardOnTab',
     type:     'normal',
     visible:  true,
     title:    browser.i18n.getMessage('context_copyTabs_label'),
-    icons:    browser.runtime.getManifest().icons,
+    icons,
     contexts: ['tab'],
     config:   'showContextCommandOnTab'
   },
@@ -29,7 +33,7 @@ const mMenuItems = [
     type:     'normal',
     visible:  true,
     title:    browser.i18n.getMessage('context_copyTabs_label'),
-    icons:    browser.runtime.getManifest().icons,
+    icons,
     contexts: ['page'],
     config:   'showContextCommandOnPage'
   }
@@ -148,7 +152,7 @@ async function refreshFormatItems() {
       item.visible && createItem({
         ...item,
         id:       `${id}:clipboardOnTabTopLevel`,
-        icons:    browser.runtime.getManifest().icons,
+        icons,
         contexts: ['tab'],
         visible:  topLevelShown && item.visible && configs.showContextCommandOnTab,
       }),
@@ -160,7 +164,7 @@ async function refreshFormatItems() {
       item.visible && createItem({
         ...item,
         id:       `${id}:clipboardOnPageTopLevel`,
-        icons:    browser.runtime.getManifest().icons,
+        icons,
         contexts: ['page'],
         visible:  topLevelShown && item.visible && configs.showContextCommandOnPage,
       }),

@@ -6,14 +6,32 @@
     :root {
       color-scheme: light dark;
     }
-    path {
+    g.prefer-color-scheme.default:target {
+      fill: rgb(21, 20, 26); /* https://searchfox.org/mozilla-central/rev/d6576544301cacc0e393fbc919c53e4e6b0d46ec/toolkit/themes/shared/in-content/common-shared.css#16 */
+    }
+    g.prefer-color-scheme.toolbar:target {
       fill: rgb(91, 91, 102); /* https://searchfox.org/mozilla-central/rev/d6576544301cacc0e393fbc919c53e4e6b0d46ec/browser/themes/shared/browser-custom-colors.css#74 */
     }
     @media (prefers-color-scheme: dark) {
-      path {
+      g.prefer-color-scheme.default:target,
+      g.prefer-color-scheme.toolbar:target {
         fill: rgb(251, 251, 254); /* https://searchfox.org/mozilla-central/rev/d6576544301cacc0e393fbc919c53e4e6b0d46ec/browser/themes/shared/browser-custom-colors.css#74 */
       }
     }
   </style>
+<symbol id="icon">
   <path d="M14.707 8.293l-3-3A1 1 0 0 0 11 5h-1V4a1 1 0 0 0-.293-.707l-3-3A1 1 0 0 0 6 0H3a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3v3a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2V9a1 1 0 0 0-.293-.707zM12.586 9H11V7.414zm-5-5H6V2.414zM6 7v2H3V2h2v2.5a.5.5 0 0 0 .5.5H8a2 2 0 0 0-2 2zm2 7V7h2v2.5a.5.5 0 0 0 .5.5H13v4z"></path>
+</symbol>
+<g id="toolbar-theme" class="theme toolbar">
+	<use href="#icon"/>
+</g>
+<g id="default-theme" class="theme default">
+	<use href="#icon"/>
+</g>
+<g id="toolbar" class="prefer-color-scheme toolbar">
+	<use href="#icon"/>
+</g>
+<g id="default" class="prefer-color-scheme default">
+	<use href="#icon"/>
+</g>
 </svg>

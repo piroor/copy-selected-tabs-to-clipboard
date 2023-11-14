@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "author": "YUKI \"Piro\" Hiroshi",
   "description": "__MSG_extensionDescription__",
   "permissions": [
@@ -18,10 +18,10 @@
     "<all_urls>"
   ],
   "icons": {
-    "16": "/resources/Copy.svg",
-    "20": "/resources/Copy.svg",
-    "24": "/resources/Copy.svg",
-    "32": "/resources/Copy.svg"
+    "16": "/resources/Copy.svg#default",
+    "20": "/resources/Copy.svg#default",
+    "24": "/resources/Copy.svg#default",
+    "32": "/resources/Copy.svg#default"
   },
   "background": {
     "page": "background/background.html"
