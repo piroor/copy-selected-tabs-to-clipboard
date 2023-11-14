@@ -355,10 +355,7 @@ async function onShown(info, tab) {
   });
   const titleKey = (multiselected || chooseFromMenu) ?
     'context_copyTabs_label' :
-    context.shouldCopyAll ? 'context_copyAllTabs_label' :
-      context.shouldCopyOnlyDescendants ? 'context_copyTreeDescendants_label' :
-        context.isTreeParent ? 'context_copyTree_label' :
-          'context_copyTab_label';
+    context.menuItemTitleKey;
   let updated = false;
   let useTopLevelItem = false;
   const hasMultipleVisibleItems = [...mFormatItems.values()].filter(item => item.visible).length > 1;
