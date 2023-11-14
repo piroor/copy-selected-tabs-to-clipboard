@@ -11,6 +11,7 @@ export const kCOPY_TREE             = 2;
 export const kCOPY_TREE_DESCENDANTS = 3;
 export const kCOPY_ALL              = 4;
 export const kCOPY_CHOOSE_FROM_MENU = 5;
+export const kCOPY_INHERIT          = 6;
 
 export const kDELIMITER_LINE_BREAK = 0;
 export const kDELIMITER_SPACE      = 1;

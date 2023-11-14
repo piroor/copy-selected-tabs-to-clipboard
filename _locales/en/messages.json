@@ -110,6 +110,7 @@
   "config_modeForNoSelection_label":                 { "message": "Regular Operation" },
   "config_modeForNoSelection_nothing_label":         { "message": "(do nothing)" },
   "config_modeForNoSelection_choose_label":          { "message": "Choose from menu always" },
+  "config_modeForNoSelection_inherit_label":         { "message": "Behave samely to the choice for individual tabs" },
   "config_modeForNoSelection_individualTab_label":   { "message": "Copy Individual Tab" },
   "config_modeForNoSelection_all_label":             { "message": "Copy All Tabs" },
   "config_modeForNoSelection_tree_label":            { "message": "Copy Whole Tree" },

@@ -110,6 +110,7 @@
   "config_modeForNoSelection_label":                 { "message": "通常の操作" },
   "config_modeForNoSelection_nothing_label":         { "message": "(何もしない)" },
   "config_modeForNoSelection_choose_label":          { "message": "その都度メニューから選択する" },
+  "config_modeForNoSelection_inherit_label":         { "message": "単独のタブに対する選択と同様に振る舞う" },
   "config_modeForNoSelection_individualTab_label":   { "message": "単独のタブをコピー" },
   "config_modeForNoSelection_all_label":             { "message": "すべてのタブをコピー" },
   "config_modeForNoSelection_tree_label":            { "message": "ツリーをコピー" },

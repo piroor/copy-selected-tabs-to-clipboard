@@ -120,20 +120,31 @@ export class Context {
 
     log('resolving mode, isTreeParent=', this.isTreeParent, ', modified=', this.modified);
 
-    return this.$mode = this.isTreeParent ? // detect tree parent at first
-      (this.modified ?
+    // detect tree parent at first
+    if (this.isTreeParent &&
+        configs.modeForNoSelectionTree != Constants.kCOPY_INHERIT) {
+      return this.$mode = this.modified ?
         configs.modeForNoSelectionTreeModified :
-        configs.modeForNoSelectionTree) :
-      (this.modified ?
-        configs.modeForNoSelectionModified :
-        configs.modeForNoSelection);
+        configs.modeForNoSelectionTree;
+    }
+
+    return this.$mode = this.modified ?
+      configs.modeForNoSelectionModified :
+      configs.modeForNoSelection;
   }
 
   get menuItemTitleKey() {
-    return this.isTreeParent ? 'context_copyTree_label' : // detect tree parent at first
-      this.shouldCopyOnlyDescendants ? 'context_copyTreeDescendants_label' :
-        this.shouldCopyAll ? 'context_copyAllTabs_label' :
-          'context_copyTab_label';
+    // detect tree parent at first
+    if (this.isTreeParent &&
+        configs.modeForNoSelectionTree != Constants.kCOPY_INHERIT) {
+      return this.shouldCopyOnlyDescendants ?
+        'context_copyTreeDescendants_label' :
+        'context_copyTree_label';
+    }
+
+    return this.shouldCopyAll ?
+      'context_copyAllTabs_label' :
+      'context_copyTab_label';
   }
 
   get isTreeParent() {
