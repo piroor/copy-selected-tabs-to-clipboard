@@ -2,9 +2,9 @@
 
  - master/HEAD
  - 1.6.2 (2023.11.14)
-   * Prefer behavior and menu label for a tree parent consistently, for a context menu on a tree parent tab.
-   * Add a context menu behavior choice for a tree parent which behave samely to the one for an individual tab.
-   * Use icon colors same to Firefox's one.
+   * ツリーの親タブ上でのコンテキストメニューの動作とラベルを、常にツリーの親タブ向けの動作を反映した物にするようにした
+   * コンテキストメニュー項目の動作について、ツリーの親タブ上のメニューでの動作を単独のタブ上での動作に揃える選択肢を追加
+   * Firefox自身と同じアイコンの色を使うようにした
  - 1.6.1 (2023.11.13)
    * コピー形式の項目が1つだけ有効な時に、コンテンツ領域上のコンテキストメニューを表示するかどうかの制御が機能しなくなっていたのを修正（1.6.0での後退バグ）
    * すべてのコピー形式が無効化されているときに、空のコンテキストメニュー項目が表示されないようにした
