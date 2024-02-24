@@ -50,10 +50,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     (_event) => { restoreDefaultFormats(); }
   );
 
+  /*
   Permissions.bindToCheckbox(
     Permissions.CONTEXTUAL_IDENTITIES,
     document.querySelector('#contextualIdentitiesPermissionGranted')
   );
+  */
   Permissions.bindToCheckbox(
     Permissions.ALL_URLS,
     document.querySelector('#allUrlsPermissionGranted')
