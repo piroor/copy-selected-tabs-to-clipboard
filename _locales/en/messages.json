@@ -96,6 +96,7 @@
   "config_examples_link_href": { "message": "https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/trunk/README.md#example-copy-formats" },
   "config_examples_after":     { "message": " for more cases." },
 
+  "config_contextualIdentitiesPermissionGranted_label": { "message": "Allow to refer containers information" },
   "config_allUrlsPermissionGranted_label": { "message": "Allow to collect data from page contents / Allow to copy data as rich text format" },
 
   "config_showContextCommandOnTab_label": { "message": "Show context menu item in the context menu on tabs" },

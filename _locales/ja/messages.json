@@ -96,6 +96,7 @@
   "config_examples_link_href": { "message": "https://github.com/piroor/copy-selected-tabs-to-clipboard/blob/trunk/README.md#example-copy-formats" },
   "config_examples_after":     { "message": "を参照して下さい。" },
 
+  "config_contextualIdentitiesPermissionGranted_label": { "message": "コンテナーの情報を参照することを許可する" },
   "config_allUrlsPermissionGranted_label": { "message": "ページの内容からデータを取得することを許可する / データをリッチテキスト形式でコピーすることを許可する" },
 
   "config_showContextCommandOnTab_label": { "message": "タブのコンテキストメニューにメニュー項目を表示する" },

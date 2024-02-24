@@ -10,6 +10,7 @@ import {
 } from './common.js';
 
 export const ALL_URLS = { origins: ['<all_urls>'] };
+export const CONTEXTUAL_IDENTITIES = { permissions: ['contextualIdentities'] };
 
 export function clearRequest() {
   configs.requestingPermissions = null;

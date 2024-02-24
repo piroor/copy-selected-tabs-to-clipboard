@@ -51,6 +51,10 @@ window.addEventListener('DOMContentLoaded', async () => {
   );
 
   Permissions.bindToCheckbox(
+    Permissions.CONTEXTUAL_IDENTITIES,
+    document.querySelector('#contextualIdentitiesPermissionGranted')
+  );
+  Permissions.bindToCheckbox(
     Permissions.ALL_URLS,
     document.querySelector('#allUrlsPermissionGranted')
   );
