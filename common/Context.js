@@ -230,7 +230,8 @@ export class Context {
             this.descendantTabs :
             [this.tab, ...this.descendantTabs];
 
-    if (this.withContainer) {
+    if (this.withContainer &&
+        browser.contextualIdentities) {
       const cookieStoreIds = [...new Set(this.$tabsToCopy.map(tab => tab.cookieStoreId))];
       this.$containerNameById = new Map();
       await Promise.all(

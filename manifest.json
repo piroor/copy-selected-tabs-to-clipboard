@@ -7,7 +7,6 @@
   "permissions": [
     "activeTab",
     "clipboardWrite",
-    "contextualIdentities",
     "cookies",
     "menus",
     "notifications",
@@ -15,6 +14,7 @@
     "tabs"
   ],
   "optional_permissions": [
+    "contextualIdentities",
     "<all_urls>"
   ],
   "icons": {
