@@ -86,16 +86,30 @@ export async function copyToClipboard(tabs, format) {
   if (typeof navigator.clipboard.write == 'function') {
     log('trying to write data to clipboard via Clipboard API');
     try {
-      const dt = new DataTransfer();
-      dt.items.add(plainText, 'text/plain');
-      dt.items.add(richText, 'text/html');
-      navigator.clipboard.write(dt)
-        .then(() => {
-          notifyCopied(tabs.length, plainText);
-        })
-        .catch(error => {
-          notifyFailed(error);
-        });
+     /* const dt = new DataTransfer();
+      		dt.items.add(plainText, 'text/plain');
+     		dt.items.add(richText, 'text/html'); */
+
+			const ci1 = new ClipboardItem({
+				["text/plain"]: plainText,
+				["text/html"]: richText,
+			});
+
+			/* navigator.clipboard
+				.write([ci1])
+				.then(() => {
+					notifyCopied(tabs.length, plainText);
+				})
+				.catch((error) => {
+					notifyFailed(error);
+				}); */
+
+			await navigator.clipboard.write([ci1]).then(() => {
+				notifyCopied(tabs.length, plainText);
+			});
+
+			console.log("Text has been copied to clipboard");
+      
       return;
     }
     catch(error) {
