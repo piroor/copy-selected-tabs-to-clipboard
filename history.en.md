@@ -1,6 +1,9 @@
 # History
 
  - master/HEAD
+ - 1.6.7 (2025.3.25)
+   * Add new functional placeholder: `%DELIMITER(...)%` to override the delimiter.
+   * Accept strings quoted with a pair of `"` or `'` by `%PREFIX(...)%` and `%SUFFIX(...)%`.
  - 1.6.6 (2024.8.4)
    * The context menu command now behaves based on the user configuration correctly for a tree parent tab, even if you choose a reaction not "Copy Whole Tree" or "Copy Descendants".
  - 1.6.5 (2024.6.9)
