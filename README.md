@@ -19,7 +19,7 @@
 |Title and URL|`%TITLE%%EOL%%URL%`|
 |HTML Link|`<a title="%HTML_SAFE(%TITLE%)%" href="%HTML_SAFE(%URL%)%">%HTML_SAFE(%TITLE%)%</a>`|
 |HTML Link (Rich Text)|`%RT%<a title="%HTML_SAFE(%TITLE%)%" href="%HTML_SAFE(%URL%)%">%HTML_SAFE(%TITLE%)%</a>`|
-|HTML Link List (Rich Text, unordered)|`%RT%%PREFIX(<ul>%EOL%)%%SUFFIX(</ul>%EOL%)%<li><a href="%URL_HTMLIFIED%">%TITLE_HTMLIFIED%</a></li>%EOL%`|
+|HTML Link List (Rich Text, unordered)|`%RT%%PREFIX(<ul>%EOL%)%%SUFFIX(</ul>%EOL%)%<li><a href="%URL_HTMLIFIED%">%TITLE_HTMLIFIED%</a></li>`|
 |Markdown Link|`[%MD_SAFE(%TITLE%)%](%URL% "%MD_LINK_TITLE_SAFE(%TITLE%)%")`|
 |Markdown Link List|`%TREE_INDENT("  ")%* [%MD_SAFE(%TITLE%)%](%URL% "%MD_LINK_TITLE_SAFE(%TITLE%)%")`|
 |Markdown Tables|`%PREFIX(\|title\|url\|%EOL%\|---\|---\|%EOL%)%\|%REPLACE(%TITLE%,'\\|','\\\|')%\|%REPLACE(%URL%,'\\|','\\\|')%\|`|
