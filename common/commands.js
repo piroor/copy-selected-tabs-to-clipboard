@@ -53,9 +53,9 @@ export async function copyToClipboard(tabs, format) {
     }
   }
 
-  const prefix = /%PREFIX\((["'])?(.+?)\)\1%/i.test(format) ? RegExp.$2.replace(/%TAB%/gi, '\t').replace(/%EOL%/gi, getLineFeed()) : '';
-  const suffix = /%SUFFIX\((["'])?(.+?)\)\1%/i.test(format) ? RegExp.$2.replace(/%TAB%/gi, '\t').replace(/%EOL%/gi, getLineFeed()) : '';
-  const delimiter = /%(?:DELIMITER|SEPARATOR)\((["'])?(.+?)\)\1%/i.test(format) ? RegExp.$2.replace(/%TAB%/gi, '\t').replace(/%EOL%/gi, getLineFeed()) : getDelimiter();
+  const prefix = /%PREFIX\((["'])?(.+?)\1\)%/i.test(format) ? RegExp.$2.replace(/%TAB%/gi, '\t').replace(/%EOL%/gi, getLineFeed()) : '';
+  const suffix = /%SUFFIX\((["'])?(.+?)\1\)%/i.test(format) ? RegExp.$2.replace(/%TAB%/gi, '\t').replace(/%EOL%/gi, getLineFeed()) : '';
+  const delimiter = /%(?:DELIMITER|SEPARATOR)\((["'])?(.+?)\1\)%/i.test(format) ? RegExp.$2.replace(/%TAB%/gi, '\t').replace(/%EOL%/gi, getLineFeed()) : getDelimiter();
   const itemsToCopy = await Promise.all(tabs.map((tab, index) => fillPlaceHolders({ format, tab, delimiter, indentLevel: indentLevels[index] })));
 
   const richText = /%RT%/i.test(format) ? prefix + itemsToCopy.map(item => item.richText).join('<br />') + suffix : null ;
