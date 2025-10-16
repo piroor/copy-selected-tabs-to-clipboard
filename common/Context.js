@@ -225,7 +225,6 @@ export class Context {
         .map(([id, _ancestors]) => parseInt(id))
     );
     return this.$descendantTabs = this.allTabs.filter(tab => descendantIds.has(tab.id));
-    return this.$descendantIds = descendantIds;
   }
 
   set descendantTabs(value) {
