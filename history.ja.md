@@ -1,6 +1,8 @@
 # 更新履歴
 
  - master/HEAD
+ - 1.6.8 (2026.1.20)
+   * 子孫タブの取得処理のキャッシュ機構が機能していなかったのを修正 [(by Gitoffthelawn, thanks!)](https://github.com/piroor/copy-selected-tabs-to-clipboard/pull/62)
  - 1.6.7 (2025.3.25)
    * 区切り文字を変更するための関数型プレースホルダー `%DELIMITER(...)%` を追加
    * `%PREFIX(...)%` と `%SUFFIX(...)%` において、`"` または `'` で括られた値を受け付けるようにした

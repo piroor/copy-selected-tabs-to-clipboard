@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.6.8 (2026.1.20)
+   * Fix miscaching of descendant tabs. [(by Gitoffthelawn, thanks!)](https://github.com/piroor/copy-selected-tabs-to-clipboard/pull/62)
  - 1.6.7 (2025.3.25)
    * Add new functional placeholder: `%DELIMITER(...)%` to override the delimiter.
    * Accept strings quoted with a pair of `"` or `'` by `%PREFIX(...)%` and `%SUFFIX(...)%`.
