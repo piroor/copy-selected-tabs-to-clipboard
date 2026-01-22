@@ -47,10 +47,10 @@ let mLastWasTree = false;
 
 function createItem(item) {
   const params = {
-    id:       item.id,
-    type:     item.type || (!item.format && SEPARATOR_MATCHER.test(item.title) ? 'separator' : 'normal'),
-    visible:  item.visible,
-    title:    item.title
+    id:      item.id,
+    type:    item.type || (!item.format && SEPARATOR_MATCHER.test(item.title) ? 'separator' : 'normal'),
+    visible: item.visible,
+    title:   item.title
   };
   if (item.icons)
     params.icons = item.icons;
@@ -469,7 +469,7 @@ async function onClick(info, tab, selectedTabs = null) {
     tab,
     multiselectedTabs: selectedTabs,
     withContainer,
-    modified: info.button == 1,
+    modified:          info.button == 1,
   });
   const tabs = await context.getTabsToCopy();
   log('tabs: ', tabs);

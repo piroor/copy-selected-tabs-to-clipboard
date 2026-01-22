@@ -29,8 +29,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     const formats = [];
     for (const label of Object.keys(configs.copyToClipboardFormats)) {
       formats.push({
-        label:   label,
-        format:  configs.copyToClipboardFormats[label]
+        label:  label,
+        format: configs.copyToClipboardFormats[label]
       });
     }
     configs.copyToClipboardFormats = formats;
@@ -221,9 +221,9 @@ function onMessageExternal(message, sender) {
 async function registerToTST() {
   try {
     await browser.runtime.sendMessage(Constants.kTST_ID, {
-      type:  Constants.kTSTAPI_REGISTER_SELF,
-      name:  browser.i18n.getMessage('extensionName'),
-      icons: browser.runtime.getManifest().icons,
+      type:           Constants.kTSTAPI_REGISTER_SELF,
+      name:           browser.i18n.getMessage('extensionName'),
+      icons:          browser.runtime.getManifest().icons,
       listeningTypes: [
         Constants.kTSTAPI_NOTIFY_READY,
         Constants.kTSTAPI_CONTEXT_MENU_CLICK,

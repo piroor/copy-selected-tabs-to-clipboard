@@ -2,22 +2,25 @@
   "name": "copy-selected-tabs-to-clipboard",
   "version": "0.0.0",
   "engines": {
-    "node": ">=16.14"
+    "node": ">=20.0.0"
   },
   "type": "module",
   "scripts": {
-    "lint": "eslint . --ext=.js --report-unused-disable-directives",
-    "format": "eslint . --ext=.js --report-unused-disable-directives --fix"
+    "lint": "eslint . --report-unused-disable-directives",
+    "format": "eslint . --report-unused-disable-directives --fix"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.7",
-    "@babel/eslint-parser": "^7.16.3",
+    "@babel/core": "^7.26.0",
+    "@babel/eslint-parser": "^7.25.9",
+    "@babel/preset-env": "^7.26.0",
+    "@eslint/compat": "^1.2.4",
     "assert": "^2.0.0",
     "babel-plugin-module-resolver": "^5.0.0",
-    "eslint": "^8.11.0",
+    "eslint": "^9.17.0",
     "eslint-import-resolver-babel-module": "^5.3.2",
     "eslint-plugin-import": "^2.25.4",
-    "jsonlint-cli": "*",
+    "eslint-plugin-indent-in-parens": "^1.0.0",
+    "jsonlint": "*",
     "tunnel-agent": ">=0.6.0"
   }
 }

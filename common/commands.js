@@ -164,7 +164,7 @@ export async function copyToClipboard(tabs, format) {
         top:    0
       });
       const [activeTab] = await browser.tabs.query({
-        active: true,
+        active:   true,
         windowId: temporaryWindow.id,
       });
       temporaryTab = activeTab;
@@ -265,7 +265,7 @@ async function fillPlaceHolders({ format, tab, delimiter, indentLevel }) {
 
     if (/%RT%/i.test(format)) {
       return {
-        richText:  filled.trim() && filled ||
+        richText: filled.trim() && filled ||
                      `<a href="${sanitizeHtmlText(tab.url)}">${sanitizeHtmlText(tab.title)}</a>`,
         plainText: filled.trim() && filled ||
                      `${tab.title}<${tab.url}>`

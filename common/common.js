@@ -37,25 +37,25 @@ defaultClipboardFormats.push({
 });
 
 export const configs = new Configs({
-  showContextCommandOnTab: true,
-  showContextCommandOnPage: false,
-  modeForNoSelection:         Constants.kCOPY_INDIVIDUAL_TAB,
-  modeForNoSelectionModified: Constants.kCOPY_INDIVIDUAL_TAB,
-  modeForNoSelectionTree:         Constants.kCOPY_TREE,
-  modeForNoSelectionTreeModified: Constants.kCOPY_TREE_DESCENDANTS,
+  showContextCommandOnTab:           true,
+  showContextCommandOnPage:          false,
+  modeForNoSelection:                Constants.kCOPY_INDIVIDUAL_TAB,
+  modeForNoSelectionModified:        Constants.kCOPY_INDIVIDUAL_TAB,
+  modeForNoSelectionTree:            Constants.kCOPY_TREE,
+  modeForNoSelectionTreeModified:    Constants.kCOPY_TREE_DESCENDANTS,
   clearSelectionAfterCommandInvoked: false,
-  shouldNotifyResult: true,
-  copyToClipboardFormats: defaultClipboardFormats,
-  reportErrors: false,
-  delimiter: Constants.kDELIMITER_LINE_BREAK,
-  useCRLF: false,
-  notificationTimeout: 10 * 1000,
-  debug: false,
+  shouldNotifyResult:                true,
+  copyToClipboardFormats:            defaultClipboardFormats,
+  reportErrors:                      false,
+  delimiter:                         Constants.kDELIMITER_LINE_BREAK,
+  useCRLF:                           false,
+  notificationTimeout:               10 * 1000,
+  debug:                             false,
 
   // obsolete options
   showContextCommandForSingleTab: null, // migrated to modeForNoSelection=kCOPY_INDIVIDUAL_TAB
-  fallbackForSingleTab: null, // migrated to modeForNoSelection
-  fallbackForSingleTabModified: null, // migrated to modeForNoSelectionModified
+  fallbackForSingleTab:           null, // migrated to modeForNoSelection
+  fallbackForSingleTabModified:   null, // migrated to modeForNoSelectionModified
 }, {
   localKeys: `
     useCRLF
@@ -64,8 +64,7 @@ export const configs = new Configs({
 });
 
 
-export function log(message, ...args)
-{
+export function log(message, ...args) {
   if (!configs || !configs.debug)
     return;
 
