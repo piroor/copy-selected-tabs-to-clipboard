@@ -1,6 +1,10 @@
 # 更新履歴
 
  - master/HEAD
+ - 1.7.0 (2026.6.30)
+   * タブグループの名前で解決されるプレースホルダー `%GROUP_NAME(prefix, suffix)%` を追加
+   * 設定の同期およびリセット時にメッセージ処理の無限ループが発生する可能性があったのを修正
+   * Firefox 139およびそれ以前のバージョンへの対応を終了
  - 1.6.8 (2026.1.20)
    * 子孫タブの取得処理のキャッシュ機構が機能していなかったのを修正 [(by Gitoffthelawn, thanks!)](https://github.com/piroor/copy-selected-tabs-to-clipboard/pull/62)
  - 1.6.7 (2025.3.25)

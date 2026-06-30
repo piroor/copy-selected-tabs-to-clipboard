@@ -1,6 +1,10 @@
 # History
 
  - master/HEAD
+ - 1.7.0 (2026.6.30)
+   * Add support of a new placeholder `%GROUP_NAME(prefix, suffix)%` resolved with the name of the tab group.
+   * Prevent possible message storm around sync and reset of configs.
+   * Drop support of Firefox 139 and olders.
  - 1.6.8 (2026.1.20)
    * Fix miscaching of descendant tabs. [(by Gitoffthelawn, thanks!)](https://github.com/piroor/copy-selected-tabs-to-clipboard/pull/62)
  - 1.6.7 (2025.3.25)
