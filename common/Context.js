@@ -250,7 +250,7 @@ export class Context {
       await this.resolveAllTabs();
     }
 
-    log('getTabsToCopy mode=', this.mode, ', shouldCopyAll=', this.shouldCopyAll);
+    log('getTabsToCopy ', { mode: this.mode, shouldCopyAll: this.shouldCopyAll, multiselectedTabCount: this.multiselectedTabs.length });
 
     this.$tabsToCopy = this.multiselectedTabs.length > 1 ?
       this.multiselectedTabs :
