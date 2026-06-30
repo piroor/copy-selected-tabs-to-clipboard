@@ -56,7 +56,9 @@ export async function copyToClipboard(tabs, format) {
   const prefix = /%PREFIX\((["'])?(.+?)\1\)%/i.test(format) ? RegExp.$2.replace(/%TAB%/gi, '\t').replace(/%EOL%/gi, getLineFeed()) : '';
   const suffix = /%SUFFIX\((["'])?(.+?)\1\)%/i.test(format) ? RegExp.$2.replace(/%TAB%/gi, '\t').replace(/%EOL%/gi, getLineFeed()) : '';
   const delimiter = /%(?:DELIMITER|SEPARATOR)\((["'])?(.+?)\1\)%/i.test(format) ? RegExp.$2.replace(/%TAB%/gi, '\t').replace(/%EOL%/gi, getLineFeed()) : getDelimiter();
-  const itemsToCopy = await Promise.all(tabs.map((tab, index) => fillPlaceHolders({ format, tab, delimiter, indentLevel: indentLevels[index] })));
+  const groupsArray = /%GROUP_NAME.+%/i.test(format) ? (await browser.tabGroups.query({ windowId: tabs[0].windowId })) : [];
+  const groups = new Map(groupsArray.map(group => [group.id, group]));
+  const itemsToCopy = await Promise.all(tabs.map((tab, index) => fillPlaceHolders({ format, tab, delimiter, indentLevel: indentLevels[index], groups })));
 
   const richText = /%RT%/i.test(format) ? prefix + itemsToCopy.map(item => item.richText).join('<br />') + suffix : null ;
   let plainText = itemsToCopy.map(item => item.plainText).join(delimiter);
@@ -214,7 +216,7 @@ export async function copyToClipboard(tabs, format) {
   }
 }
 
-async function fillPlaceHolders({ format, tab, delimiter, indentLevel }) {
+async function fillPlaceHolders({ format, tab, delimiter, indentLevel, groups }) {
   log(`fillPlaceHolders for tab #{tab.id}`, { format, indentLevel });
   const now = new Date();
   let params = {
@@ -222,7 +224,8 @@ async function fillPlaceHolders({ format, tab, delimiter, indentLevel }) {
     indentLevel,
     delimiter,
     timeUTC:   now.toUTCString(),
-    timeLocal: now.toLocaleString()
+    timeLocal: now.toLocaleString(),
+    groups,
   };
   if (tab.discarded) {
     if (configs.reportErrors) {
@@ -293,14 +296,14 @@ async function fillPlaceHolders({ format, tab, delimiter, indentLevel }) {
 
 function fillPlaceHoldersInternal(
   format,
-  { tab, author, description, keywords, timeUTC, timeLocal, delimiter, indentLevel } = {}
+  { tab, author, description, keywords, timeUTC, timeLocal, delimiter, indentLevel, groups } = {}
 ) {
   return PlaceHolderParser.process(format, (name, rawArgs, ...args) => {
     return processPlaceHolder(
       name,
       rawArgs,
       args,
-      { tab, author, description, keywords, timeUTC, timeLocal, delimiter, indentLevel }
+      { tab, author, description, keywords, timeUTC, timeLocal, delimiter, indentLevel, groups }
     );
   }, '', log);
 }
@@ -311,7 +314,7 @@ function processPlaceHolder(
   name,
   rawArgs,
   args,
-  { tab, author, description, keywords, timeUTC, timeLocal, delimiter, indentLevel } = {}
+  { tab, author, description, keywords, timeUTC, timeLocal, delimiter, indentLevel, groups } = {}
 ) {
   log('processPlaceHolder ', name, rawArgs, args);
   switch (name.trim().toLowerCase()) {
@@ -363,6 +366,16 @@ function processPlaceHolder(
 
     case 'container_url':
       return tab.container ? `ext+container:name=${tab.container}&url=${tab.url}` : tab.url;
+
+    case 'group_name': {
+      if (!tab.groupId || tab.groupId == -1)
+        return '';
+      const [prefix, suffix] = args.length == 0 ? ['', ''] : args;
+      const group = groups.get(tab.groupId);
+      if (!group)
+        return '';
+      return `${prefix}${group.title || group.color}${suffix}`;
+    }
 
     case 'author':
       return author || '';
