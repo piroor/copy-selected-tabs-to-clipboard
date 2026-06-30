@@ -154,7 +154,6 @@ async function onShortcutCommand(command) {
       const formats = configs.copyToClipboardFormats;
       const result = await RichConfirm.showInPopup(activeTab.windowId, {
         modal:   true,
-        url:     '/resources/blank.html', // required on Firefox ESR68
         title:   browser.i18n.getMessage(titleKey),
         message: browser.i18n.getMessage(messageKey),
         buttons: formats.map(format => format.label)
