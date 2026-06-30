@@ -29,8 +29,9 @@ update_extlib:
 	git submodule foreach 'git checkout trunk || git checkout main || git checkout master && git pull'
 
 install_extlib:
-	rm -f extlib/*.js
+	rm -f extlib/*.js extlib/*.html
 	cp submodules/webextensions-lib-rich-confirm/RichConfirm.js extlib/
+	cp submodules/webextensions-lib-rich-confirm/RichConfirmDialog.* extlib/
 	cp submodules/webextensions-lib-configs/Configs.js extlib/; echo 'export default Configs;' >> extlib/Configs.js
 	cp submodules/webextensions-lib-options/Options.js extlib/; echo 'export default Options;' >> extlib/Options.js
 	cp submodules/webextensions-lib-l10n/l10n.js extlib/; echo 'export default l10n;' >> extlib/l10n.js

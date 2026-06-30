@@ -16,6 +16,8 @@ import { Context } from '/common/Context.js';
 import * as ContextMenu from './context-menu.js';
 import RichConfirm from '/extlib/RichConfirm.js';
 
+RichConfirm.init('/extlib/RichConfirmDialog.html');
+
 log.context = 'BG';
 
 const ASSIGNABLE_SHORTCUT_COUNT = 20;
