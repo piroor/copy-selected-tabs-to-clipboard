@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.7.1 (2026.7.3)
+   * Behave as settings correctly after they are back to their default values. (regression on 1.7.0)
  - 1.7.0 (2026.6.30)
    * Add support of a new placeholder `%GROUP_NAME(prefix, suffix)%` resolved with the name of the tab group.
    * Prevent possible message storm around sync and reset of configs.
